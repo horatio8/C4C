@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coalition for Conservation — Australia</title>
+<meta name="description" content="An Australian environmental charity advancing practical, evidence-led climate and conservation policy.">
+<link rel="stylesheet" href="assets/styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="assets/components.jsx"></script>
+<script type="text/babel" src="assets/pages-1.jsx"></script>
+<script type="text/babel" src="assets/pages-2.jsx"></script>
+<script type="text/babel" src="assets/tweaks-panel.jsx"></script>
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+const TWEAKS = {
+  "typeMode": "serif-body",
+  "density": "standard"
+};
+
+function App() {
+  const [page, setPage] = useState('home');
+  const [t, setTweak] = useTweaks(TWEAKS);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-type', t.typeMode);
+    document.documentElement.setAttribute('data-density', t.density);
+  }, [t.typeMode, t.density]);
+
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [page]);
+
+  let body;
+  if (page === 'home') body = <HomePage setPage={setPage} />;
+  else if (page === 'about') body = <AboutPage setPage={setPage} />;
+  else if (page === 'work') body = <WorkPage setPage={setPage} />;
+  else if (page === 'aea') body = <AEAPage />;
+  else if (page === 'news') body = <NewsPage />;
+  else if (page === 'donate') body = <DonatePage />;
+  else if (page === 'contact') body = <ContactPage />;
+  else if (page.startsWith('issue:')) body = <IssuePage slug={page.split(':')[1]} setPage={setPage} />;
+  else body = <HomePage setPage={setPage} />;
+
+  const navPage = page.startsWith('issue:') ? 'work' : page;
+
+  return (
+    <React.Fragment>
+      <Nav page={navPage} setPage={setPage} />
+      <main data-screen-label={page}>{body}</main>
+      <Footer setPage={setPage} />
+    </React.Fragment>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
