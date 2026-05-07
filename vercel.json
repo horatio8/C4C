@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "buildCommand": "node scripts/build-static.js",
+  "outputDirectory": ".",
   "rewrites": [
     { "source": "/about", "destination": "/index.html" },
     { "source": "/work", "destination": "/index.html" },
