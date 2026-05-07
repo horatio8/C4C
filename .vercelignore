@@ -6,7 +6,9 @@ node_modules/
 .git/
 .vercelignore
 
-# These live in the repo for local dev / build only — not for static publish.
+# server.js is the local dev server only — not deployed (api/* + static
+# files cover the Vercel deployment). scripts/ and content/ stay in the
+# build workspace because vercel.json's buildCommand reads them; both
+# contain non-sensitive data already exposed via /content.js and the
+# api/content GET handler.
 server.js
-scripts/
-content/
