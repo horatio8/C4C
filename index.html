@@ -3,8 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#2f5a3a">
 <title>Coalition for Conservation — Australia</title>
 <meta name="description" content="An Australian environmental charity advancing practical, evidence-led climate and conservation policy.">
+<link rel="canonical" href="">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Coalition for Conservation">
+<meta property="og:title" content="Coalition for Conservation — Australia">
+<meta property="og:description" content="An Australian environmental charity advancing practical, evidence-led climate and conservation policy.">
+<meta property="og:url" content="">
+<meta property="og:image" content="">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Coalition for Conservation — Australia">
+<meta name="twitter:description" content="An Australian environmental charity advancing practical, evidence-led climate and conservation policy.">
+<meta name="twitter:image" content="">
+
 <link rel="stylesheet" href="/assets/styles.css">
 <script src="/content.js"></script>
 <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
@@ -12,36 +28,118 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 <div id="root"></div>
+
+<script type="text/babel">
+// Stub — the live tweaks panel was a development-only artifact.
+function useTweaks(initial) { return [initial, () => {}]; }
+</script>
 
 <script type="text/babel" src="/assets/components.jsx"></script>
 <script type="text/babel" src="/assets/pages-1.jsx"></script>
 <script type="text/babel" src="/assets/pages-2.jsx"></script>
-<script type="text/babel" src="/assets/tweaks-panel.jsx"></script>
 
 <script type="text/babel">
-const { useState, useEffect } = React;
+const { useState, useEffect, useCallback } = React;
+
+const PAGE_META = {
+  home:    { title: () => CONTENT.site.title, desc: () => CONTENT.site.description },
+  about:   { title: () => 'About — ' + CONTENT.site.title, desc: () => 'How C4C works, who we are, and our financial transparency.' },
+  work:    { title: () => 'What we do — ' + CONTENT.site.title, desc: () => 'Energy, agriculture, biodiversity and heavy industry — four areas, one framework.' },
+  aea:     { title: () => 'Affordable Energy Australia — ' + CONTENT.site.title, desc: () => 'Proven for families. True on cost. Secure for the grid.' },
+  news:    { title: () => 'News — ' + CONTENT.site.title, desc: () => 'Submissions, op-eds, statements, events. The work, on the record.' },
+  donate:  { title: () => 'Donate — ' + CONTENT.site.title, desc: () => 'Fund the policy work. Tax-deductible. DGR endorsed.' },
+  contact: { title: () => 'Contact — ' + CONTENT.site.title, desc: () => 'Get in touch with C4C — we read everything.' },
+};
+
+function metaFor(page) {
+  if (page.startsWith('issue:')) {
+    const slug = page.split(':')[1];
+    const issue = (CONTENT.issues || {})[slug];
+    if (issue) return { title: () => issue.title + ' — ' + CONTENT.site.title, desc: () => issue.tagline };
+  }
+  return PAGE_META[page] || PAGE_META.home;
+}
+
+function pathToPage(path) {
+  if (!path || path === '/') return 'home';
+  if (path === '/about') return 'about';
+  if (path === '/work') return 'work';
+  if (path === '/campaigns') return 'aea';
+  if (path === '/news') return 'news';
+  if (path === '/donate') return 'donate';
+  if (path === '/contact') return 'contact';
+  const m = path.match(/^\/issues\/([a-z-]+)$/);
+  if (m) return 'issue:' + m[1];
+  return 'home';
+}
+
+function pageToPath(page) {
+  if (page === 'home') return '/';
+  if (page === 'about') return '/about';
+  if (page === 'work') return '/work';
+  if (page === 'aea') return '/campaigns';
+  if (page === 'news') return '/news';
+  if (page === 'donate') return '/donate';
+  if (page === 'contact') return '/contact';
+  if (page.startsWith('issue:')) return '/issues/' + page.split(':')[1];
+  return '/';
+}
+
+function setMetaTag(selector, attr, value) {
+  const el = document.querySelector(selector);
+  if (el) el.setAttribute(attr, value);
+}
+
+function applyMeta(page) {
+  const meta = metaFor(page);
+  const title = meta.title();
+  const desc = meta.desc();
+  document.title = title;
+  setMetaTag('meta[name="description"]', 'content', desc);
+  setMetaTag('meta[property="og:title"]', 'content', title);
+  setMetaTag('meta[property="og:description"]', 'content', desc);
+  setMetaTag('meta[property="og:url"]', 'content', location.href);
+  setMetaTag('meta[name="twitter:title"]', 'content', title);
+  setMetaTag('meta[name="twitter:description"]', 'content', desc);
+  setMetaTag('link[rel="canonical"]', 'href', location.href);
+  if (CONTENT.site.ogImage) {
+    setMetaTag('meta[property="og:image"]', 'content', CONTENT.site.ogImage);
+    setMetaTag('meta[name="twitter:image"]', 'content', CONTENT.site.ogImage);
+  }
+}
 
 function App() {
-  const [page, setPage] = useState('home');
-  const [t, setTweak] = useTweaks({ typeMode: 'serif-body', density: 'standard' });
+  const [page, setPageState] = useState(() => pathToPage(window.location.pathname));
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-type', t.typeMode);
-    document.documentElement.setAttribute('data-density', t.density);
-    document.title = window.CONTENT.site.title;
-  }, [t.typeMode, t.density]);
+    const onPop = () => setPageState(pathToPage(window.location.pathname));
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
 
-  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [page]);
+  const setPage = useCallback((next) => {
+    const path = pageToPath(next);
+    if (window.location.pathname !== path) {
+      window.history.pushState({}, '', path);
+    }
+    setPageState(next);
+  }, []);
+
+  useEffect(() => {
+    applyMeta(page);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [page]);
 
   let body;
   if (page === 'home') body = <HomePage setPage={setPage} />;
   else if (page === 'about') body = <AboutPage setPage={setPage} />;
   else if (page === 'work') body = <WorkPage setPage={setPage} />;
-  else if (page === 'aea') body = <AEAPage />;
-  else if (page === 'news') body = <NewsPage />;
-  else if (page === 'donate') body = <DonatePage />;
-  else if (page === 'contact') body = <ContactPage />;
+  else if (page === 'aea') body = <AEAPage setPage={setPage} />;
+  else if (page === 'news') body = <NewsPage setPage={setPage} />;
+  else if (page === 'donate') body = <DonatePage setPage={setPage} />;
+  else if (page === 'contact') body = <ContactPage setPage={setPage} />;
   else if (page.startsWith('issue:')) body = <IssuePage slug={page.split(':')[1]} setPage={setPage} />;
   else body = <HomePage setPage={setPage} />;
 
@@ -49,8 +147,10 @@ function App() {
 
   return (
     <React.Fragment>
-      <Nav page={navPage} setPage={setPage} />
-      <main data-screen-label={page}>{body}</main>
+      <header>
+        <Nav page={navPage} setPage={setPage} />
+      </header>
+      <main id="main" tabIndex={-1} data-screen-label={page}>{body}</main>
       <Footer setPage={setPage} />
     </React.Fragment>
   );

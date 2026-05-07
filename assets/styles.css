@@ -491,9 +491,162 @@ body { font-size: 18px; line-height: 1.6; }
 .input { font-size: 17px; }
 .chip { font-size: 12px; padding: 7px 14px; }
 .h-3 { font-size: clamp(24px, 2vw, 32px); }
+/* skip link for keyboard users */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 1000;
+  background: var(--ink);
+  color: var(--bone);
+  padding: 12px 16px;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  border-radius: 0 0 4px 0;
+}
+.skip-link:focus { left: 0; }
+
+/* visible focus rings for keyboard users — overrides any blanket :focus { outline: none } above */
+:focus-visible {
+  outline: 2px solid var(--ochre);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.btn:focus-visible,
+.nav-cta:focus-visible,
+.nav-link:focus-visible,
+.btn-ghost:focus-visible {
+  outline: 2px solid var(--bone);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px var(--ochre-2);
+}
+.input:focus-visible,
+.select:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--ochre-2);
+  outline-offset: 1px;
+}
+main:focus { outline: none; }
+
+/* invalid-form styling for fields the user has touched */
+.input:invalid:not(:placeholder-shown),
+input:invalid:not(:placeholder-shown):not([type=checkbox]):not([type=radio]),
+textarea:invalid:not(:placeholder-shown) {
+  border-bottom-color: #b04a1f;
+}
+.input:invalid:not(:placeholder-shown):focus,
+input:invalid:not(:placeholder-shown):focus,
+textarea:invalid:not(:placeholder-shown):focus {
+  border-color: #b04a1f;
+}
+
+/* mobile drawer */
+.nav-toggle {
+  display: none;
+  background: transparent;
+  border: 1px solid rgba(236,235,226,0.3);
+  border-radius: 4px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--bone);
+}
+.nav-toggle .bar {
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  background: currentColor;
+  position: relative;
+}
+.nav-toggle .bar::before,
+.nav-toggle .bar::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 1.5px;
+  background: currentColor;
+  transition: transform 0.2s ease;
+}
+.nav-toggle .bar::before { top: -6px; }
+.nav-toggle .bar::after  { top: 6px; }
+.nav-toggle[aria-expanded="true"] .bar { background: transparent; }
+.nav-toggle[aria-expanded="true"] .bar::before { transform: translateY(6px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .bar::after  { transform: translateY(-6px) rotate(-45deg); }
+
+.nav-drawer {
+  display: none;
+  position: fixed;
+  inset: 79px 0 0 0;
+  background: var(--ink);
+  color: var(--bone);
+  z-index: 90;
+  padding: 32px 24px;
+  overflow-y: auto;
+}
+.nav-drawer.open { display: block; }
+.nav-drawer .nav-link {
+  display: block;
+  padding: 16px 0;
+  font-size: 22px;
+  border-bottom: 1px solid rgba(236,235,226,0.12);
+  color: var(--bone);
+  text-decoration: none;
+}
+.nav-drawer .nav-cta {
+  margin-top: 24px;
+  width: 100%;
+  justify-content: center;
+}
+
+/* tablet */
+@media (max-width: 1024px) {
+  :root { --gutter: 32px; }
+  .container-wide { max-width: 100%; }
+  .h-display { font-size: clamp(56px, 9vw, 96px); }
+}
+
+/* mobile */
 @media (max-width: 800px) {
-  :root { --gutter: 24px; }
+  :root { --gutter: 20px; }
   .nav-links { display: none; }
+  .nav-toggle { display: inline-flex; }
   .section { padding: 64px 0; }
-  .h-display { font-size: 64px; }
+  .h-display { font-size: 56px; }
+  .h-1 { font-size: clamp(40px, 9vw, 64px); }
+  .h-2 { font-size: clamp(32px, 7vw, 48px); }
+  .lead { font-size: 18px; }
+
+  /* All two-column grids collapse to one column on mobile. */
+  .container-wide [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  .container-wide [style*="repeat(2"],
+  .container-wide [style*="repeat(3"],
+  .container-wide [style*="repeat(4"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .h-display { font-size: 44px; }
+  .btn { padding: 14px 22px; font-size: 14px; }
+}
+
+/* respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

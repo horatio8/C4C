@@ -1,15 +1,43 @@
 // AEA + News + Donate + Contact (CMS-driven)
 
-function AEAPage() {
+function AEAPage({ setPage }) {
   const a = C().aea;
   const pillarKeys = Object.keys(a.pillars);
   const [pillar, setPillar] = useState(pillarKeys[0]);
   const p = a.pillars[pillar];
 
+  const [signed, setSigned] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState('');
+  const formRef = useRef(null);
+  const matrixUrl = a.messagingMatrixUrl || '';
+
+  const scrollToForm = () => {
+    if (formRef.current) formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  async function submitPetition(e) {
+    e.preventDefault();
+    setBusy(true);
+    setErr('');
+    const fd = new FormData(e.currentTarget);
+    const ok = await postJson('/api/petition', {
+      first_name: fd.get('first_name'),
+      last_name: fd.get('last_name'),
+      email: fd.get('email'),
+      postcode: fd.get('postcode'),
+      mobile: fd.get('mobile'),
+      consent: !!fd.get('consent'),
+    });
+    setBusy(false);
+    if (ok) setSigned(true);
+    else setErr('Submission failed. Please try again.');
+  }
+
   return (
     <React.Fragment>
       <section style={{ background: '#0A1F44', color: '#f4f7fb', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, opacity: 0.35 }}>
+        <div style={{ position: 'absolute', inset: 0, opacity: 0.35 }} aria-hidden="true">
           <svg viewBox="0 0 1440 600" style={{ width: '100%', height: '100%' }} preserveAspectRatio="none">
             <defs>
               <pattern id="aeagrid" width="64" height="64" patternUnits="userSpaceOnUse">
@@ -48,8 +76,16 @@ function AEAPage() {
           </p>
 
           <div style={{ display: 'flex', gap: 14, marginTop: 56, flexWrap: 'wrap' }}>
-            <button className="btn" style={{ background: '#1FB5D8', color: '#0A1F44' }}>{a.ctaPrimary}</button>
-            <button className="btn btn-outline-paper" style={{ borderColor: 'rgba(255,255,255,0.4)', color: 'white' }}>{a.ctaSecondary}</button>
+            <button type="button" className="btn" style={{ background: '#1FB5D8', color: '#0A1F44' }} onClick={scrollToForm}>
+              {a.ctaPrimary}
+            </button>
+            {matrixUrl ? (
+              <a href={matrixUrl} target="_blank" rel="noopener noreferrer">
+                <button type="button" className="btn btn-outline-paper" style={{ borderColor: 'rgba(255,255,255,0.4)', color: 'white' }}>
+                  {a.ctaSecondary} ↗
+                </button>
+              </a>
+            ) : null}
           </div>
         </div>
       </section>
@@ -57,11 +93,16 @@ function AEAPage() {
       <section className="section">
         <div className="container-wide">
           <Eyebrow ochre>{a.pillarsEyebrow}</Eyebrow>
-          <div style={{ display: 'flex', gap: 0, marginTop: 32, marginBottom: 64 }}>
+          <div role="tablist" style={{ display: 'flex', gap: 0, marginTop: 32, marginBottom: 64 }}>
             {pillarKeys.map(k => (
-              <button key={k}
+              <button
+                key={k}
+                role="tab"
+                type="button"
+                aria-selected={pillar === k}
                 onClick={() => setPillar(k)}
-                className={`pillar-tab ${pillar === k ? 'active' : ''}`}>
+                className={`pillar-tab ${pillar === k ? 'active' : ''}`}
+              >
                 <div className="mono" style={{ fontSize: 11, letterSpacing: '0.14em', opacity: 0.7 }}>{a.pillars[k].eyebrow}</div>
                 <div className="display" style={{ fontSize: 30, marginTop: 12, fontWeight: 400 }}>{a.pillars[k].headline}</div>
               </button>
@@ -87,7 +128,7 @@ function AEAPage() {
         </div>
       </section>
 
-      <section style={{ background: '#f0f4fa', padding: '120px 0', borderTop: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)' }}>
+      <section ref={formRef} style={{ background: '#f0f4fa', padding: '120px 0', borderTop: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)' }}>
         <div className="container-wide">
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
             <div>
@@ -105,22 +146,47 @@ function AEAPage() {
                 ))}
               </div>
             </div>
-            <div style={{ background: 'white', padding: 48, border: '1px solid var(--rule)' }}>
-              <div className="mono" style={{ fontSize: 11, letterSpacing: '0.14em', color: '#0A1F44', marginBottom: 32 }}>{a.petition.formTitle}</div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
-                <div><label className="label">First name</label><input className="input" /></div>
-                <div><label className="label">Last name</label><input className="input" /></div>
-                <div style={{ gridColumn: '1 / -1' }}><label className="label">Email</label><input className="input" /></div>
-                <div><label className="label">Postcode</label><input className="input" /></div>
-                <div><label className="label">Mobile (optional)</label><input className="input" /></div>
-                <label style={{ gridColumn: '1 / -1', display: 'flex', gap: 12, alignItems: 'flex-start', fontSize: 13, color: 'var(--ink-3)', marginTop: 16 }}>
-                  <input type="checkbox" style={{ marginTop: 4 }} defaultChecked /> {a.petition.consent}
-                </label>
-                <button className="btn" style={{ background: '#0A1F44', color: '#1FB5D8', gridColumn: '1 / -1', marginTop: 16 }}>
-                  {a.petition.submitLabel}
-                </button>
+
+            {signed ? (
+              <div style={{ background: 'white', padding: 48, border: '1px solid var(--rule)' }}>
+                <div className="mono" style={{ fontSize: 11, letterSpacing: '0.14em', color: '#0A1F44', marginBottom: 16 }}>SIGNATURE RECEIVED</div>
+                <h3 className="display" style={{ fontSize: 48, color: '#0A1F44', fontWeight: 300 }}>{a.petition.thanksTitle}</h3>
+                <p className="body" style={{ marginTop: 16 }}>{a.petition.thanksBody}</p>
               </div>
-            </div>
+            ) : (
+              <form ref={null} onSubmit={submitPetition} noValidate={false} style={{ background: 'white', padding: 48, border: '1px solid var(--rule)' }}>
+                <div className="mono" style={{ fontSize: 11, letterSpacing: '0.14em', color: '#0A1F44', marginBottom: 32 }}>{a.petition.formTitle}</div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+                  <div>
+                    <label htmlFor="aea_first" className="label">First name</label>
+                    <input id="aea_first" name="first_name" type="text" autoComplete="given-name" required placeholder=" " className="input" />
+                  </div>
+                  <div>
+                    <label htmlFor="aea_last" className="label">Last name</label>
+                    <input id="aea_last" name="last_name" type="text" autoComplete="family-name" required placeholder=" " className="input" />
+                  </div>
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <label htmlFor="aea_email" className="label">Email</label>
+                    <input id="aea_email" name="email" type="email" autoComplete="email" required placeholder=" " className="input" />
+                  </div>
+                  <div>
+                    <label htmlFor="aea_postcode" className="label">Postcode</label>
+                    <input id="aea_postcode" name="postcode" type="text" inputMode="numeric" pattern="[0-9]{4}" autoComplete="postal-code" required placeholder=" " className="input" />
+                  </div>
+                  <div>
+                    <label htmlFor="aea_mobile" className="label">Mobile (optional)</label>
+                    <input id="aea_mobile" name="mobile" type="tel" autoComplete="tel" placeholder=" " className="input" />
+                  </div>
+                  <label style={{ gridColumn: '1 / -1', display: 'flex', gap: 12, alignItems: 'flex-start', fontSize: 13, color: 'var(--ink-3)', marginTop: 16 }}>
+                    <input type="checkbox" name="consent" value="yes" defaultChecked style={{ marginTop: 4 }} /> {a.petition.consent}
+                  </label>
+                  {err && <div style={{ gridColumn: '1 / -1', color: '#9a1f1f', fontSize: 13 }}>{err}</div>}
+                  <button type="submit" disabled={busy} className="btn" style={{ background: '#0A1F44', color: '#1FB5D8', gridColumn: '1 / -1', marginTop: 16 }}>
+                    {busy ? 'Signing…' : a.petition.submitLabel}
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       </section>
@@ -128,15 +194,26 @@ function AEAPage() {
   );
 }
 
-function NewsPage() {
+function NewsPage({ setPage }) {
   const n = C().news;
   const [filter, setFilter] = useState(n.filters[0] || 'All');
-  const filtered = filter === (n.filters[0] || 'All') ? n.items : n.items.filter(i => i.tag === filter);
+  const [q, setQ] = useState('');
+
+  const filteredByTag = filter === (n.filters[0] || 'All') ? n.items : n.items.filter(i => i.tag === filter);
+  const ql = q.trim().toLowerCase();
+  const filtered = ql
+    ? filteredByTag.filter(it =>
+        (it.title || '').toLowerCase().includes(ql) ||
+        (it.body || '').toLowerCase().includes(ql) ||
+        (it.tag || '').toLowerCase().includes(ql) ||
+        (it.type || '').toLowerCase().includes(ql)
+      )
+    : filteredByTag;
 
   return (
     <React.Fragment>
       <section style={{ position: 'relative' }}>
-        <Photo kind={n.hero.photoKind} label={n.hero.photoLabel} credit={n.hero.photoCredit} height={520}>
+        <Photo kind={n.hero.photoKind} src={n.hero.photoUrl} alt="" eager label={n.hero.photoLabel} credit={n.hero.photoCredit} height={520}>
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(20,17,11,0.2) 0%, rgba(20,17,11,0.7) 100%)', zIndex: 2 }} />
           <div className="container-wide" style={{ position: 'relative', zIndex: 4, height: '100%', display: 'flex', alignItems: 'flex-end', padding: '0 var(--gutter) 72px' }}>
             <div>
@@ -152,9 +229,14 @@ function NewsPage() {
       <section style={{ padding: '32px 0', background: 'var(--paper-warm)', borderBottom: '1px solid var(--rule)', position: 'sticky', top: 79, zIndex: 10 }}>
         <div className="container-wide" style={{ display: 'flex', gap: 32, alignItems: 'center', flexWrap: 'wrap' }}>
           <div className="eyebrow">Filter</div>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <div role="tablist" aria-label="Filter by topic" style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {n.filters.map(f => (
-              <button key={f} onClick={() => setFilter(f)}
+              <button
+                key={f}
+                type="button"
+                role="tab"
+                aria-selected={filter === f}
+                onClick={() => setFilter(f)}
                 style={{
                   padding: '8px 16px',
                   fontFamily: 'var(--mono)',
@@ -172,16 +254,30 @@ function NewsPage() {
             ))}
           </div>
           <div style={{ marginLeft: 'auto', display: 'flex', gap: 16, alignItems: 'center' }}>
-            <span className="mono small">{filtered.length} items</span>
-            <input className="input" placeholder="Search…" style={{ width: 240, padding: '8px 12px', fontSize: 13, borderBottom: 'none', borderRadius: 999, border: '1px solid var(--rule-2)', background: 'var(--paper)' }} />
+            <span className="mono small" aria-live="polite">{filtered.length} items</span>
+            <label htmlFor="news_search" className="visually-hidden" style={{ position: 'absolute', left: -9999 }}>Search news</label>
+            <input
+              id="news_search"
+              type="search"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              className="input"
+              placeholder="Search…"
+              style={{ width: 240, padding: '8px 12px', fontSize: 13, borderBottom: 'none', borderRadius: 999, border: '1px solid var(--rule-2)', background: 'var(--paper)' }}
+            />
           </div>
         </div>
       </section>
 
       <section className="section">
         <div className="container-wide">
+          {filtered.length === 0 && (
+            <div className="body" style={{ padding: '64px 0', color: 'var(--ink-3)' }}>
+              No items match. Try a different filter or search term.
+            </div>
+          )}
           {filtered.map((it, i) => (
-            <div key={i} style={{ display: 'grid', gridTemplateColumns: '140px 130px 1fr 160px 60px', gap: 32, padding: '40px 0', borderBottom: '1px solid var(--rule)', borderTop: i === 0 ? '1px solid var(--ink)' : 'none', alignItems: 'flex-start', cursor: 'pointer' }}>
+            <article key={i} style={{ display: 'grid', gridTemplateColumns: '140px 130px 1fr 160px', gap: 32, padding: '40px 0', borderBottom: '1px solid var(--rule)', borderTop: i === 0 ? '1px solid var(--ink)' : 'none', alignItems: 'flex-start' }}>
               <span className="mono" style={{ fontSize: 11, letterSpacing: '0.12em', color: 'var(--ochre-2)', textTransform: 'uppercase', paddingTop: 12 }}>{it.type}</span>
               <span className="mono" style={{ fontSize: 12, color: 'var(--ink-3)', paddingTop: 12 }}>{it.date}</span>
               <div>
@@ -189,8 +285,7 @@ function NewsPage() {
                 <p className="body" style={{ fontSize: 14, marginTop: 14, maxWidth: 600 }}>{it.body}</p>
               </div>
               <span className="chip" style={{ alignSelf: 'flex-start', marginTop: 8 }}>{it.tag}</span>
-              <span style={{ fontSize: 22, textAlign: 'right', paddingTop: 8 }}>↗</span>
-            </div>
+            </article>
           ))}
         </div>
       </section>
@@ -203,11 +298,32 @@ function DonatePage() {
   const [amount, setAmount] = useState(d.presets[1] || 100);
   const [recurring, setRecurring] = useState(true);
   const [step, setStep] = useState(1);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState('');
+
+  async function handleStep2(e) {
+    e.preventDefault();
+    setBusy(true);
+    setErr('');
+    const fd = new FormData(e.currentTarget);
+    const ok = await postJson('/api/donate-intent', {
+      amount: Number(amount),
+      recurring,
+      first_name: fd.get('first_name'),
+      last_name: fd.get('last_name'),
+      email: fd.get('email'),
+      postcode: fd.get('postcode'),
+      phone: fd.get('phone'),
+    });
+    setBusy(false);
+    if (ok) setStep(3);
+    else setErr('Submission failed. Please try again.');
+  }
 
   return (
     <React.Fragment>
       <section style={{ position: 'relative' }}>
-        <Photo kind={d.hero.photoKind} label={d.hero.photoLabel} credit={d.hero.photoCredit} height={520}>
+        <Photo kind={d.hero.photoKind} src={d.hero.photoUrl} alt="" eager label={d.hero.photoLabel} credit={d.hero.photoCredit} height={520}>
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(20,17,11,0.2) 0%, rgba(20,17,11,0.7) 100%)', zIndex: 2 }} />
           <div className="container-wide" style={{ position: 'relative', zIndex: 4, height: '100%', display: 'flex', alignItems: 'flex-end', padding: '0 var(--gutter) 72px' }}>
             <div>
@@ -235,12 +351,16 @@ function DonatePage() {
               <div>
                 <Eyebrow ochre>{d.amountEyebrow}</Eyebrow>
                 <div style={{ display: 'flex', gap: 12, marginTop: 24, marginBottom: 32 }}>
-                  <button onClick={() => setRecurring(false)} className="btn" style={{ flex: 1, background: !recurring ? 'var(--ink)' : 'transparent', color: !recurring ? 'var(--paper)' : 'var(--ink)', border: '1px solid var(--ink)', justifyContent: 'center' }}>{d.oneTimeLabel}</button>
-                  <button onClick={() => setRecurring(true)} className="btn" style={{ flex: 1, background: recurring ? 'var(--ink)' : 'transparent', color: recurring ? 'var(--paper)' : 'var(--ink)', border: '1px solid var(--ink)', justifyContent: 'center' }}>{d.monthlyLabel}</button>
+                  <button type="button" onClick={() => setRecurring(false)} aria-pressed={!recurring} className="btn" style={{ flex: 1, background: !recurring ? 'var(--ink)' : 'transparent', color: !recurring ? 'var(--paper)' : 'var(--ink)', border: '1px solid var(--ink)', justifyContent: 'center' }}>{d.oneTimeLabel}</button>
+                  <button type="button" onClick={() => setRecurring(true)} aria-pressed={recurring} className="btn" style={{ flex: 1, background: recurring ? 'var(--ink)' : 'transparent', color: recurring ? 'var(--paper)' : 'var(--ink)', border: '1px solid var(--ink)', justifyContent: 'center' }}>{d.monthlyLabel}</button>
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 24 }}>
                   {d.presets.map(p => (
-                    <button key={p} onClick={() => setAmount(p)}
+                    <button
+                      type="button"
+                      key={p}
+                      onClick={() => setAmount(p)}
+                      aria-pressed={amount === p}
                       style={{
                         padding: '36px 0',
                         border: '1px solid ' + (amount === p ? 'var(--ink)' : 'var(--rule-2)'),
@@ -253,10 +373,10 @@ function DonatePage() {
                   ))}
                 </div>
                 <div>
-                  <label className="label">{d.customLabel}</label>
+                  <label htmlFor="donate_amount" className="label">{d.customLabel}</label>
                   <div style={{ position: 'relative' }}>
-                    <span style={{ position: 'absolute', left: 0, top: 14, fontFamily: 'var(--display)', fontSize: 20, color: 'var(--ink-3)' }}>$</span>
-                    <input className="input" value={amount} onChange={e => setAmount(e.target.value)} style={{ paddingLeft: 24, fontFamily: 'var(--display)', fontSize: 22, fontWeight: 300 }} />
+                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, top: 14, fontFamily: 'var(--display)', fontSize: 20, color: 'var(--ink-3)' }}>$</span>
+                    <input id="donate_amount" type="number" min="1" step="1" inputMode="numeric" className="input" value={amount} onChange={e => setAmount(e.target.value === '' ? 0 : Number(e.target.value))} style={{ paddingLeft: 24, fontFamily: 'var(--display)', fontSize: 22, fontWeight: 300 }} />
                   </div>
                 </div>
                 <div style={{ marginTop: 40, padding: 28, background: 'var(--paper)', border: '1px solid var(--rule)' }}>
@@ -268,26 +388,46 @@ function DonatePage() {
                     {amount >= 2500 && d.fundsLabels.over2500}
                   </p>
                 </div>
-                <button onClick={() => setStep(2)} className="btn btn-primary" style={{ marginTop: 32 }}>Continue ↗</button>
+                <button type="button" onClick={() => setStep(2)} disabled={!amount || amount < 1} className="btn btn-primary" style={{ marginTop: 32 }}>Continue ↗</button>
               </div>
             )}
 
             {step === 2 && (
-              <div>
+              <form onSubmit={handleStep2}>
                 <Eyebrow ochre>Your details</Eyebrow>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginTop: 24 }}>
-                  <div><label className="label">First name</label><input className="input" /></div>
-                  <div><label className="label">Last name</label><input className="input" /></div>
-                  <div style={{ gridColumn: '1 / -1' }}><label className="label">Email</label><input className="input" type="email" /></div>
-                  <div><label className="label">Postcode</label><input className="input" /></div>
-                  <div><label className="label">Phone (optional)</label><input className="input" /></div>
-                  <div style={{ gridColumn: '1 / -1' }}><label className="label">Card details</label><input className="input" placeholder="•••• •••• •••• ••••" /></div>
+                  <div>
+                    <label htmlFor="don_first" className="label">First name</label>
+                    <input id="don_first" name="first_name" type="text" autoComplete="given-name" required placeholder=" " className="input" />
+                  </div>
+                  <div>
+                    <label htmlFor="don_last" className="label">Last name</label>
+                    <input id="don_last" name="last_name" type="text" autoComplete="family-name" required placeholder=" " className="input" />
+                  </div>
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <label htmlFor="don_email" className="label">Email</label>
+                    <input id="don_email" name="email" type="email" autoComplete="email" required placeholder=" " className="input" />
+                  </div>
+                  <div>
+                    <label htmlFor="don_post" className="label">Postcode</label>
+                    <input id="don_post" name="postcode" type="text" inputMode="numeric" pattern="[0-9]{4}" autoComplete="postal-code" required placeholder=" " className="input" />
+                  </div>
+                  <div>
+                    <label htmlFor="don_phone" className="label">Phone (optional)</label>
+                    <input id="don_phone" name="phone" type="tel" autoComplete="tel" placeholder=" " className="input" />
+                  </div>
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <p className="small" style={{ color: 'var(--ink-3)' }}>
+                      A real payment processor will be wired here before launch — this confirmation step records your intent only.
+                    </p>
+                  </div>
                 </div>
+                {err && <div style={{ marginTop: 16, color: '#9a1f1f', fontSize: 13 }}>{err}</div>}
                 <div style={{ display: 'flex', gap: 12, marginTop: 40 }}>
-                  <button onClick={() => setStep(1)} className="btn btn-outline">← Back</button>
-                  <button onClick={() => setStep(3)} className="btn btn-primary">Donate ${amount}{recurring ? '/mo' : ''} ↗</button>
+                  <button type="button" onClick={() => setStep(1)} className="btn btn-outline">← Back</button>
+                  <button type="submit" disabled={busy} className="btn btn-primary">{busy ? 'Submitting…' : `Donate $${amount}${recurring ? '/mo' : ''} ↗`}</button>
                 </div>
-              </div>
+              </form>
             )}
 
             {step === 3 && (
@@ -329,11 +469,33 @@ function ContactPage() {
   const c = C().contact;
   const [topic, setTopic] = useState(c.topics[0]);
   const [sent, setSent] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState('');
+
+  async function submit(e) {
+    e.preventDefault();
+    setBusy(true);
+    setErr('');
+    const fd = new FormData(e.currentTarget);
+    const ok = await postJson('/api/contact', {
+      topic,
+      first_name: fd.get('first_name'),
+      last_name: fd.get('last_name'),
+      email: fd.get('email'),
+      org: fd.get('org'),
+      subject: fd.get('subject'),
+      message: fd.get('message'),
+      consent: !!fd.get('consent'),
+    });
+    setBusy(false);
+    if (ok) setSent(true);
+    else setErr('Submission failed. Please try again.');
+  }
 
   return (
     <React.Fragment>
       <section style={{ position: 'relative' }}>
-        <Photo kind={c.hero.photoKind} label={c.hero.photoLabel} credit={c.hero.photoCredit} height={420}>
+        <Photo kind={c.hero.photoKind} src={c.hero.photoUrl} alt="" eager label={c.hero.photoLabel} credit={c.hero.photoCredit} height={420}>
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(20,17,11,0.2) 0%, rgba(20,17,11,0.7) 100%)', zIndex: 2 }} />
           <div className="container-wide" style={{ position: 'relative', zIndex: 4, height: '100%', display: 'flex', alignItems: 'flex-end', padding: '0 var(--gutter) 72px' }}>
             <div>
@@ -369,15 +531,20 @@ function ContactPage() {
                 <p className="lead" style={{ marginTop: 24, maxWidth: 480 }}>
                   {c.thanks.body} <span className="mono" style={{ background: 'var(--ink)', color: 'var(--bone)', padding: '2px 8px', fontSize: 13 }}>{c.thanks.urgentLabel}</span>.
                 </p>
-                <button onClick={() => setSent(false)} className="btn btn-outline" style={{ marginTop: 40 }}>{c.thanks.ctaLabel}</button>
+                <button type="button" onClick={() => setSent(false)} className="btn btn-outline" style={{ marginTop: 40 }}>{c.thanks.ctaLabel}</button>
               </div>
             ) : (
-              <form onSubmit={e => { e.preventDefault(); setSent(true); }} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, padding: 56, border: '1px solid var(--ink)', background: 'var(--bone)' }}>
+              <form onSubmit={submit} method="post" action="/api/contact" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, padding: 56, border: '1px solid var(--ink)', background: 'var(--bone)' }}>
                 <div style={{ gridColumn: '1 / -1' }}>
-                  <label className="label">What's this about?</label>
-                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 8 }}>
+                  <span className="label">What's this about?</span>
+                  <div role="radiogroup" aria-label="Topic" style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 8 }}>
                     {c.topics.map(tp => (
-                      <button type="button" key={tp} onClick={() => setTopic(tp)}
+                      <button
+                        type="button"
+                        key={tp}
+                        role="radio"
+                        aria-checked={topic === tp}
+                        onClick={() => setTopic(tp)}
                         style={{
                           padding: '8px 16px',
                           fontFamily: 'var(--mono)',
@@ -393,39 +560,41 @@ function ContactPage() {
                       </button>
                     ))}
                   </div>
+                  <input type="hidden" name="topic" value={topic} />
                 </div>
                 <div>
-                  <label className="label">First name</label>
-                  <input className="input" required />
+                  <label htmlFor="ct_first" className="label">First name</label>
+                  <input id="ct_first" name="first_name" type="text" autoComplete="given-name" required placeholder=" " className="input" />
                 </div>
                 <div>
-                  <label className="label">Last name</label>
-                  <input className="input" required />
+                  <label htmlFor="ct_last" className="label">Last name</label>
+                  <input id="ct_last" name="last_name" type="text" autoComplete="family-name" required placeholder=" " className="input" />
                 </div>
                 <div>
-                  <label className="label">Email</label>
-                  <input className="input" type="email" required />
+                  <label htmlFor="ct_email" className="label">Email</label>
+                  <input id="ct_email" name="email" type="email" autoComplete="email" required placeholder=" " className="input" />
                 </div>
                 <div>
-                  <label className="label">Organisation (optional)</label>
-                  <input className="input" />
+                  <label htmlFor="ct_org" className="label">Organisation (optional)</label>
+                  <input id="ct_org" name="org" type="text" autoComplete="organization" placeholder=" " className="input" />
                 </div>
                 <div style={{ gridColumn: '1 / -1' }}>
-                  <label className="label">Subject</label>
-                  <input className="input" required />
+                  <label htmlFor="ct_subject" className="label">Subject</label>
+                  <input id="ct_subject" name="subject" type="text" required placeholder=" " className="input" />
                 </div>
                 <div style={{ gridColumn: '1 / -1' }}>
-                  <label className="label">Your message</label>
-                  <textarea className="input" rows={6} required style={{ resize: 'vertical', minHeight: 140, lineHeight: 1.5, paddingTop: 14 }} />
+                  <label htmlFor="ct_msg" className="label">Your message</label>
+                  <textarea id="ct_msg" name="message" rows={6} required placeholder=" " className="input" style={{ resize: 'vertical', minHeight: 140, lineHeight: 1.5, paddingTop: 14 }} />
                 </div>
                 <label style={{ gridColumn: '1 / -1', display: 'flex', gap: 12, alignItems: 'flex-start', fontSize: 13, color: 'var(--ink-3)' }}>
-                  <input type="checkbox" style={{ marginTop: 4 }} /> {c.consent}
+                  <input type="checkbox" name="consent" value="yes" style={{ marginTop: 4 }} /> {c.consent}
                 </label>
+                {err && <div style={{ gridColumn: '1 / -1', color: '#9a1f1f', fontSize: 13 }}>{err}</div>}
                 <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 16, borderTop: '1px solid var(--rule)' }}>
                   <span className="mono small" style={{ color: 'var(--ink-3)' }}>
                     Routed to: <span style={{ color: 'var(--ink)' }}>{topic}</span>
                   </span>
-                  <button type="submit" className="btn btn-primary">{c.submitLabel}</button>
+                  <button type="submit" disabled={busy} className="btn btn-primary">{busy ? 'Sending…' : c.submitLabel}</button>
                 </div>
               </form>
             )}
