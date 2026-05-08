@@ -115,7 +115,6 @@ function Nav({ page, setPage }) {
 
 function Footer({ setPage }) {
   const f = C().footer;
-  const email = f.office.email;
   return (
     <footer>
       <div className="container-wide" style={{ padding: '96px var(--gutter) 40px' }}>
@@ -172,10 +171,6 @@ function Footer({ setPage }) {
               {f.office.addressLine2}<br /><br />
               <a href={`tel:${(f.office.phone || '').replace(/\s/g, '')}`} style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'rgba(236,225,200,0.7)' }}>
                 {f.office.phone}
-              </a>
-              <br />
-              <a href={`mailto:${email}`} style={{ borderBottom: '1px solid rgba(236,225,200,0.3)', fontSize: 13 }}>
-                {email}
               </a>
             </p>
           </div>
