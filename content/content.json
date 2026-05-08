@@ -446,9 +446,7 @@
     "trustEyebrow": "Trust & transparency",
     "trustItems": [
       ["DGR", "Deductible Gift Recipient endorsed by the ATO. Donations over $2 are tax-deductible."],
-      ["ACNC", "Registered with the Australian Charities and Not-for-profits Commission since 2017."],
-      ["Audit", "Audited annually by Pitcher Partners. Books published every July."],
-      ["Disclosure", "Donors over $25,000 named in the annual report, with consent."]
+      ["ACNC", "Registered with the Australian Charities and Not-for-profits Commission since 2017."]
     ]
   },
   "contact": {
