@@ -97,28 +97,6 @@ function AboutPage({ setPage }) {
           </div>
         </div>
       </section>
-
-      <section className="section">
-        <div className="container-wide">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.6fr', gap: 96 }}>
-            <div>
-              <Eyebrow ochre>{a.financials.eyebrow}</Eyebrow>
-              <h2 className="h-2 display" style={{ marginTop: 24 }}>{a.financials.headlinePre}<span className="italic">{a.financials.headlineItalic}</span></h2>
-              <p className="body" style={{ marginTop: 24 }}>{a.financials.body}</p>
-            </div>
-            <div style={{ borderTop: '1px solid var(--ink)' }}>
-              {a.financials.documents.map((d, i) => (
-                <div key={i} style={{ display: 'grid', gridTemplateColumns: '80px 1fr 220px 40px', gap: 24, padding: '28px 0', borderBottom: '1px solid var(--rule)', alignItems: 'center' }}>
-                  <span className="mono" style={{ fontSize: 12, color: 'var(--ochre-2)', letterSpacing: '0.1em' }}>{d.y}</span>
-                  <div className="display" style={{ fontSize: 22, fontWeight: 400 }}>{d.name}</div>
-                  <span className="mono small">{d.size}</span>
-                  <span aria-hidden="true" style={{ fontSize: 18, textAlign: 'right' }}>↓</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
     </React.Fragment>
   );
 }
