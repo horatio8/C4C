@@ -314,9 +314,12 @@ function FlagshipCampaign({ setPage }) {
                 {f.campaignName}
               </div>
               <h2 className="display" style={{ fontSize: 'clamp(40px, 4.5vw, 72px)', fontWeight: 300, lineHeight: 0.98, color: 'var(--bone)', letterSpacing: '-0.03em' }}>
-                {f.headline1}<br />
-                <span className="italic" style={{ color: '#e6c97a' }}>{f.headline2Italic}</span>{f.headline2Suffix}<br />
-                {f.headline3}
+                {f.headline1}
+                {(f.headline2Italic || f.headline2Suffix) && (<>
+                  <br />
+                  <span className="italic" style={{ color: '#e6c97a' }}>{f.headline2Italic}</span>{f.headline2Suffix}
+                </>)}
+                {f.headline3 && (<><br />{f.headline3}</>)}
               </h2>
               <p className="body" style={{ marginTop: 28, maxWidth: 480, color: 'rgba(236,225,200,0.78)' }}>
                 {f.body}
@@ -357,7 +360,7 @@ function IssueAreas({ setPage }) {
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${ia.areas.length}, 1fr)`, gap: 16 }}>
           {ia.areas.map(a => (
             <a
               key={a.n}
@@ -423,12 +426,28 @@ function PartnerStrip() {
       <div className="container-wide" style={{ padding: '48px var(--gutter)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 56, flexWrap: 'wrap' }}>
           <div className="eyebrow" style={{ flexShrink: 0 }}>{p.eyebrow}</div>
-          <div style={{ display: 'flex', flex: 1, gap: 48, flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' }}>
-            {p.items.map(name => (
-              <div key={name} className="display italic" style={{ fontSize: 18, color: 'var(--ink-2)', fontWeight: 400 }}>
-                {name}
-              </div>
-            ))}
+          <div className="partner-row" style={{ display: 'flex', flex: 1, gap: 48, flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' }}>
+            {p.items.map((item, i) => {
+              const name = typeof item === 'string' ? item : item.name;
+              const logoUrl = typeof item === 'string' ? '' : (item.logoUrl || '');
+              if (logoUrl) {
+                return (
+                  <img
+                    key={name || i}
+                    src={logoUrl}
+                    alt={name}
+                    loading="lazy"
+                    decoding="async"
+                    style={{ height: 40, width: 'auto', maxWidth: 180, objectFit: 'contain', filter: 'grayscale(1)', opacity: 0.85 }}
+                  />
+                );
+              }
+              return (
+                <div key={name || i} className="display italic" style={{ fontSize: 18, color: 'var(--ink-2)', fontWeight: 400 }}>
+                  {name}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

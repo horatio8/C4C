@@ -7,7 +7,7 @@
     "wordmarkLine1Pre": "Coalition ",
     "wordmarkLine1Italic": "for",
     "wordmarkLine1Post": " Conservation",
-    "wordmarkLine2": "Australia · Est. 2017"
+    "wordmarkLine2": "Australia · Est. 2018"
   },
   "nav": {
     "links": [
@@ -70,10 +70,10 @@
   },
   "home": {
     "hero": {
-      "eyebrow": "An Australian environmental charity · Est. 2017",
-      "title1": "Conservation,",
-      "titleItalic": "with the receipts.",
-      "lead": "We are Australians who believe protecting the environment and growing the economy are the same project. We do the policy work to prove it — practical, technology-neutral, evidence-led.",
+      "eyebrow": "An Australian environmental charity · Est. 2018",
+      "title1": "Protecting Nature,",
+      "titleItalic": "growing prosperity.",
+      "lead": "We are Australians who believe protecting the environment and growing the economy are the same project. We do the policy to prove it — practical, technology-neutral, evidence-based solutions that conserve Australia's unique natural heritage while helping Australian families, businesses and communities thrive.",
       "ctaPrimary": "Donate ↗",
       "ctaSecondary": "Join the list",
       "photoLabel": "Hero · West MacDonnell Ranges",
@@ -82,7 +82,7 @@
       "photoUrl": ""
     },
     "stats": [
-      { "value": "09", "label": "years of bipartisan policy work" },
+      { "value": "9", "label": "years of policy and advocacy work with the help of thousands of supporters" },
       { "value": "42", "label": "parliamentary submissions filed" },
       { "value": "300+", "label": "centre-right legislators in our network" },
       { "value": "14k", "label": "active supporters across 89 electorates" }
@@ -101,11 +101,11 @@
       "chipLabel": "Launching · 11 May",
       "subBrandLabel": "SUB-BRAND · OWN VOICE",
       "campaignName": "AFFORDABLE ENERGY AUSTRALIA",
-      "headline1": "Proven for families.",
-      "headline2Italic": "True",
-      "headline2Suffix": " on cost.",
-      "headline3": "Secure for the grid.",
-      "body": "Australia's flagship campaign for an honest national conversation about energy. Three pillars. Three years of research. Now open for signatures.",
+      "headline1": "Affordable, reliable energy.",
+      "headline2Italic": "For all Australians.",
+      "headline2Suffix": "",
+      "headline3": "",
+      "body": "Australia's flagship campaign for an honest national conversation about energy that puts families, businesses and communities first. Now open for signatures.",
       "ctaLabel": "Visit AEA ↗",
       "supporters": "14,228",
       "supportersLabel": "Supporters",
@@ -118,14 +118,13 @@
     },
     "issueAreas": {
       "eyebrow": "What we work on · 02",
-      "headline": "Four areas. ",
-      "headlineItalic": "One framework.",
-      "lead": "Every brief, every event, every submission maps back to one of these four — and back to one organising question: where does honest research applied to a real policy moment change a real outcome?",
+      "headline": "Three pillars. ",
+      "headlineItalic": "One question.",
+      "lead": "Every policy brief, article and event maps back to one of these three pillars and one simple question: How can Australia use technology-neutral, evidence-based solutions to drive real change that protects the environment and supports human flourishing?",
       "areas": [
-        { "n": "01", "slug": "energy", "title": "Energy", "body": "Advanced nuclear, industrial solar, and the balanced grid Australia actually needs.", "kind": "coast" },
+        { "n": "01", "slug": "energy", "title": "Energy", "body": "Affordable, reliable energy that protects the environment and grows the economy.", "kind": "coast" },
         { "n": "02", "slug": "agriculture", "title": "Agriculture", "body": "Soil carbon, productivity gains, and adaptation strategies built with farmers, not for them.", "kind": "wheat" },
-        { "n": "03", "slug": "biodiversity", "title": "Biodiversity", "body": "Rainforest, reef, and habitat protection in partnership with Rainforest Reserves Australia.", "kind": "forest" },
-        { "n": "04", "slug": "industry", "title": "Heavy Industry", "body": "Decarbonisation pathways for steel, aluminium, cement and the manufacturers downstream.", "kind": "reef" }
+        { "n": "03", "slug": "biodiversity", "title": "Biodiversity", "body": "Reforestation and habitat protection, in partnership with Rainforest Reserves Australia.", "kind": "forest" }
       ]
     },
     "featuredPolicy": {
@@ -140,11 +139,11 @@
     "partners": {
       "eyebrow": "In partnership with",
       "items": [
-        "Bill & Melinda Gates Foundation",
-        "Rainforest Reserves Australia",
-        "Conservative Environment Network",
-        "ANSTO",
-        "Menzies Research Centre"
+        { "name": "Bill & Melinda Gates Foundation", "logoUrl": "" },
+        { "name": "Rainforest Reserves Australia", "logoUrl": "" },
+        { "name": "Conservative Environment Network", "logoUrl": "" },
+        { "name": "ANSTO", "logoUrl": "" },
+        { "name": "Menzies Research Centre", "logoUrl": "" }
       ]
     },
     "press": {

@@ -611,6 +611,13 @@ textarea:invalid:not(:placeholder-shown):focus {
   :root { --gutter: 32px; }
   .container-wide { max-width: 100%; }
   .h-display { font-size: clamp(56px, 9vw, 96px); }
+
+  /* Two-column splits stay two-column on tablet but the headlines need room. */
+  [style*="grid-template-columns: '1fr 1.6fr'"],
+  [style*="grid-template-columns: '1.4fr 1fr'"],
+  [style*="grid-template-columns: '1.6fr 1fr 1fr 1fr'"] {
+    gap: 48px !important;
+  }
 }
 
 /* mobile */
@@ -618,27 +625,88 @@ textarea:invalid:not(:placeholder-shown):focus {
   :root { --gutter: 20px; }
   .nav-links { display: none; }
   .nav-toggle { display: inline-flex; }
-  .section { padding: 64px 0; }
-  .h-display { font-size: 56px; }
-  .h-1 { font-size: clamp(40px, 9vw, 64px); }
-  .h-2 { font-size: clamp(32px, 7vw, 48px); }
-  .lead { font-size: 18px; }
+  .section { padding: 56px 0; }
+  .h-display { font-size: clamp(40px, 11vw, 56px); line-height: 0.98; }
+  .h-1 { font-size: clamp(32px, 9vw, 48px); }
+  .h-2 { font-size: clamp(28px, 7vw, 40px); }
+  .lead { font-size: 17px; }
+  .body { font-size: 16px; }
 
-  /* All two-column grids collapse to one column on mobile. */
-  .container-wide [style*="grid-template-columns"] {
+  /* Every inline grid collapses to a single column. The previous rule only
+     matched descendants of .container-wide and missed grids that *were* the
+     container-wide (stats strip, footer columns, …). */
+  [style*="grid-template-columns"] {
     grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+
+  /* Footer columns — keep them two-up on phones so the footer isn't a long scroll. */
+  footer [style*="grid-template-columns: '1.6fr 1fr 1fr 1fr'"] {
+    grid-template-columns: 1fr 1fr !important;
     gap: 32px !important;
   }
-  .container-wide [style*="repeat(2"],
-  .container-wide [style*="repeat(3"],
-  .container-wide [style*="repeat(4"] {
-    grid-template-columns: 1fr !important;
+
+  /* Stats strip — 4 stats stacked is too much vertical space; do 2×2. */
+  [style*="display: 'grid'"][style*="repeat(4"] > div,
+  .container-wide[style*="repeat(4"] > div {
+    border-right: none !important;
+  }
+  [style*="grid-template-columns"][style*="repeat(4, 1fr)"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Hero photos: fixed vh heights look bad on mobile (too tall on phones in
+     portrait, too short in landscape). Cap by min/max content. */
+  .ph { min-height: 420px; }
+  .ph-label, .ph-credit { font-size: 10px; }
+
+  /* AEA hero typography needs to fit a 360px screen. */
+  section[style*="#0A1F44"] h1.display {
+    font-size: clamp(40px, 11vw, 56px) !important;
+    line-height: 0.98 !important;
+  }
+
+  /* AEA pillar tabs stack so labels aren't truncated. */
+  [role="tablist"] {
+    flex-direction: column !important;
+  }
+  .pillar-tab {
+    width: 100% !important;
+    border-right: none !important;
+  }
+
+  /* News page sticky filter bar — when the nav gets shorter, the top offset
+     should follow. */
+  section[style*="position: 'sticky'"][style*="top: 79"] {
+    top: 64px !important;
+  }
+
+  /* Forms: keep the labels and inputs comfortable on phones. */
+  form .input, form input, form textarea { font-size: 16px; } /* prevents iOS zoom-on-focus */
+  form button[type="submit"], form .btn { width: 100%; justify-content: center; }
+
+  /* Reduce big absolute paddings on dark/inset blocks. */
+  [style*="padding: '64px 56px'"],
+  [style*="padding: 56px"],
+  [style*="padding: 64px"] {
+    padding: 32px 24px !important;
+  }
+  [style*="padding: '128px var(--gutter)'"],
+  [style*="padding: '120px var(--gutter)'"] {
+    padding: 64px var(--gutter) !important;
   }
 }
 
 @media (max-width: 480px) {
-  .h-display { font-size: 44px; }
+  .h-display { font-size: 38px; line-height: 1; }
+  .h-1 { font-size: 34px; }
   .btn { padding: 14px 22px; font-size: 14px; }
+  .nav-inner { padding: 12px var(--gutter); }
+  .ph { min-height: 360px; }
+  /* Stats: stack 1-col on the smallest phones — 2×2 of long labels is cramped. */
+  [style*="grid-template-columns"][style*="repeat(4, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 /* respect prefers-reduced-motion */
