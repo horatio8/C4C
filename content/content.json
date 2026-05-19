@@ -1,9 +1,10 @@
 {
   "site": {
     "title": "Coalition for Conservation — Australia",
-    "description": "An Australian environmental charity advancing practical, evidence-led climate and conservation policy.",
+    "description": "An Australian environmental charity advancing practical, technology-neutral policy solutions that protect Australia's unique natural heritage and help families, businesses and communities thrive.",
     "url": "",
     "ogImage": "",
+    "logoUrl": "/assets/c4c-logo.png",
     "wordmarkLine1Pre": "Coalition ",
     "wordmarkLine1Italic": "for",
     "wordmarkLine1Post": " Conservation",
@@ -22,34 +23,19 @@
     "ctaPath": "/donate"
   },
   "footer": {
-    "blurb": "An Australian environmental charity advancing practical, evidence-led climate and conservation policy. We work in country with farmers, scientists, and policymakers.",
+    "blurb": "An Australian environmental charity advancing practical, technology-neutral policy solutions that protect Australia's unique natural heritage and help families, businesses and communities thrive.",
     "social": [
       { "label": "LI", "url": "" },
       { "label": "IG", "url": "" },
-      { "label": "X", "url": "" },
-      { "label": "YT", "url": "" }
+      { "label": "YT", "url": "" },
+      { "label": "FB", "url": "" },
+      { "label": "TT", "url": "" }
     ],
     "columns": [
       {
         "title": "Explore",
         "links": [
-          { "label": "About", "page": "/about" },
-          { "label": "What we do", "page": "/work" },
-          { "label": "Campaigns", "page": "/campaigns" },
-          { "label": "News", "page": "/news" },
-          { "label": "Events", "page": "/news" },
-          { "label": "Contact", "page": "/contact" }
-        ]
-      },
-      {
-        "title": "Support",
-        "links": [
-          { "label": "Donate", "page": "/donate" },
-          { "label": "Become a member", "page": "/donate" },
-          { "label": "Volunteer", "page": "/contact" },
-          { "label": "Bequests", "page": "/contact" },
-          { "label": "Corporate giving", "page": "/contact" },
-          { "label": "Annual report", "page": "/about" }
+          { "label": "Donate", "page": "/donate" }
         ]
       }
     ],
@@ -60,46 +46,41 @@
       "phone": "02 9188 8838",
       "email": "admin@coalitionforconservation.com.au"
     },
-    "legal": "ABN 84 638 274 922 · ACNC registered · DGR endorsed · © 2026",
+    "legal": "ABN 82 201 923 025 · ACNC registered · DGR endorsed · © 2026",
     "legalLinks": [
-      { "label": "Privacy", "page": "/about" },
-      { "label": "Terms", "page": "/about" },
-      { "label": "Conflicts", "page": "/about" },
-      { "label": "Annual reports", "page": "/about" }
+      { "label": "Privacy", "page": "/about" }
     ]
   },
   "home": {
     "hero": {
       "eyebrow": "An Australian environmental charity · Est. 2018",
-      "title1": "Protecting Nature,",
+      "title1": "Protecting nature,",
       "titleItalic": "growing prosperity.",
-      "lead": "We are Australians who believe protecting the environment and growing the economy are the same project. We do the policy to prove it — practical, technology-neutral, evidence-based solutions that conserve Australia's unique natural heritage while helping Australian families, businesses and communities thrive.",
-      "ctaPrimary": "Donate ↗",
-      "ctaSecondary": "Join the list",
-      "photoLabel": "Hero · West MacDonnell Ranges",
-      "photoCredit": "Photo: Jack Atley · NT · April 2026",
+      "lead": "We are Australians who believe protecting the environment and growing the economy are the same project. We advocate for practical, technology-neutral, evidence-backed solutions that conserve Australia's unique natural heritage while helping Australian families, businesses and communities thrive.",
+      "ctaPrimary": "Donate now",
+      "ctaSecondary": "",
+      "photoLabel": "Hero · Blue Mountains",
+      "photoCredit": "",
       "photoKind": "outback",
       "photoUrl": ""
     },
     "stats": [
-      { "value": "9", "label": "years of policy and advocacy work with the help of thousands of supporters" },
-      { "value": "42", "label": "parliamentary submissions filed" },
-      { "value": "300+", "label": "centre-right legislators in our network" },
-      { "value": "14k", "label": "active supporters across 89 electorates" }
+      { "value": "9", "label": "years of policy and advocacy work with the help of thousands of supporters" }
     ],
     "mission": {
       "eyebrow": "The proposition",
-      "headlinePre": "For nine years we have been making one argument: that the people who care most about Australian land — ",
-      "headlineItalic": "farmers, foresters, fishers, families who grew up in the bush",
-      "headlinePost": " — belong at the centre of the climate conversation, not the edge of it.",
-      "founderName": "Cristina Talacko",
-      "founderRole": "Chair & Founder",
-      "linkLabel": "Read the founder's letter"
+      "headlinePre": "The Coalition for Conservation was founded on a simple proposition: that protecting Australia's natural environment and growing a strong economy are not competing goals, but ",
+      "headlineItalic": "complementary responsibilities.",
+      "headlinePost": "",
+      "founderName": "Hon. Larry Anthony AO",
+      "founderRole": "Chair.",
+      "founderPhotoUrl": "/assets/larry-anthony.png",
+      "linkLabel": "Read the Chair's letter"
     },
     "flagship": {
       "eyebrow": "Flagship campaign · 01",
-      "chipLabel": "Launching · 11 May",
-      "subBrandLabel": "SUB-BRAND · OWN VOICE",
+      "chipLabel": "",
+      "subBrandLabel": "",
       "campaignName": "AFFORDABLE ENERGY AUSTRALIA",
       "headline1": "Affordable, reliable energy.",
       "headline2Italic": "For all Australians.",
@@ -107,33 +88,25 @@
       "headline3": "",
       "body": "Australia's flagship campaign for an honest national conversation about energy that puts families, businesses and communities first. Now open for signatures.",
       "ctaLabel": "Visit AEA ↗",
-      "supporters": "14,228",
-      "supportersLabel": "Supporters",
-      "electorates": "89/151",
-      "electoratesLabel": "Electorates",
-      "photoLabel": "AEA · Power lines, Hunter Valley",
-      "photoCredit": "Photo: Lyndon Mechielsen · NSW · 2026",
+      "supporters": "",
+      "supportersLabel": "",
+      "electorates": "",
+      "electoratesLabel": "",
+      "photoLabel": "Affordable Energy Australia",
+      "photoCredit": "",
       "photoKind": "coast",
-      "photoUrl": ""
+      "photoUrl": "",
+      "logoUrl": ""
     },
     "issueAreas": {
       "eyebrow": "What we work on · 02",
-      "headline": "Three pillars. ",
+      "headline": "Three pillars.",
       "headlineItalic": "One question.",
       "lead": "Every policy brief, article and event maps back to one of these three pillars and one simple question: How can Australia use technology-neutral, evidence-based solutions to drive real change that protects the environment and supports human flourishing?",
       "areas": [
         { "n": "01", "slug": "energy", "title": "Energy", "body": "Affordable, reliable energy that protects the environment and grows the economy.", "kind": "coast" },
-        { "n": "02", "slug": "agriculture", "title": "Agriculture", "body": "Soil carbon, productivity gains, and adaptation strategies built with farmers, not for them.", "kind": "wheat" },
-        { "n": "03", "slug": "biodiversity", "title": "Biodiversity", "body": "Reforestation and habitat protection, in partnership with Rainforest Reserves Australia.", "kind": "forest" }
-      ]
-    },
-    "featuredPolicy": {
-      "eyebrow": "Featured policy · 03",
-      "headline": "The receipts.",
-      "items": [
-        { "type": "Submission", "date": "28 APR 2026", "title": "Capacity Investment Scheme — Round 4 Response", "cite": "12pp · Treasury, Senate Standing Committee" },
-        { "type": "Fact sheet", "date": "12 APR 2026", "title": "A Low-Emissions Future: the Economic Case for Centre-Right Climate Action", "cite": "24pp · C4C Research Unit" },
-        { "type": "Op-ed", "date": "02 APR 2026", "title": "Why farmers, not activists, will solve the methane question", "cite": "Published in The Australian · 1,180 words" }
+        { "n": "02", "slug": "agriculture", "title": "Agriculture", "body": "Sharing Australian farming know-how with the world.", "kind": "wheat" },
+        { "n": "03", "slug": "biodiversity", "title": "Biodiversity", "body": "Conserving our natural heritage right here, right now.", "kind": "forest" }
       ]
     },
     "partners": {
@@ -148,7 +121,7 @@
     },
     "press": {
       "eyebrow": "C4C in the press · 04",
-      "linkLabel": "VIEW ALL COVERAGE ↗",
+      "linkLabel": "VIEW ALL ARTICLES ↗",
       "items": [
         { "masthead": "The Australian", "headline": "C4C is the rare green group conservatives will sit down with.", "when": "May 2026" },
         { "masthead": "AFR", "headline": "Their nuclear submission was the most cited paper in the inquiry.", "when": "Apr 2026" },
@@ -157,85 +130,63 @@
     },
     "donateBand": {
       "eyebrow": "Tax-deductible · DGR endorsed",
-      "headlinePre": "Funded by people who'd rather ",
-      "headlineItalic": "read a submission",
-      "headlinePost": " than burn an effigy.",
-      "lead": "Every dollar funds research, parliamentary engagement, and the legal work that keeps C4C independent. Donations over $2 are tax-deductible.",
+      "headlinePre": "Help protect what makes Australia unique. ",
+      "headlineItalic": "Donate today.",
+      "headlinePost": "",
+      "lead": "Every dollar supports our work to advance policies that protect the environment while helping families, businesses and communities thrive. Donations over $2 are tax-deductible.",
       "ctaPrimary": "Make a donation ↗",
-      "ctaSecondary": "Recurring giving",
-      "photoLabel": "Hero · Daintree",
-      "photoCredit": "Photo: Rainforest Reserves Australia · QLD · 2025",
-      "photoKind": "forest",
+      "ctaSecondary": "",
+      "photoLabel": "Australian beach",
+      "photoCredit": "",
+      "photoKind": "coast",
       "photoUrl": ""
     }
   },
   "about": {
     "hero": {
-      "eyebrow": "About · Our story",
-      "title1": "Grown-up",
-      "titleItalic": "environmentalism.",
-      "photoLabel": "Wheat country, Riverina",
-      "photoCredit": "Photo: Lyndon Mechielsen · NSW · 2025",
-      "photoKind": "wheat",
+      "eyebrow": "About",
+      "title1": "Who we are.",
+      "titleItalic": "",
+      "photoLabel": "Daintree rainforest",
+      "photoCredit": "",
+      "photoKind": "forest",
       "photoUrl": ""
     },
     "story": {
-      "eyebrow": "Founded 2017 · Sydney",
-      "lead": "C4C was founded on a simple proposition: that the centre-right of Australian politics had been written out of the climate conversation, and that this was bad for the climate, bad for politics, and bad for the country.",
-      "body": "Nine years later, we're a registered charity with deductible-gift status, a board of senior Australians, partners on three continents, and a record of policy submissions to every parliamentary inquiry that touches our remit. We are not activists. We don't chain ourselves to anything. We do the slow, expensive, often boring work of changing how people in power think about the natural world."
+      "eyebrow": "Founded 2018 · Sydney",
+      "lead": "The Coalition for Conservation was founded on a simple proposition: that protecting Australia's natural environment and growing a strong economy are not competing goals, but complementary responsibilities.",
+      "body": "Conservation and conservative values have always gone hand in hand: stewardship, responsibility, pragmatic problem-solving, and a belief that we should leave the country better than we found it. C4C exists to bring those values back to the centre of environmental policy.\n\nOver the years, we have connected policymakers, industry leaders, scientists, farmers and community voices to help inform practical, technology-neutral and evidence-based solutions. Our policy and advocacy work has spanned energy, agriculture and biodiversity, all grounded in the belief that good policy should protect Australia's unique natural heritage while allowing families, businesses and communities to prosper.\n\nYour support of C4C will help our work continue to make an impact for generations to come.\n\nHon. Larry Anthony AO\nChair of C4C"
     },
     "howWeWork": {
       "eyebrow": "How we work",
       "items": [
-        { "num": "01", "word": "Inform", "body": "We brief policymakers, journalists, and the broader public with research grounded in evidence — not advocacy framed as evidence." },
-        { "num": "02", "word": "Connect", "body": "We bring scientists, MPs, primary producers and industry to the same table. The conversations that move policy happen in rooms, not on platforms." },
-        { "num": "03", "word": "Advocate", "body": "We file submissions, run campaigns, and argue — publicly, on the record, with a name attached — for practical climate and conservation outcomes." }
-      ]
-    },
-    "numbers": {
-      "eyebrow": "By the numbers · 2025",
-      "items": [
-        { "n": "$2.4m", "l": "Funded research disbursed" },
-        { "n": "42", "l": "Parliamentary submissions filed" },
-        { "n": "187", "l": "Briefings to ministers and advisers" },
-        { "n": "14,228", "l": "Active supporters across 89 electorates" }
+        { "num": "01", "word": "Inform", "body": "We equip policymakers, journalists and the public with evidence-based policy solutions that support practical conservation." },
+        { "num": "02", "word": "Connect", "body": "We bring together policymakers, experts and the community through a range of events, seminars and discussions." },
+        { "num": "03", "word": "Advocate", "body": "We fund on-the-ground conservation work and run campaigns to advance practical environmental policy solutions." }
       ]
     },
     "team": {
-      "eyebrow": "Governance · Board · Patrons",
+      "eyebrow": "Governance",
       "headlinePre": "Senior Australians, ",
       "headlineItalic": "on the record.",
-      "lead": "Every board member, patron and advisor is named, photographed, and accountable. We publish a conflicts register and audited financials annually.",
-      "members": [
-        { "name": "Cristina Talacko", "role": "Chair & Founder", "bio": "Two-decade veteran of climate diplomacy. Founded C4C in 2017.", "tag": "GOVERNANCE", "kind": "portrait" },
-        { "name": "Chris Walsh", "role": "Executive Director", "bio": "Former adviser to the Federal Environment Minister; ANU economics.", "tag": "EXECUTIVE", "kind": "portrait" },
-        { "name": "The Hon. Trent Zimmerman", "role": "Patron", "bio": "Former federal MP for North Sydney; long-time advocate for moderate climate policy.", "tag": "PATRON", "kind": "portrait" },
-        { "name": "Hon. Bridget McKenzie", "role": "Advisory Council", "bio": "Senator for Victoria; former Federal Agriculture Minister.", "tag": "ADVISORY", "kind": "portrait" },
-        { "name": "Dr. Helen Catanchin", "role": "Director, Research", "bio": "PhD energy systems, Cambridge. Leads the C4C policy unit.", "tag": "RESEARCH", "kind": "portrait" },
-        { "name": "Dr. Ian Cohen", "role": "Director, Biodiversity", "bio": "Marine ecologist; 14 years with Rainforest Reserves Australia.", "tag": "PROGRAMS", "kind": "portrait" }
-      ]
-    },
-    "financials": {
-      "eyebrow": "Financial transparency",
-      "headlinePre": "Our books are ",
-      "headlineItalic": "open.",
-      "body": "C4C is audited annually by Pitcher Partners. Our Annual Report, audited financial statements, and ACNC charity profile are public. Donors over $25,000 are named in the annual report, with consent.",
-      "documents": [
-        { "y": "2025", "name": "Annual Report & Audited Financials", "size": "PDF · 4.2 MB · 64pp" },
-        { "y": "2024", "name": "Annual Report & Audited Financials", "size": "PDF · 3.8 MB · 58pp" },
-        { "y": "2023", "name": "Annual Report & Audited Financials", "size": "PDF · 3.6 MB · 52pp" },
-        { "y": "—", "name": "Conflicts of Interest Register (rolling)", "size": "PDF · 220 KB · 6pp" },
-        { "y": "—", "name": "ACNC Charity Profile", "size": "External link → ACNC.gov.au" }
+      "lead": "Every member of our leadership is named and accountable.",
+      "groups": [
+        { "title": "Our Executive", "members": [] },
+        { "title": "Our Board", "members": [] },
+        { "title": "Our Patrons", "members": [] },
+        { "title": "Our Ambassadors", "members": [] },
+        { "title": "Our Advisory Committee", "members": [] },
+        { "title": "Our Partners", "members": [] }
       ]
     }
   },
   "work": {
     "hero": {
       "eyebrow": "What we do",
-      "title1": "Four issues.",
-      "titleItalic": "One framework.",
-      "photoLabel": "Daintree canopy",
-      "photoCredit": "Photo: Rainforest Reserves Australia · QLD",
+      "title1": "Our three pillars.",
+      "titleItalic": "",
+      "photoLabel": "Plants",
+      "photoCredit": "",
       "photoKind": "forest",
       "photoUrl": ""
     },
@@ -244,150 +195,104 @@
         "slug": "energy",
         "n": "01",
         "title": "Energy",
+        "topLabel": "01 Pillar",
         "kind": "coast",
-        "tagline": "Affordable, reliable, low-emission. Pick three.",
-        "body": "Australia needs a grid that survives 2050. That means advanced nuclear in the mix, industrial-scale solar in the right places, and an honest conversation about firming, transmission, and household cost.",
-        "meta": "AEA · NUCLEAR · SOLAR · GRID"
+        "tagline": "Affordable, reliable energy that preserves nature.",
+        "body": "Australia needs affordable, reliable energy so our families, businesses and communities can thrive. This doesn't have to come at the cost of our unique natural heritage. At C4C, we believe protecting high biodiversity areas and prime agricultural land from unnecessary energy infrastructure is the best way to steward our natural resources. Australia's energy mix should prioritise technologies that keep costs down, provide 24/7 power and have high energy density which allows for a smaller spatial footprint.",
+        "photoUrl": ""
       },
       {
         "slug": "agriculture",
         "n": "02",
         "title": "Agriculture",
+        "topLabel": "02 Pillar",
         "kind": "wheat",
-        "tagline": "Productivity is the climate strategy.",
-        "body": "Soil carbon, methane reduction, and adaptation tooling — built with farmers, not for them. We work with family-farm representatives across NSW and QLD on practical methodologies that pay.",
-        "meta": "SOIL · METHANE · WATER · ADAPTATION"
+        "tagline": "Sharing Australian farming know-how with the world.",
+        "body": "Australia is a global leader in sustainable agriculture, ag tech, and climate adaptation. In partnership with the Bill and Melinda Gates Foundation and local farming research organisations, C4C has helped connect Australian experts with farmers in Sub-Saharan Africa and the Pacific. Our work has helped farmers in drought-prone areas improve their water and soil carbon management practices, improving soil health and increasing productivity.",
+        "photoUrl": ""
       },
       {
         "slug": "biodiversity",
         "n": "03",
         "title": "Biodiversity",
+        "topLabel": "03 Pillar",
         "kind": "forest",
-        "tagline": "Conservation is conservatism's oldest job.",
-        "body": "Rainforest, reef, and habitat protection — in partnership with Rainforest Reserves Australia. Every dollar of biodiversity funding produces an outsized return on outcome.",
-        "meta": "RAINFOREST · MARINE · SPECIES"
-      },
-      {
-        "slug": "industry",
-        "n": "04",
-        "title": "Heavy Industry",
-        "kind": "reef",
-        "tagline": "Decarbonise without de-industrialising.",
-        "body": "Steel, aluminium, cement, and the manufacturers downstream. Australia has the natural resources to be a clean-industrial superpower; we work on the policy that gets us there.",
-        "meta": "STEEL · ALUMINIUM · CEMENT · HYDROGEN"
+        "tagline": "Conserving our natural heritage right here, right now.",
+        "body": "At C4C, we believe in protecting Australia's unique wildlife and landscapes from destruction in the here and now – not sacrificing our rainforests and endangered species in the name of reducing emissions in the future. We have partnered with Rainforest Reserves Australia to combat deforestation and enhance tree canopy cover, preserving vital habitat for wildlife.",
+        "photoUrl": ""
       }
-    ]
+    ],
+    "briefing": {
+      "eyebrow": "Quarterly briefing",
+      "headlinePre": "Get the C4C ",
+      "headlineItalic": "briefing.",
+      "headlinePost": "",
+      "lead": "Keep up to date with our work by subscribing to our quarterly briefing.",
+      "submitLabel": "Subscribe to the quarterly briefing"
+    }
   },
   "issues": {
     "energy": {
       "title": "Energy",
-      "tag": "01",
+      "tag": "01 Pillar",
       "kind": "coast",
-      "tagline": "Affordable, reliable, low-emission. Pick three.",
-      "position": "Australia needs a grid that survives 2050. That requires technology-neutral policy: advanced nuclear in the mix, industrial-scale solar in the right places, firming for the duration that matters, and a transmission build-out that respects the people who live along the lines.",
-      "why": "Australia's electricity sector accounts for roughly a third of national emissions. Closing it down without a plan is fantasy; running it forever on coal is irresponsible. The middle path requires technology choices that progressives have ruled out and conservatives have been told they can't support — and that's where C4C lives."
+      "tagline": "Affordable, reliable energy that preserves nature.",
+      "position": "Australia needs affordable, reliable energy so our families, businesses and communities can thrive. This doesn't have to come at the cost of our unique natural heritage. At C4C, we believe protecting high biodiversity areas and prime agricultural land from unnecessary energy infrastructure is the best way to steward our natural resources. Australia's energy mix should prioritise technologies that keep costs down, provide 24/7 power and have high energy density which allows for a smaller spatial footprint.",
+      "photoUrl": ""
     },
     "agriculture": {
       "title": "Agriculture",
-      "tag": "02",
+      "tag": "02 Pillar",
       "kind": "wheat",
-      "tagline": "Productivity is the climate strategy.",
-      "position": "Australian agriculture is one of the world's most efficient. The policy task is not to penalise it; it is to make it pay for the carbon it sequesters and the methane it eliminates.",
-      "why": "Australian farmers manage about half the continent. They are the most consequential land-use decision-makers in the country. If we cannot build climate policy that pays them for stewardship, we cannot build climate policy at all."
+      "tagline": "Sharing Australian farming know-how with the world.",
+      "position": "Australia is a global leader in sustainable agriculture, ag tech, and climate adaptation. In partnership with the Bill and Melinda Gates Foundation and local farming research organisations, C4C has helped connect Australian experts with farmers in Sub-Saharan Africa and the Pacific. Our work has helped farmers in drought-prone areas improve their water and soil carbon management practices, improving soil health and increasing productivity.",
+      "photoUrl": ""
     },
     "biodiversity": {
       "title": "Biodiversity",
-      "tag": "03",
+      "tag": "03 Pillar",
       "kind": "forest",
-      "tagline": "Conservation is conservatism's oldest job.",
-      "position": "We partner with Rainforest Reserves Australia to fund habitat protection where the marginal dollar buys the most outcome — and we work the policy that locks those gains in for generations.",
-      "why": "Australia has the worst mammal extinction record on Earth. The species at risk live on private land more than public — and the policy levers that protect them are conservation easements, biodiversity offsets, and partnerships with Indigenous rangers. None of those are progressive policies. All of them work."
-    },
-    "industry": {
-      "title": "Heavy Industry",
-      "tag": "04",
-      "kind": "reef",
-      "tagline": "Decarbonise without de-industrialising.",
-      "position": "Australia has the iron ore, the bauxite, the gas and the engineers. The question is whether we let other countries refine those resources or whether we build the clean industrial base ourselves.",
-      "why": "Heavy industry produces a fifth of Australia's emissions and employs hundreds of thousands of Australians, most of them outside the capital cities. Every plausible decarbonisation path runs through technology that doesn't exist at scale yet — which means the policy has to fund the build, not just price the emissions."
+      "tagline": "Conserving our natural heritage right here, right now.",
+      "position": "At C4C, we believe in protecting Australia's unique wildlife and landscapes from destruction in the here and now – not sacrificing our rainforests and endangered species in the name of reducing emissions in the future. We have partnered with Rainforest Reserves Australia to combat deforestation and enhance tree canopy cover, preserving vital habitat for wildlife.",
+      "photoUrl": ""
     },
     "shared": {
-      "whyEyebrow": "Why this matters",
-      "whyHeadline": "The slow problem nobody else is willing to solve.",
-      "stats": [
-        { "n": "32%", "l": "of national emissions originate in this sector" },
-        { "n": "$54bn", "l": "annual value to the Australian economy" },
-        { "n": "14", "l": "parliamentary inquiries we've submitted to since 2022" }
-      ],
-      "workEyebrow": "Our work · Active",
-      "workItems": [
-        { "type": "Submission", "t": "Capacity Investment Scheme — Round 4 Response", "d": "28 APR 2026" },
-        { "type": "Event", "t": "The Nuclear Question — Closed-door briefing for federal MPs", "d": "14 MAY 2026 · Parliament House" },
-        { "type": "Partnership", "t": "ANSTO joint research programme on small modular reactors", "d": "Ongoing · 2025–2027" },
-        { "type": "Op-ed", "t": "Why farmers, not activists, will solve the methane question", "d": "02 APR 2026 · The Australian" },
-        { "type": "Submission", "t": "Safeguard Mechanism Review — industry transition pathways", "d": "11 MAR 2026" }
-      ],
-      "briefingEyebrow": "Quarterly briefing",
-      "briefingLead": "A long-form digest of what's moving in Canberra, what we're working on, and what's worth your attention. Sent four times a year. No fluff."
+      "workEyebrow": "Recent media coverage",
+      "workItems": []
     }
   },
   "aea": {
     "headerLeft": "↳ A CAMPAIGN OF THE COALITION FOR CONSERVATION",
-    "headerRight": "SUB-BRAND · OWN VOICE · SAME ORG",
-    "wordmark": "AFFORDABLE ENERGY AUSTRALIA",
-    "headline1Pre": "Power that's ",
-    "headline1Highlight": "proven",
-    "headline1Post": ",",
-    "headline2Italic": "true",
-    "headline2Post": " on cost,",
-    "headline3": "and secure for the grid.",
-    "lead": "An honest national campaign for a national conversation Australia keeps avoiding. Built on three pillars. Backed by three years of research.",
+    "headerRight": "",
+    "wordmark": "Affordable Energy Australia",
+    "headline1Pre": "Affordable, reliable energy.",
+    "headline1Highlight": "",
+    "headline1Post": "",
+    "headline2Italic": "For all Australians.",
+    "headline2Post": "",
+    "headline3": "",
+    "lead": "Australia's flagship campaign for an honest national conversation about energy that puts families, businesses and communities first. Now open for signatures.",
     "ctaPrimary": "Sign the AEA petition ↗",
-    "ctaSecondary": "Read the messaging matrix",
+    "ctaSecondary": "",
     "messagingMatrixUrl": "",
-    "pillarsEyebrow": "The three pillars · Click to switch",
-    "pillars": {
-      "proven": {
-        "eyebrow": "Pillar A",
-        "headline": "Proven for families",
-        "sub": "The technologies in the energy mix have to be proven — for cost, for reliability, for safety. Not \"promising\". Not \"emerging\". Proven.",
-        "points": [
-          ["$1,840", "Average household electricity bill, NSW · 2025"],
-          ["+62%", "Wholesale price increase since 2019"],
-          ["98.4%", "Grid reliability target — already missed in 4 states"]
-        ]
-      },
-      "true": {
-        "eyebrow": "Pillar B",
-        "headline": "True on cost",
-        "sub": "No more accounting tricks. Every bill, every subsidy, every transmission line — the public deserves the full number, before we lock it in.",
-        "points": [
-          ["$320bn", "Estimated grid build-out to 2050"],
-          ["28,000 km", "New transmission lines required"],
-          ["$0", "Of which is currently in the federal forward estimates"]
-        ]
-      },
-      "secure": {
-        "eyebrow": "Pillar C",
-        "headline": "Secure for the grid",
-        "sub": "Energy security is national security. The grid that powers our hospitals and our manufacturers cannot depend on the weather.",
-        "points": [
-          ["72hrs", "Of dispatchable storage required to firm 90% renewables"],
-          ["1.4GW", "Of firming capacity retired since 2022"],
-          ["18", "Coal units scheduled to close before 2035"]
-        ]
-      }
+    "statusQuo": {
+      "eyebrow": "Why this matters",
+      "headline": "The status quo is not sustainable.",
+      "body": "The energy transition is not working for Australians or the environment. Australia's unique rainforests and fauna are being destroyed to make way for renewable energy projects. Meanwhile, families are struggling to put food on the table and businesses are collapsing under the weight of high energy costs. We need to change course – and that means putting all energy sources back on the table so that Australians can have the energy mix they deserve. Affordable, reliable, protecting Australia's unique natural heritage for generations to come.",
+      "stats": [
+        { "value": "$1,367", "label": "" },
+        { "value": "220%", "label": "" },
+        { "value": "20%", "label": "" },
+        { "value": "84%", "label": "" }
+      ]
     },
     "petition": {
       "topLabel": "JOIN THE AEA SUPPORTER LIST",
-      "headlinePre": "14,228 Australians have ",
-      "headlineItalic": "already signed.",
-      "body": "AEA's supporter list is separate from the C4C parent list — different cadence, different content, different consent. You can sign one or both.",
-      "stats": [
-        ["14,228", "Signatures"],
-        ["89", "Electorates"],
-        ["6/6", "States & Terr."]
-      ],
+      "headlinePre": "Sign the petition. ",
+      "headlineItalic": "Join the movement.",
+      "body": "We need your help to make the voices of everyday Australians heard. By adding your signature, you are sending a message Australia's leaders cannot ignore.",
+      "statement": "\"We call on Australia's leaders to prioritise affordable & reliable energy.\"",
+      "stats": [],
       "formTitle": "SIGN THE PETITION",
       "consent": "I'd like AEA campaign updates by email. I can unsubscribe anytime.",
       "submitLabel": "Sign the AEA petition ↗",
@@ -398,22 +303,23 @@
   "news": {
     "hero": {
       "eyebrow": "News & Resources",
-      "title1": "The work,",
+      "title1": "Our work,",
       "titleItalic": "on the record.",
-      "photoLabel": "The Whitsundays",
-      "photoCredit": "Photo: Jack Atley · QLD · 2026",
-      "photoKind": "reef",
+      "photoLabel": "Lorikeets",
+      "photoCredit": "",
+      "photoKind": "forest",
       "photoUrl": ""
     },
-    "filters": ["All", "Energy", "Agriculture", "Biodiversity", "Heavy Industry", "Cross-cutting"],
+    "filters": ["All", "Energy", "Agriculture", "Biodiversity", "Other"],
+    "pageSize": 8,
     "items": [
       { "type": "Submission", "date": "28 APR 2026", "title": "Capacity Investment Scheme — Round 4 Response", "tag": "Energy", "body": "C4C's 12-page response to Treasury's consultation, with technical analysis of merit-order effects and firming requirements." },
       { "type": "Op-ed", "date": "02 APR 2026", "title": "Why farmers, not activists, will solve the methane question", "tag": "Agriculture", "body": "Published in The Australian. A 1,180-word case for paying farmers for what they do, instead of regulating them out of the way." },
       { "type": "News", "date": "24 MAR 2026", "title": "C4C welcomes the bipartisan endorsement of small modular reactors", "tag": "Energy", "body": "Joint statement with the ANSTO research alliance on the federal SMR feasibility process." },
       { "type": "Statement", "date": "12 MAR 2026", "title": "On the closure of Eraring: a managed transition is possible. This was not it.", "tag": "Energy", "body": "A statement on closure announcements made without firming plans, transmission contracts, or community consultation." },
-      { "type": "Fact sheet", "date": "01 MAR 2026", "title": "A Low-Emissions Future: the Economic Case", "tag": "Cross-cutting", "body": "A 24-page primer for centre-right legislators on the economic upside of practical climate action." },
+      { "type": "Fact sheet", "date": "01 MAR 2026", "title": "A Low-Emissions Future: the Economic Case", "tag": "Other", "body": "A 24-page primer for centre-right legislators on the economic upside of practical climate action." },
       { "type": "Event", "date": "14 FEB 2026", "title": "The Soil Carbon Pact — closed roundtable, Toowoomba", "tag": "Agriculture", "body": "Eighteen family-farm representatives from across NSW and QLD met with C4C's research unit to set methodologies." },
-      { "type": "Submission", "date": "28 JAN 2026", "title": "Safeguard Mechanism Review — industry transition pathways", "tag": "Heavy Industry", "body": "Detailed C4C response to the federal Safeguard Mechanism review — particular focus on cement and aluminium." },
+      { "type": "Submission", "date": "28 JAN 2026", "title": "Safeguard Mechanism Review — industry transition pathways", "tag": "Other", "body": "Detailed C4C response to the federal Safeguard Mechanism review." },
       { "type": "Op-ed", "date": "14 JAN 2026", "title": "The conservation movement's problem with farmers", "tag": "Biodiversity", "body": "Published in The Spectator Australia. On private-land conservation as the next frontier." }
     ]
   },
@@ -423,8 +329,8 @@
       "headlinePre": "Fund the work that ",
       "headlineItalic": "writes itself",
       "headlinePost": " into the record.",
-      "photoLabel": "West MacDonnell Ranges",
-      "photoCredit": "Photo: Jack Atley · NT · 2026",
+      "photoLabel": "Sunset mountains",
+      "photoCredit": "",
       "photoKind": "outback",
       "photoUrl": ""
     },
@@ -440,21 +346,21 @@
       "under2500": "A C4C representative at a closed-door industry roundtable, on the record.",
       "over2500": "Underwrites a piece of original C4C research that lands in submissions, op-eds, and ministerial briefings."
     },
+    "briefingConsent": "Add me to the C4C quarterly briefing list (optional).",
     "thankYou": "Thank you.",
     "thankYouBody": "You'll receive a tax-deductible receipt in your inbox in the next 60 seconds. We'll send you a quarterly update on the work your contribution funded — no spam, no chain of fundraising emails.",
     "trustEyebrow": "Trust & transparency",
     "trustItems": [
-      ["DGR", "Deductible Gift Recipient endorsed by the ATO. Donations over $2 are tax-deductible."],
-      ["ACNC", "Registered with the Australian Charities and Not-for-profits Commission since 2017."]
+      ["DGR", "Deductible Gift Recipient endorsed by the ATO. Donations over $2 are tax-deductible."]
     ]
   },
   "contact": {
     "hero": {
       "eyebrow": "Contact",
-      "title1": "Get in touch",
-      "titleItalic": "— we read everything.",
-      "photoLabel": "Sydney Harbour",
-      "photoCredit": "Photo: C4C office · 2026",
+      "title1": "We'd love",
+      "titleItalic": "to hear from you.",
+      "photoLabel": "Sunset",
+      "photoCredit": "",
       "photoKind": "coast",
       "photoUrl": ""
     },
@@ -462,11 +368,11 @@
       "eyebrow": "Send us a message",
       "headlinePre": "One form. ",
       "headlineItalic": "The right person reads it.",
-      "body": "Tell us a little about what you're after. Press, partnerships, donations, speaking — pick a topic and we'll route your note to whoever can help fastest. We aim to reply within two business days.",
-      "footnote": "MON–FRI · 09:00–17:30 AEST\nSydney HQ · Level 9, 255 George Street\nABN 84 638 274 922 · DGR endorsed"
+      "body": "Send us a message through our contact form and we'll aim to reply within two business days.",
+      "footnote": "MON–FRI · 09:00–17:30 AEST\nSydney HQ · Level 9, 255 George Street\n02 9188 8838\nABN 82 201 923 025 · DGR endorsed"
     },
     "topics": ["General enquiry", "Press & media", "Partnerships", "Donations & giving", "Speaking & events", "Other"],
-    "consent": "Add me to the C4C quarterly briefing list (optional, double opt-in).",
+    "consent": "Add me to the C4C quarterly briefing list (optional).",
     "submitLabel": "Send message →",
     "thanks": {
       "eyebrow": "Received",

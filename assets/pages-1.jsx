@@ -15,6 +15,7 @@ async function postJson(url, data) {
 
 function AboutPage({ setPage }) {
   const a = C().about;
+  const storyParagraphs = (a.story.body || '').split('\n\n').filter(Boolean);
 
   return (
     <React.Fragment>
@@ -25,7 +26,8 @@ function AboutPage({ setPage }) {
             <div>
               <Eyebrow dark>{a.hero.eyebrow}</Eyebrow>
               <h1 className="h-display display" style={{ color: 'var(--bone)', marginTop: 28 }}>
-                {a.hero.title1}<br /><span className="italic" style={{ color: '#e6c97a' }}>{a.hero.titleItalic}</span>
+                {a.hero.title1}
+                {a.hero.titleItalic && (<><br /><span className="italic" style={{ color: '#e6c97a' }}>{a.hero.titleItalic}</span></>)}
               </h1>
             </div>
           </div>
@@ -38,7 +40,9 @@ function AboutPage({ setPage }) {
             <Eyebrow ochre>{a.story.eyebrow}</Eyebrow>
             <div>
               <p className="lead" style={{ marginBottom: 32 }}>{a.story.lead}</p>
-              <p className="body" style={{ fontSize: 17 }}>{a.story.body}</p>
+              {storyParagraphs.map((para, i) => (
+                <p key={i} className="body" style={{ fontSize: 17, marginBottom: 20, whiteSpace: 'pre-line' }}>{para}</p>
+              ))}
             </div>
           </div>
         </div>
@@ -59,44 +63,45 @@ function AboutPage({ setPage }) {
         </div>
       </section>
 
-      <section className="section">
-        <div className="container-wide">
-          <Eyebrow ochre>{a.numbers.eyebrow}</Eyebrow>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 0, marginTop: 48, borderTop: '1px solid var(--ink)' }}>
-            {a.numbers.items.map((s, i) => (
-              <div key={s.l} style={{ padding: '48px 32px 0 0', borderRight: i < a.numbers.items.length - 1 ? '1px solid var(--rule)' : 'none', paddingLeft: i > 0 ? 32 : 0 }}>
-                <div className="numeral">{s.n}</div>
-                <div className="small" style={{ marginTop: 24, maxWidth: 200 }}>{s.l}</div>
+      {a.team && a.team.groups && a.team.groups.length > 0 && (
+        <section className="section warm-bg" style={{ borderTop: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)' }}>
+          <div className="container-wide">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 96, marginBottom: 80, alignItems: 'flex-end' }}>
+              <Eyebrow ochre>{a.team.eyebrow}</Eyebrow>
+              <div>
+                <h2 className="h-1 display">{a.team.headlinePre}<span className="italic">{a.team.headlineItalic}</span></h2>
+                {a.team.lead && <p className="lead" style={{ marginTop: 24, maxWidth: 600 }}>{a.team.lead}</p>}
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section warm-bg" style={{ borderTop: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)' }}>
-        <div className="container-wide">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 96, marginBottom: 80, alignItems: 'flex-end' }}>
-            <Eyebrow ochre>{a.team.eyebrow}</Eyebrow>
-            <div>
-              <h2 className="h-1 display">{a.team.headlinePre}<span className="italic">{a.team.headlineItalic}</span></h2>
-              <p className="lead" style={{ marginTop: 24, maxWidth: 600 }}>{a.team.lead}</p>
             </div>
-          </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32 }}>
-            {a.team.members.map(t => (
-              <div key={t.name}>
-                <Photo kind={t.kind} src={t.photoUrl} alt={t.name} height={360} label={t.tag} />
-                <div style={{ paddingTop: 24 }}>
-                  <h3 className="display" style={{ fontSize: 28, fontWeight: 400, lineHeight: 1.05 }}>{t.name}</h3>
-                  <div className="mono" style={{ fontSize: 11, letterSpacing: '0.1em', color: 'var(--ink-3)', textTransform: 'uppercase', marginTop: 8 }}>{t.role}</div>
-                  <p className="body" style={{ fontSize: 14, marginTop: 16 }}>{t.bio}</p>
-                </div>
+            {a.team.groups.map(group => (
+              <div key={group.title} style={{ marginBottom: 64 }}>
+                <h3 className="display" style={{ fontSize: 28, fontWeight: 400, paddingBottom: 16, borderBottom: '1px solid var(--ink)', marginBottom: 32 }}>
+                  {group.title}
+                </h3>
+                {group.members && group.members.length > 0 ? (
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32 }}>
+                    {group.members.map(t => (
+                      <div key={t.name}>
+                        <Photo kind={t.kind || 'portrait'} src={t.photoUrl} alt={t.name} height={300} label={t.tag || ''} />
+                        <div style={{ paddingTop: 20 }}>
+                          <h4 className="display" style={{ fontSize: 22, fontWeight: 400, lineHeight: 1.1 }}>{t.name}</h4>
+                          {t.role && <div className="mono" style={{ fontSize: 11, letterSpacing: '0.1em', color: 'var(--ink-3)', textTransform: 'uppercase', marginTop: 6 }}>{t.role}</div>}
+                          {t.bio && <p className="body" style={{ fontSize: 14, marginTop: 12 }}>{t.bio}</p>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="small" style={{ color: 'var(--ink-4)', fontStyle: 'italic' }}>
+                    Profiles coming soon.
+                  </p>
+                )}
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </React.Fragment>
   );
 }
@@ -113,7 +118,8 @@ function WorkPage({ setPage }) {
             <div>
               <Eyebrow dark>{w.hero.eyebrow}</Eyebrow>
               <h1 className="h-display display" style={{ color: 'var(--bone)', marginTop: 28 }}>
-                {w.hero.title1}<br /><span className="italic" style={{ color: '#e6c97a' }}>{w.hero.titleItalic}</span>
+                {w.hero.title1}
+                {w.hero.titleItalic && (<><br /><span className="italic" style={{ color: '#e6c97a' }}>{w.hero.titleItalic}</span></>)}
               </h1>
             </div>
           </div>
@@ -126,35 +132,46 @@ function WorkPage({ setPage }) {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
               <div style={{ order: i % 2 === 0 ? 1 : 2 }}>
                 <div className="mono" style={{ fontSize: 12, letterSpacing: '0.14em', color: 'var(--ochre-2)', marginBottom: 24 }}>
-                  {a.n} · ISSUE AREA
+                  {a.topLabel || (a.n + ' Pillar')}
                 </div>
-                <h2 className="display" style={{ fontSize: 'clamp(56px, 7vw, 120px)', lineHeight: 0.92, fontWeight: 300, letterSpacing: '-0.04em' }}>
-                  {a.title}.
-                </h2>
-                <p className="display italic" style={{ fontSize: 28, color: 'var(--terracotta-2)', marginTop: 24, lineHeight: 1.2, fontWeight: 400 }}>
+                <h2 className="display" style={{ fontSize: 'clamp(48px, 6vw, 88px)', lineHeight: 0.95, fontWeight: 300, letterSpacing: '-0.035em' }}>
                   {a.tagline}
-                </p>
-                <p className="body" style={{ marginTop: 32, maxWidth: 480, fontSize: 17 }}>{a.body}</p>
-                <div className="mono" style={{ fontSize: 11, letterSpacing: '0.14em', color: 'var(--ink-4)', marginTop: 32 }}>
-                  {a.meta}
-                </div>
-                <div style={{ display: 'flex', gap: 16, marginTop: 40 }}>
+                </h2>
+                <p className="body" style={{ marginTop: 32, maxWidth: 520, fontSize: 17 }}>{a.body}</p>
+                <div style={{ display: 'flex', gap: 16, marginTop: 40, flexWrap: 'wrap' }}>
                   <button type="button" className="btn btn-outline" onClick={() => setPage('issue:' + a.slug)}>Explore {a.title.toLowerCase()} ↗</button>
                   {a.slug === 'energy' && <button type="button" className="btn-ghost" onClick={() => setPage('aea')}>See AEA campaign</button>}
                 </div>
               </div>
               <div style={{ order: i % 2 === 0 ? 2 : 1 }}>
-                <Photo kind={a.kind} src={a.photoUrl} alt="" height={520} label={a.title} credit={`Field reporting · 2026`} />
+                <Photo kind={a.kind} src={a.photoUrl} alt="" height={520} label={a.title} credit="" />
               </div>
             </div>
           </div>
         </section>
       ))}
+
+      {w.briefing && (
+        <section className="section umber-bg">
+          <div className="container-wide">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 96, alignItems: 'flex-start' }}>
+              <div>
+                <Eyebrow dark>{w.briefing.eyebrow}</Eyebrow>
+                <h2 className="h-1 display" style={{ marginTop: 24, color: 'var(--bone)' }}>
+                  {w.briefing.headlinePre}<span className="italic" style={{ color: '#e6c97a' }}>{w.briefing.headlineItalic}</span>{w.briefing.headlinePost}
+                </h2>
+                {w.briefing.lead && <p className="lead" style={{ color: 'rgba(236,225,200,0.78)', marginTop: 24 }}>{w.briefing.lead}</p>}
+              </div>
+              <BriefingForm topic="C4C" submitLabel={w.briefing.submitLabel || 'Subscribe'} />
+            </div>
+          </div>
+        </section>
+      )}
     </React.Fragment>
   );
 }
 
-function BriefingForm({ topic }) {
+function BriefingForm({ topic, submitLabel }) {
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState('');
@@ -180,7 +197,7 @@ function BriefingForm({ topic }) {
     return (
       <div style={{ padding: 32, border: '1px solid rgba(236,225,200,0.3)', color: 'var(--bone)' }}>
         <div className="display" style={{ fontSize: 32, color: '#e6c97a' }}>You're on the list.</div>
-        <p style={{ marginTop: 16, color: 'rgba(236,225,200,0.78)' }}>We'll send the {topic.toLowerCase()} briefing to your inbox four times a year. Check your email for confirmation.</p>
+        <p style={{ marginTop: 16, color: 'rgba(236,225,200,0.78)' }}>We'll send the briefing to your inbox four times a year. Check your email for confirmation.</p>
       </div>
     );
   }
@@ -199,18 +216,14 @@ function BriefingForm({ topic }) {
         <label htmlFor="brief_email" className="label" style={{ color: 'rgba(236,225,200,0.6)' }}>Email</label>
         <input id="brief_email" name="email" type="email" autoComplete="email" className="input" required placeholder=" " style={{ borderBottomColor: 'rgba(236,225,200,0.3)', color: 'var(--bone)' }} />
       </div>
-      <div>
+      <div style={{ gridColumn: '1 / -1' }}>
         <label htmlFor="brief_postcode" className="label" style={{ color: 'rgba(236,225,200,0.6)' }}>Postcode</label>
         <input id="brief_postcode" name="postcode" type="text" inputMode="numeric" pattern="[0-9]{4}" className="input" placeholder=" " style={{ borderBottomColor: 'rgba(236,225,200,0.3)', color: 'var(--bone)' }} />
-      </div>
-      <div>
-        <label className="label" style={{ color: 'rgba(236,225,200,0.6)' }}>Electorate (auto)</label>
-        <input className="input" style={{ borderBottomColor: 'rgba(236,225,200,0.3)', color: 'rgba(236,225,200,0.5)' }} placeholder="From postcode" disabled />
       </div>
       {err && <div style={{ gridColumn: '1 / -1', color: '#ff9a7a', fontSize: 13 }}>{err}</div>}
       <div style={{ gridColumn: '1 / -1', marginTop: 24 }}>
         <button type="submit" className="btn btn-ochre" disabled={busy} style={{ width: '100%' }}>
-          {busy ? 'Subscribing…' : `Subscribe to the ${topic.toLowerCase()} briefing ↗`}
+          {busy ? 'Subscribing…' : (submitLabel || 'Subscribe ↗')}
         </button>
       </div>
     </form>
@@ -220,14 +233,12 @@ function BriefingForm({ topic }) {
 function IssuePage({ slug, setPage }) {
   const issues = C().issues;
   const a = issues[slug] || issues.energy;
-  const shared = issues.shared;
-
-  const taglineParts = a.tagline.split('.');
+  const shared = issues.shared || {};
 
   return (
     <React.Fragment>
       <section style={{ position: 'relative' }}>
-        <Photo kind={a.kind} src={a.photoUrl} alt="" eager height={620} label={`${a.title} · field reporting`} credit="Photo: Jack Atley · 2026">
+        <Photo kind={a.kind} src={a.photoUrl} alt="" eager height={620} label={a.title} credit="">
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(20,17,11,0.2) 0%, rgba(20,17,11,0.75) 100%)', zIndex: 2 }} />
           <div className="container-wide" style={{ position: 'relative', zIndex: 4, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '0 var(--gutter) 80px' }}>
             <div style={{ display: 'flex', gap: 12, alignItems: 'center', fontSize: 13, color: 'rgba(236,225,200,0.7)', marginBottom: 32 }}>
@@ -236,11 +247,10 @@ function IssuePage({ slug, setPage }) {
               <span>{a.title}</span>
             </div>
             <div className="mono" style={{ fontSize: 12, letterSpacing: '0.14em', color: '#e6c97a', marginBottom: 24 }}>
-              {a.tag} · ISSUE AREA · {a.title.toUpperCase()}
+              {a.tag} · {a.title.toUpperCase()}
             </div>
             <h1 className="h-display display" style={{ maxWidth: 1200, color: 'var(--bone)' }}>
-              {taglineParts[0]}.<br />
-              <span className="italic" style={{ color: '#e6c97a' }}>{taglineParts[1] && taglineParts[1].trim() + '.'}</span>
+              <span className="italic" style={{ color: '#e6c97a' }}>{a.tagline}</span>
             </h1>
           </div>
         </Photo>
@@ -250,70 +260,35 @@ function IssuePage({ slug, setPage }) {
         <div className="container-wide">
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.6fr', gap: 96 }}>
             <Eyebrow ochre>The C4C position</Eyebrow>
-            <p className="lead" style={{ fontSize: 26 }}>{a.position}</p>
+            <p className="lead" style={{ fontSize: 22, whiteSpace: 'pre-line' }}>{a.position}</p>
           </div>
         </div>
       </section>
 
-      <section className="section warm-bg" style={{ borderTop: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)' }}>
-        <div className="container-wide">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 96, alignItems: 'flex-start' }}>
-            <div>
-              <Eyebrow ochre>{shared.whyEyebrow}</Eyebrow>
-              <h2 className="h-2 display" style={{ marginTop: 24 }}>{shared.whyHeadline}</h2>
-            </div>
-            <div>
-              <p className="body" style={{ fontSize: 18, marginBottom: 24 }}>{a.why}</p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32, marginTop: 56, paddingTop: 40, borderTop: '1px solid var(--rule)' }}>
-                {shared.stats.map(s => (
-                  <div key={s.l}>
-                    <div className="numeral" style={{ fontSize: 64 }}>{s.n}</div>
-                    <div className="small" style={{ marginTop: 16 }}>{s.l}</div>
-                  </div>
+      {shared.workItems && shared.workItems.length > 0 && (
+        <section className="section warm-bg" style={{ borderTop: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)' }}>
+          <div className="container-wide">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 96 }}>
+              <Eyebrow ochre>{shared.workEyebrow || 'Recent coverage'}</Eyebrow>
+              <div>
+                {shared.workItems.map((it, i) => (
+                  <a
+                    key={i}
+                    href="/news"
+                    onClick={(e) => { e.preventDefault(); setPage('news'); }}
+                    style={{ display: 'grid', gridTemplateColumns: '140px 1fr 240px 40px', gap: 24, padding: '28px 0', borderBottom: '1px solid var(--rule)', borderTop: i === 0 ? '1px solid var(--ink)' : 'none', alignItems: 'baseline', cursor: 'pointer', color: 'inherit', textDecoration: 'none' }}
+                  >
+                    <span className="mono" style={{ fontSize: 11, letterSpacing: '0.12em', color: 'var(--ochre-2)', textTransform: 'uppercase' }}>{it.type}</span>
+                    <div className="display" style={{ fontSize: 22, lineHeight: 1.2, fontWeight: 400 }}>{it.t}</div>
+                    <span className="mono small">{it.d}</span>
+                    <span aria-hidden="true" style={{ fontSize: 18, textAlign: 'right' }}>↗</span>
+                  </a>
                 ))}
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container-wide">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 96 }}>
-            <Eyebrow ochre>{shared.workEyebrow}</Eyebrow>
-            <div>
-              {shared.workItems.map((it, i) => (
-                <a
-                  key={i}
-                  href="/news"
-                  onClick={(e) => { e.preventDefault(); setPage('news'); }}
-                  style={{ display: 'grid', gridTemplateColumns: '140px 1fr 240px 40px', gap: 24, padding: '28px 0', borderBottom: '1px solid var(--rule)', borderTop: i === 0 ? '1px solid var(--ink)' : 'none', alignItems: 'baseline', cursor: 'pointer', color: 'inherit', textDecoration: 'none' }}
-                >
-                  <span className="mono" style={{ fontSize: 11, letterSpacing: '0.12em', color: 'var(--ochre-2)', textTransform: 'uppercase' }}>{it.type}</span>
-                  <div className="display" style={{ fontSize: 22, lineHeight: 1.2, fontWeight: 400 }}>{it.t}</div>
-                  <span className="mono small">{it.d}</span>
-                  <span aria-hidden="true" style={{ fontSize: 18, textAlign: 'right' }}>↗</span>
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="section umber-bg">
-        <div className="container-wide">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 96, alignItems: 'flex-start' }}>
-            <div>
-              <Eyebrow dark>{shared.briefingEyebrow}</Eyebrow>
-              <h2 className="h-1 display" style={{ marginTop: 24, color: 'var(--bone)' }}>
-                Get the {a.title.toLowerCase()} <span className="italic" style={{ color: '#e6c97a' }}>briefing.</span>
-              </h2>
-              <p className="lead" style={{ color: 'rgba(236,225,200,0.78)', marginTop: 24 }}>{shared.briefingLead}</p>
-            </div>
-            <BriefingForm topic={a.title} />
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
     </React.Fragment>
   );
 }

@@ -18,8 +18,22 @@ function Logo({ size = 40 }) {
   );
 }
 
-function Wordmark() {
+function Wordmark({ dark }) {
   const s = C().site;
+  if (s.logoUrl) {
+    return (
+      <img
+        src={s.logoUrl}
+        alt="Coalition for Conservation"
+        style={{
+          height: 44,
+          width: 'auto',
+          maxWidth: 280,
+          display: 'block',
+        }}
+      />
+    );
+  }
   const c = 'var(--bone)';
   const sub = 'rgba(236,235,226,0.6)';
   return (
@@ -245,23 +259,57 @@ function HomeHero({ setPage }) {
               {h.lead}
             </p>
             <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-              <button type="button" className="btn btn-rust" onClick={() => setPage('donate')}>{h.ctaPrimary}</button>
-              <button type="button" className="btn btn-outline-paper" onClick={() => setPage('contact')}>{h.ctaSecondary}</button>
+              {h.ctaPrimary && <button type="button" className="btn btn-rust" onClick={() => setPage('donate')}>{h.ctaPrimary}</button>}
+              {h.ctaSecondary && <button type="button" className="btn btn-outline-paper" onClick={() => setPage('contact')}>{h.ctaSecondary}</button>}
             </div>
           </div>
         </div>
       </Photo>
 
-      <div style={{ background: 'var(--ink)', color: 'var(--bone)' }}>
-        <div className="container-wide" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 0 }}>
-          {stats.map((s, i) => (
-            <div key={i} style={{ padding: '40px 32px', borderRight: i < stats.length - 1 ? '1px solid rgba(236,225,200,0.15)' : 'none', display: 'flex', alignItems: 'baseline', gap: 20 }}>
-              <div className="display" style={{ fontSize: 56, fontWeight: 300, lineHeight: 0.9, color: 'var(--bone)', letterSpacing: '-0.04em' }}>{s.value}</div>
-              <div style={{ fontSize: 13, color: 'rgba(236,225,200,0.7)', lineHeight: 1.4, maxWidth: 180 }}>{s.label}</div>
-            </div>
-          ))}
+      {stats.length > 0 && (
+        <div style={{ background: 'var(--ink)', color: 'var(--bone)' }}>
+          <div className="container-wide" style={{ display: 'grid', gridTemplateColumns: `repeat(${stats.length}, 1fr)`, gap: 0 }}>
+            {stats.map((s, i) => {
+              const solo = stats.length === 1;
+              return (
+                <div
+                  key={i}
+                  style={{
+                    padding: solo ? '64px 48px' : '40px 32px',
+                    borderRight: i < stats.length - 1 ? '1px solid rgba(236,225,200,0.15)' : 'none',
+                    display: 'flex',
+                    alignItems: 'baseline',
+                    gap: solo ? 40 : 20,
+                  }}
+                >
+                  <div
+                    className="display"
+                    style={{
+                      fontSize: solo ? 'clamp(72px, 9vw, 128px)' : 56,
+                      fontWeight: 300,
+                      lineHeight: 0.9,
+                      color: 'var(--bone)',
+                      letterSpacing: '-0.04em',
+                    }}
+                  >
+                    {s.value}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: solo ? 'clamp(18px, 2.2vw, 28px)' : 13,
+                      lineHeight: 1.35,
+                      color: 'rgba(236,225,200,0.85)',
+                      maxWidth: solo ? 'none' : 180,
+                    }}
+                  >
+                    {s.label}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }
@@ -280,8 +328,10 @@ function MissionStatement({ setPage }) {
               {m.headlinePre}<span className="italic" style={{ color: 'var(--terracotta-2)' }}>{m.headlineItalic}</span>{m.headlinePost}
             </h2>
             <div style={{ marginTop: 48, display: 'flex', gap: 32, alignItems: 'center', paddingTop: 32, borderTop: '1px solid var(--rule)' }}>
-              <div style={{ width: 72, height: 72, borderRadius: 999, overflow: 'hidden' }}>
-                <Photo kind="portrait" height={72} />
+              <div style={{ width: 72, height: 72, borderRadius: 999, overflow: 'hidden', flexShrink: 0, background: 'var(--paper-warm)' }}>
+                {m.founderPhotoUrl
+                  ? <img src={m.founderPhotoUrl} alt={m.founderName} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                  : <Photo kind="portrait" height={72} />}
               </div>
               <div>
                 <div className="display" style={{ fontSize: 20 }}>{m.founderName}</div>
@@ -303,16 +353,20 @@ function FlagshipCampaign({ setPage }) {
       <div className="container-wide">
         <Eyebrow ochre>{f.eyebrow}</Eyebrow>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, marginTop: 40, background: 'var(--ink)', color: 'var(--bone)', minHeight: 560 }}>
-          <Photo kind={f.photoKind} src={f.photoUrl} label={f.photoLabel} credit={f.photoCredit} alt="" height="100%" />
+          <Photo kind={f.photoKind} src={f.photoUrl || f.logoUrl} label={f.photoLabel} credit={f.photoCredit} alt={f.logoUrl ? 'Affordable Energy Australia' : ''} height="100%" />
           <div style={{ padding: '64px 56px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <div>
-              <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginBottom: 32 }}>
-                <span className="chip chip-active" style={{ borderColor: 'rgba(236,225,200,0.3)', color: 'var(--bone)' }}>{f.chipLabel}</span>
-                <span className="mono" style={{ fontSize: 11, letterSpacing: '0.12em', color: 'rgba(236,225,200,0.55)' }}>{f.subBrandLabel}</span>
-              </div>
-              <div style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.2em', color: '#e6c97a', marginBottom: 24 }}>
-                {f.campaignName}
-              </div>
+              {(f.chipLabel || f.subBrandLabel) && (
+                <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginBottom: 32 }}>
+                  {f.chipLabel && <span className="chip chip-active" style={{ borderColor: 'rgba(236,225,200,0.3)', color: 'var(--bone)' }}>{f.chipLabel}</span>}
+                  {f.subBrandLabel && <span className="mono" style={{ fontSize: 11, letterSpacing: '0.12em', color: 'rgba(236,225,200,0.55)' }}>{f.subBrandLabel}</span>}
+                </div>
+              )}
+              {f.campaignName && (
+                <div style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.2em', color: '#e6c97a', marginBottom: 24 }}>
+                  {f.campaignName}
+                </div>
+              )}
               <h2 className="display" style={{ fontSize: 'clamp(40px, 4.5vw, 72px)', fontWeight: 300, lineHeight: 0.98, color: 'var(--bone)', letterSpacing: '-0.03em' }}>
                 {f.headline1}
                 {(f.headline2Italic || f.headline2Suffix) && (<>
@@ -327,16 +381,22 @@ function FlagshipCampaign({ setPage }) {
             </div>
             <div style={{ display: 'flex', gap: 32, alignItems: 'center', flexWrap: 'wrap', marginTop: 48, paddingTop: 32, borderTop: '1px solid rgba(236,225,200,0.18)' }}>
               <button type="button" className="btn btn-ochre" onClick={() => setPage('aea')}>{f.ctaLabel}</button>
-              <div style={{ display: 'flex', gap: 32 }}>
-                <div>
-                  <div className="display" style={{ fontSize: 24, color: 'var(--bone)', fontWeight: 300 }}>{f.supporters}</div>
-                  <div className="mono" style={{ fontSize: 10, letterSpacing: '0.1em', color: 'rgba(236,225,200,0.55)', marginTop: 4, textTransform: 'uppercase' }}>{f.supportersLabel}</div>
+              {(f.supporters || f.electorates) && (
+                <div style={{ display: 'flex', gap: 32 }}>
+                  {f.supporters && (
+                    <div>
+                      <div className="display" style={{ fontSize: 24, color: 'var(--bone)', fontWeight: 300 }}>{f.supporters}</div>
+                      {f.supportersLabel && <div className="mono" style={{ fontSize: 10, letterSpacing: '0.1em', color: 'rgba(236,225,200,0.55)', marginTop: 4, textTransform: 'uppercase' }}>{f.supportersLabel}</div>}
+                    </div>
+                  )}
+                  {f.electorates && (
+                    <div>
+                      <div className="display" style={{ fontSize: 24, color: 'var(--bone)', fontWeight: 300 }}>{f.electorates}</div>
+                      {f.electoratesLabel && <div className="mono" style={{ fontSize: 10, letterSpacing: '0.1em', color: 'rgba(236,225,200,0.55)', marginTop: 4, textTransform: 'uppercase' }}>{f.electoratesLabel}</div>}
+                    </div>
+                  )}
                 </div>
-                <div>
-                  <div className="display" style={{ fontSize: 24, color: 'var(--bone)', fontWeight: 300 }}>{f.electorates}</div>
-                  <div className="mono" style={{ fontSize: 10, letterSpacing: '0.1em', color: 'rgba(236,225,200,0.55)', marginTop: 4, textTransform: 'uppercase' }}>{f.electoratesLabel}</div>
-                </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
@@ -353,7 +413,7 @@ function IssueAreas({ setPage }) {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 96, marginBottom: 80, alignItems: 'flex-end' }}>
           <Eyebrow dark>{ia.eyebrow}</Eyebrow>
           <div>
-            <h2 className="h-1 display">{ia.headline}<span className="italic">{ia.headlineItalic}</span></h2>
+            <h2 className="h-1 display">{ia.headline}{ia.headlineItalic && (<><br /><span className="italic">{ia.headlineItalic}</span></>)}</h2>
             <p className="lead" style={{ marginTop: 24, maxWidth: 600 }}>
               {ia.lead}
             </p>
@@ -504,8 +564,8 @@ function DonateBand({ setPage }) {
               {d.lead}
             </p>
             <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-              <button type="button" className="btn btn-rust" onClick={() => setPage('donate')}>{d.ctaPrimary}</button>
-              <button type="button" className="btn btn-outline-paper" onClick={() => setPage('donate')}>{d.ctaSecondary}</button>
+              {d.ctaPrimary && <button type="button" className="btn btn-rust" onClick={() => setPage('donate')}>{d.ctaPrimary}</button>}
+              {d.ctaSecondary && <button type="button" className="btn btn-outline-paper" onClick={() => setPage('donate')}>{d.ctaSecondary}</button>}
             </div>
           </div>
         </div>
@@ -522,7 +582,6 @@ function HomePage({ setPage }) {
       <MissionStatement setPage={setPage} />
       <FlagshipCampaign setPage={setPage} />
       <IssueAreas setPage={setPage} />
-      <FeaturedPolicy setPage={setPage} />
       <PressBand setPage={setPage} />
       <DonateBand setPage={setPage} />
     </React.Fragment>

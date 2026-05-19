@@ -2,15 +2,13 @@
 
 function AEAPage({ setPage }) {
   const a = C().aea;
-  const pillarKeys = Object.keys(a.pillars);
-  const [pillar, setPillar] = useState(pillarKeys[0]);
-  const p = a.pillars[pillar];
-
+  const sq = a.statusQuo;
   const [signed, setSigned] = useState(false);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState('');
   const formRef = useRef(null);
   const matrixUrl = a.messagingMatrixUrl || '';
+  const hasFlagshipNumbers = (a.petition.stats && a.petition.stats.length > 0);
 
   const scrollToForm = () => {
     if (formRef.current) formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -53,98 +51,93 @@ function AEAPage({ setPage }) {
             <div className="mono" style={{ fontSize: 11, letterSpacing: '0.16em', color: '#1FB5D8' }}>
               {a.headerLeft}
             </div>
-            <div className="mono" style={{ fontSize: 11, letterSpacing: '0.14em', color: 'rgba(255,255,255,0.6)' }}>
-              {a.headerRight}
-            </div>
+            {a.headerRight && (
+              <div className="mono" style={{ fontSize: 11, letterSpacing: '0.14em', color: 'rgba(255,255,255,0.6)' }}>
+                {a.headerRight}
+              </div>
+            )}
           </div>
         </div>
 
         <div className="container-wide" style={{ padding: '88px var(--gutter) 112px', position: 'relative' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 32 }}>
-            <div className="display italic" style={{ fontSize: 56, color: '#1FB5D8', fontWeight: 400, lineHeight: 1 }}>AEA</div>
-            <div style={{ height: 1, flex: 1, background: 'rgba(255,255,255,0.2)' }} />
-            <div className="mono" style={{ fontSize: 11, letterSpacing: '0.14em', color: 'rgba(255,255,255,0.6)' }}>{a.wordmark}</div>
+          <div className="display italic" style={{ fontSize: 'clamp(28px, 4vw, 44px)', color: '#1FB5D8', fontWeight: 400, lineHeight: 1, marginBottom: 32 }}>
+            {a.wordmark}
           </div>
 
-          <h1 className="display" style={{ fontSize: 'clamp(64px, 8.5vw, 144px)', lineHeight: 0.92, letterSpacing: '-0.04em', fontWeight: 300, color: 'white' }}>
-            {a.headline1Pre}<span style={{ color: '#1FB5D8' }}>{a.headline1Highlight}</span>{a.headline1Post}<br />
-            <span className="italic">{a.headline2Italic}</span>{a.headline2Post}<br />
-            {a.headline3}
+          <h1 className="display" style={{ fontSize: 'clamp(56px, 8vw, 128px)', lineHeight: 0.92, letterSpacing: '-0.04em', fontWeight: 300, color: 'white' }}>
+            {a.headline1Pre}{a.headline1Highlight && <span style={{ color: '#1FB5D8' }}>{a.headline1Highlight}</span>}{a.headline1Post}
+            {a.headline2Italic && (<><br /><span className="italic">{a.headline2Italic}</span>{a.headline2Post}</>)}
+            {a.headline3 && (<><br />{a.headline3}</>)}
           </h1>
-          <p className="lead" style={{ marginTop: 40, color: 'rgba(255,255,255,0.85)', maxWidth: 720, fontSize: 24 }}>
+          {a.lead && <p className="lead" style={{ marginTop: 40, color: 'rgba(255,255,255,0.85)', maxWidth: 720, fontSize: 22 }}>
             {a.lead}
-          </p>
+          </p>}
 
           <div style={{ display: 'flex', gap: 14, marginTop: 56, flexWrap: 'wrap' }}>
-            <button type="button" className="btn" style={{ background: '#1FB5D8', color: '#0A1F44' }} onClick={scrollToForm}>
+            {a.ctaPrimary && <button type="button" className="btn" style={{ background: '#1FB5D8', color: '#0A1F44' }} onClick={scrollToForm}>
               {a.ctaPrimary}
-            </button>
-            {matrixUrl ? (
+            </button>}
+            {matrixUrl && (
               <a href={matrixUrl} target="_blank" rel="noopener noreferrer">
                 <button type="button" className="btn btn-outline-paper" style={{ borderColor: 'rgba(255,255,255,0.4)', color: 'white' }}>
-                  {a.ctaSecondary} ↗
+                  {a.ctaSecondary || 'Read more'} ↗
                 </button>
               </a>
-            ) : null}
+            )}
           </div>
         </div>
       </section>
 
-      <section className="section">
-        <div className="container-wide">
-          <Eyebrow ochre>{a.pillarsEyebrow}</Eyebrow>
-          <div role="tablist" style={{ display: 'flex', gap: 0, marginTop: 32, marginBottom: 64 }}>
-            {pillarKeys.map(k => (
-              <button
-                key={k}
-                role="tab"
-                type="button"
-                aria-selected={pillar === k}
-                onClick={() => setPillar(k)}
-                className={`pillar-tab ${pillar === k ? 'active' : ''}`}
-              >
-                <div className="mono" style={{ fontSize: 11, letterSpacing: '0.14em', opacity: 0.7 }}>{a.pillars[k].eyebrow}</div>
-                <div className="display" style={{ fontSize: 30, marginTop: 12, fontWeight: 400 }}>{a.pillars[k].headline}</div>
-              </button>
-            ))}
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 96 }}>
-            <div>
-              <h2 className="display" style={{ fontSize: 'clamp(48px, 5vw, 80px)', lineHeight: 0.95, color: '#0A1F44', fontWeight: 300, letterSpacing: '-0.035em' }}>
-                {p.headline}.
+      {sq && (
+        <section className="section">
+          <div className="container-wide">
+            <Eyebrow ochre>{sq.eyebrow || 'Why this matters'}</Eyebrow>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 96, marginTop: 24 }}>
+              <h2 className="display" style={{ fontSize: 'clamp(48px, 5vw, 88px)', lineHeight: 0.95, color: '#0A1F44', fontWeight: 300, letterSpacing: '-0.035em' }}>
+                {sq.headline}
               </h2>
-              <p className="lead" style={{ marginTop: 32 }}>{p.sub}</p>
+              <p className="body" style={{ fontSize: 18 }}>{sq.body}</p>
             </div>
-            <div>
-              {p.points.map((pt, i) => (
-                <div key={i} style={{ display: 'grid', gridTemplateColumns: '240px 1fr', gap: 32, padding: '36px 0', borderBottom: '1px solid var(--rule)', borderTop: i === 0 ? '1px solid var(--ink)' : 'none', alignItems: 'baseline' }}>
-                  <div className="display" style={{ fontSize: 64, color: '#0A1F44', lineHeight: 0.92, fontWeight: 300, letterSpacing: '-0.04em' }}>{pt[0]}</div>
-                  <div className="body" style={{ fontSize: 16 }}>{pt[1]}</div>
-                </div>
-              ))}
-            </div>
+            {sq.stats && sq.stats.length > 0 && (
+              <div style={{ display: 'grid', gridTemplateColumns: `repeat(${sq.stats.length}, 1fr)`, gap: 0, marginTop: 80, borderTop: '1px solid var(--ink)' }}>
+                {sq.stats.map((s, i) => (
+                  <div key={i} style={{ padding: '40px 24px 0 0', borderRight: i < sq.stats.length - 1 ? '1px solid var(--rule)' : 'none', paddingLeft: i > 0 ? 32 : 0 }}>
+                    <div className="display" style={{ fontSize: 'clamp(48px, 6vw, 88px)', color: '#0A1F44', lineHeight: 0.92, fontWeight: 300, letterSpacing: '-0.04em' }}>
+                      {s.value}
+                    </div>
+                    {s.label && <div className="small" style={{ marginTop: 16 }}>{s.label}</div>}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <section ref={formRef} style={{ background: '#f0f4fa', padding: '120px 0', borderTop: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)' }}>
         <div className="container-wide">
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
             <div>
-              <div className="mono" style={{ fontSize: 11, letterSpacing: '0.14em', color: '#0A1F44' }}>{a.petition.topLabel}</div>
+              {a.petition.topLabel && <div className="mono" style={{ fontSize: 11, letterSpacing: '0.14em', color: '#0A1F44' }}>{a.petition.topLabel}</div>}
               <h2 className="h-1 display" style={{ marginTop: 24, color: '#0A1F44', fontWeight: 300 }}>
                 {a.petition.headlinePre}<span className="italic">{a.petition.headlineItalic}</span>
               </h2>
-              <p className="body" style={{ marginTop: 24, fontSize: 17 }}>{a.petition.body}</p>
-              <div style={{ display: 'flex', gap: 40, marginTop: 48 }}>
-                {a.petition.stats.map(s => (
-                  <div key={s[1]}>
-                    <div className="display" style={{ fontSize: 40, color: '#0A1F44', lineHeight: 1, fontWeight: 300 }}>{s[0]}</div>
-                    <div className="mono" style={{ fontSize: 11, letterSpacing: '0.1em', color: 'var(--ink-3)', marginTop: 8 }}>{s[1]}</div>
-                  </div>
-                ))}
-              </div>
+              {a.petition.body && <p className="body" style={{ marginTop: 24, fontSize: 17 }}>{a.petition.body}</p>}
+              {a.petition.statement && (
+                <blockquote className="display italic" style={{ marginTop: 32, paddingLeft: 24, borderLeft: '3px solid #1FB5D8', fontSize: 22, color: '#0A1F44', fontWeight: 400, lineHeight: 1.35 }}>
+                  {a.petition.statement}
+                </blockquote>
+              )}
+              {hasFlagshipNumbers && (
+                <div style={{ display: 'flex', gap: 40, marginTop: 48 }}>
+                  {a.petition.stats.map(s => (
+                    <div key={s[1]}>
+                      <div className="display" style={{ fontSize: 40, color: '#0A1F44', lineHeight: 1, fontWeight: 300 }}>{s[0]}</div>
+                      <div className="mono" style={{ fontSize: 11, letterSpacing: '0.1em', color: 'var(--ink-3)', marginTop: 8 }}>{s[1]}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {signed ? (
@@ -154,7 +147,7 @@ function AEAPage({ setPage }) {
                 <p className="body" style={{ marginTop: 16 }}>{a.petition.thanksBody}</p>
               </div>
             ) : (
-              <form ref={null} onSubmit={submitPetition} noValidate={false} style={{ background: 'white', padding: 48, border: '1px solid var(--rule)' }}>
+              <form onSubmit={submitPetition} style={{ background: 'white', padding: 48, border: '1px solid var(--rule)' }}>
                 <div className="mono" style={{ fontSize: 11, letterSpacing: '0.14em', color: '#0A1F44', marginBottom: 32 }}>{a.petition.formTitle}</div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
                   <div>
@@ -196,19 +189,25 @@ function AEAPage({ setPage }) {
 
 function NewsPage({ setPage }) {
   const n = C().news;
+  const pageSize = n.pageSize || 8;
   const [filter, setFilter] = useState(n.filters[0] || 'All');
   const [q, setQ] = useState('');
+  const [visible, setVisible] = useState(pageSize);
 
-  const filteredByTag = filter === (n.filters[0] || 'All') ? n.items : n.items.filter(i => i.tag === filter);
+  useEffect(() => { setVisible(pageSize); }, [filter, q, pageSize]);
+
+  const allByTag = filter === (n.filters[0] || 'All') ? n.items : n.items.filter(i => i.tag === filter);
   const ql = q.trim().toLowerCase();
   const filtered = ql
-    ? filteredByTag.filter(it =>
+    ? allByTag.filter(it =>
         (it.title || '').toLowerCase().includes(ql) ||
         (it.body || '').toLowerCase().includes(ql) ||
         (it.tag || '').toLowerCase().includes(ql) ||
         (it.type || '').toLowerCase().includes(ql)
       )
-    : filteredByTag;
+    : allByTag;
+  const shown = filtered.slice(0, visible);
+  const hasMore = visible < filtered.length;
 
   return (
     <React.Fragment>
@@ -219,7 +218,7 @@ function NewsPage({ setPage }) {
             <div>
               <Eyebrow dark>{n.hero.eyebrow}</Eyebrow>
               <h1 className="h-display display" style={{ color: 'var(--bone)', marginTop: 28 }}>
-                {n.hero.title1}<br /><span className="italic" style={{ color: '#e6c97a' }}>{n.hero.titleItalic}</span>
+                {n.hero.title1}{n.hero.titleItalic && (<><br /><span className="italic" style={{ color: '#e6c97a' }}>{n.hero.titleItalic}</span></>)}
               </h1>
             </div>
           </div>
@@ -254,8 +253,8 @@ function NewsPage({ setPage }) {
             ))}
           </div>
           <div style={{ marginLeft: 'auto', display: 'flex', gap: 16, alignItems: 'center' }}>
-            <span className="mono small" aria-live="polite">{filtered.length} items</span>
-            <label htmlFor="news_search" className="visually-hidden" style={{ position: 'absolute', left: -9999 }}>Search news</label>
+            <span className="mono small" aria-live="polite">{shown.length} of {filtered.length}</span>
+            <label htmlFor="news_search" style={{ position: 'absolute', left: -9999 }}>Search news</label>
             <input
               id="news_search"
               type="search"
@@ -271,12 +270,12 @@ function NewsPage({ setPage }) {
 
       <section className="section">
         <div className="container-wide">
-          {filtered.length === 0 && (
+          {shown.length === 0 && (
             <div className="body" style={{ padding: '64px 0', color: 'var(--ink-3)' }}>
               No items match. Try a different filter or search term.
             </div>
           )}
-          {filtered.map((it, i) => (
+          {shown.map((it, i) => (
             <article key={i} style={{ display: 'grid', gridTemplateColumns: '140px 130px 1fr 160px', gap: 32, padding: '40px 0', borderBottom: '1px solid var(--rule)', borderTop: i === 0 ? '1px solid var(--ink)' : 'none', alignItems: 'flex-start' }}>
               <span className="mono" style={{ fontSize: 11, letterSpacing: '0.12em', color: 'var(--ochre-2)', textTransform: 'uppercase', paddingTop: 12 }}>{it.type}</span>
               <span className="mono" style={{ fontSize: 12, color: 'var(--ink-3)', paddingTop: 12 }}>{it.date}</span>
@@ -287,6 +286,13 @@ function NewsPage({ setPage }) {
               <span className="chip" style={{ alignSelf: 'flex-start', marginTop: 8 }}>{it.tag}</span>
             </article>
           ))}
+          {hasMore && (
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 48 }}>
+              <button type="button" className="btn btn-outline" onClick={() => setVisible(v => v + pageSize)}>
+                See older posts ↓
+              </button>
+            </div>
+          )}
         </div>
       </section>
     </React.Fragment>
@@ -314,6 +320,7 @@ function DonatePage() {
       email: fd.get('email'),
       postcode: fd.get('postcode'),
       phone: fd.get('phone'),
+      briefing: !!fd.get('briefing'),
     });
     setBusy(false);
     if (ok) setStep(3);
@@ -416,6 +423,11 @@ function DonatePage() {
                     <label htmlFor="don_phone" className="label">Phone (optional)</label>
                     <input id="don_phone" name="phone" type="tel" autoComplete="tel" placeholder=" " className="input" />
                   </div>
+                  {d.briefingConsent && (
+                    <label style={{ gridColumn: '1 / -1', display: 'flex', gap: 12, alignItems: 'flex-start', fontSize: 13, color: 'var(--ink-3)', marginTop: 8 }}>
+                      <input type="checkbox" name="briefing" value="yes" style={{ marginTop: 4 }} /> {d.briefingConsent}
+                    </label>
+                  )}
                   <div style={{ gridColumn: '1 / -1' }}>
                     <p className="small" style={{ color: 'var(--ink-3)' }}>
                       A real payment processor will be wired here before launch — this confirmation step records your intent only.
@@ -440,7 +452,7 @@ function DonatePage() {
                     AMOUNT ........ ${amount} AUD<br />
                     FREQUENCY ..... {recurring ? 'Monthly' : 'One-time'}<br />
                     DGR STATUS .... Tax-deductible (donations over $2)<br />
-                    ABN ........... 84 638 274 922<br />
+                    ABN ........... 82 201 923 025<br />
                     REF NO ........ C4C-2026-{String(Math.floor(Math.random() * 99999)).padStart(5, '0')}
                   </div>
                 </div>
@@ -501,7 +513,7 @@ function ContactPage() {
             <div>
               <Eyebrow dark>{c.hero.eyebrow}</Eyebrow>
               <h1 className="h-display display" style={{ color: 'var(--bone)', marginTop: 28 }}>
-                {c.hero.title1}<br /><span className="italic" style={{ color: '#e6c97a' }}>{c.hero.titleItalic}</span>
+                {c.hero.title1}{c.hero.titleItalic && (<><br /><span className="italic" style={{ color: '#e6c97a' }}>{c.hero.titleItalic}</span></>)}
               </h1>
             </div>
           </div>
@@ -513,13 +525,12 @@ function ContactPage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.6fr', gap: 96, alignItems: 'flex-start' }}>
             <div>
               <Eyebrow ochre>{c.intro.eyebrow}</Eyebrow>
-              <h2 className="h-2 display" style={{ marginTop: 24 }}>
-                {c.intro.headlinePre}<span className="italic">{c.intro.headlineItalic}</span>
-              </h2>
-              <p className="body" style={{ marginTop: 24 }}>{c.intro.body}</p>
-              <div className="mono small" style={{ marginTop: 40, color: 'var(--ink-3)', lineHeight: 1.9, paddingTop: 32, borderTop: '1px solid var(--rule)', whiteSpace: 'pre-line' }}>
-                {c.intro.footnote}
-              </div>
+              <p className="lead" style={{ marginTop: 24 }}>{c.intro.body}</p>
+              {c.intro.footnote && (
+                <div className="mono small" style={{ marginTop: 40, color: 'var(--ink-3)', lineHeight: 1.9, paddingTop: 32, borderTop: '1px solid var(--rule)', whiteSpace: 'pre-line' }}>
+                  {c.intro.footnote}
+                </div>
+              )}
             </div>
 
             {sent ? (
