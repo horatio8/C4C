@@ -626,7 +626,6 @@ function MediaPage({ setPage }) {
   const [typeFilter, setTypeFilter] = useState('All');
   const [tagFilter, setTagFilter] = useState('All');
   const [q, setQ] = useState('');
-  const [visible, setVisible] = useState(pageSize);
 
   useEffect(() => {
     fetch('/media.json')
@@ -634,8 +633,6 @@ function MediaPage({ setPage }) {
       .then(setItems)
       .catch(e => setErr('Failed to load media: ' + e.message));
   }, []);
-
-  useEffect(() => { setVisible(pageSize); }, [typeFilter, tagFilter, q, pageSize]);
 
   const all = items || [];
   const types = ['All', ...Array.from(new Set(all.map(i => i.type).filter(Boolean)))];
@@ -652,8 +649,7 @@ function MediaPage({ setPage }) {
     )) return false;
     return true;
   });
-  const shown = filtered.slice(0, visible);
-  const hasMore = visible < filtered.length;
+  const shown = filtered;
 
   return (
     <React.Fragment>
@@ -736,7 +732,7 @@ function MediaPage({ setPage }) {
             </div>
           </div>
           <div style={{ marginLeft: 'auto', display: 'flex', gap: 14, alignItems: 'center' }}>
-            <span className="mono small" aria-live="polite">{shown.length} of {filtered.length}</span>
+            <span className="mono small" aria-live="polite">{shown.length} item{shown.length === 1 ? '' : 's'}</span>
             <label htmlFor="media_search" style={{ position: 'absolute', left: -9999 }}>Search media</label>
             <input
               id="media_search"
@@ -806,14 +802,6 @@ function MediaPage({ setPage }) {
                   </div>
                 );
               })}
-            </div>
-          )}
-
-          {hasMore && (
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 56 }}>
-              <button type="button" className="btn btn-outline" onClick={() => setVisible(v => v + pageSize)}>
-                See older posts ↓
-              </button>
             </div>
           )}
         </div>

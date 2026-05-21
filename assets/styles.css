@@ -328,6 +328,15 @@ p { margin: 0; }
   z-index: 1;
 }
 
+/* When a real image is loaded, drop the gradient/texture placeholder overlays
+   so the photo isn't tinted or noise-textured. The intentional dark gradient
+   for hero text legibility lives on its own inline div, so this only removes
+   the decorative .ph pseudos. */
+.ph-has-image { background: #14110b !important; }
+.ph-has-image::before,
+.ph-has-image::after { display: none !important; }
+.ph-has-image > img { z-index: 1; }
+
 /* Outback re-cast as Highland (sky + ridgeline) */
 .ph-outback {
   background:

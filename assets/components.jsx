@@ -220,15 +220,16 @@ function Eyebrow({ children, ochre, dark }) {
 }
 
 function Photo({ kind = 'outback', label, credit, height = 480, style, src, alt, eager, children }) {
+  const cls = `ph ph-${kind}${src ? ' ph-has-image' : ''}`;
   return (
-    <div className={`ph ph-${kind}`} style={{ height, ...style }}>
+    <div className={cls} style={{ height, ...style }}>
       {src && (
         <img
           src={src}
           alt={alt || ''}
           loading={eager ? 'eager' : 'lazy'}
           decoding="async"
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }}
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block', zIndex: 1 }}
         />
       )}
       {label && <div className="ph-label">{label}</div>}
