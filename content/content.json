@@ -62,7 +62,7 @@
       "photoLabel": "Hero · Blue Mountains",
       "photoCredit": "",
       "photoKind": "outback",
-      "photoUrl": ""
+      "photoUrl": "/assets/banners/home-hero.jpg"
     },
     "stats": [
       { "value": "9", "label": "years of policy and advocacy work with the help of thousands of supporters" }
@@ -104,9 +104,9 @@
       "headlineItalic": "One question.",
       "lead": "Every policy brief, article and event maps back to one of these three pillars and one simple question: How can Australia use technology-neutral, evidence-based solutions to drive real change that protects the environment and supports human flourishing?",
       "areas": [
-        { "n": "01", "slug": "energy", "title": "Energy", "body": "Affordable, reliable energy that protects the environment and grows the economy.", "kind": "coast" },
-        { "n": "02", "slug": "agriculture", "title": "Agriculture", "body": "Sharing Australian farming know-how with the world.", "kind": "wheat" },
-        { "n": "03", "slug": "biodiversity", "title": "Biodiversity", "body": "Conserving our natural heritage right here, right now.", "kind": "forest" }
+        { "n": "01", "slug": "energy", "title": "Energy", "body": "Affordable, reliable energy that protects the environment and grows the economy.", "kind": "coast", "photoUrl": "/assets/banners/energy.jpg" },
+        { "n": "02", "slug": "agriculture", "title": "Agriculture", "body": "Sharing Australian farming know-how with the world.", "kind": "wheat", "photoUrl": "/assets/banners/agriculture.jpg" },
+        { "n": "03", "slug": "biodiversity", "title": "Biodiversity", "body": "Conserving our natural heritage right here, right now.", "kind": "forest", "photoUrl": "/assets/banners/biodiversity.jpg" }
       ]
     },
     "partners": {
@@ -139,7 +139,7 @@
       "photoLabel": "Australian beach",
       "photoCredit": "",
       "photoKind": "coast",
-      "photoUrl": ""
+      "photoUrl": "/assets/banners/donate-band.jpg"
     }
   },
   "about": {
@@ -150,7 +150,7 @@
       "photoLabel": "Daintree rainforest",
       "photoCredit": "",
       "photoKind": "forest",
-      "photoUrl": ""
+      "photoUrl": "/assets/banners/about-hero.jpg"
     },
     "story": {
       "eyebrow": "Founded 2018 · Sydney",
@@ -188,7 +188,7 @@
       "photoLabel": "Plants",
       "photoCredit": "",
       "photoKind": "forest",
-      "photoUrl": ""
+      "photoUrl": "/assets/banners/work-hero.jpg"
     },
     "areas": [
       {
@@ -199,7 +199,7 @@
         "kind": "coast",
         "tagline": "Affordable, reliable energy that preserves nature.",
         "body": "Australia needs affordable, reliable energy so our families, businesses and communities can thrive. This doesn't have to come at the cost of our unique natural heritage. At C4C, we believe protecting high biodiversity areas and prime agricultural land from unnecessary energy infrastructure is the best way to steward our natural resources. Australia's energy mix should prioritise technologies that keep costs down, provide 24/7 power and have high energy density which allows for a smaller spatial footprint.",
-        "photoUrl": ""
+        "photoUrl": "/assets/banners/work-energy.jpg"
       },
       {
         "slug": "agriculture",
@@ -209,7 +209,7 @@
         "kind": "wheat",
         "tagline": "Sharing Australian farming know-how with the world.",
         "body": "Australia is a global leader in sustainable agriculture, ag tech, and climate adaptation. In partnership with the Bill and Melinda Gates Foundation and local farming research organisations, C4C has helped connect Australian experts with farmers in Sub-Saharan Africa and the Pacific. Our work has helped farmers in drought-prone areas improve their water and soil carbon management practices, improving soil health and increasing productivity.",
-        "photoUrl": ""
+        "photoUrl": "/assets/banners/work-agriculture.jpg"
       },
       {
         "slug": "biodiversity",
@@ -219,7 +219,7 @@
         "kind": "forest",
         "tagline": "Conserving our natural heritage right here, right now.",
         "body": "At C4C, we believe in protecting Australia's unique wildlife and landscapes from destruction in the here and now – not sacrificing our rainforests and endangered species in the name of reducing emissions in the future. We have partnered with Rainforest Reserves Australia to combat deforestation and enhance tree canopy cover, preserving vital habitat for wildlife.",
-        "photoUrl": ""
+        "photoUrl": "/assets/banners/work-biodiversity.jpg"
       }
     ],
     "briefing": {
@@ -238,7 +238,7 @@
       "kind": "coast",
       "tagline": "Affordable, reliable energy that preserves nature.",
       "position": "Australia needs affordable, reliable energy so our families, businesses and communities can thrive. This doesn't have to come at the cost of our unique natural heritage. At C4C, we believe protecting high biodiversity areas and prime agricultural land from unnecessary energy infrastructure is the best way to steward our natural resources. Australia's energy mix should prioritise technologies that keep costs down, provide 24/7 power and have high energy density which allows for a smaller spatial footprint.",
-      "photoUrl": ""
+      "photoUrl": "/assets/banners/energy.jpg"
     },
     "agriculture": {
       "title": "Agriculture",
@@ -246,7 +246,7 @@
       "kind": "wheat",
       "tagline": "Sharing Australian farming know-how with the world.",
       "position": "Australia is a global leader in sustainable agriculture, ag tech, and climate adaptation. In partnership with the Bill and Melinda Gates Foundation and local farming research organisations, C4C has helped connect Australian experts with farmers in Sub-Saharan Africa and the Pacific. Our work has helped farmers in drought-prone areas improve their water and soil carbon management practices, improving soil health and increasing productivity.",
-      "photoUrl": ""
+      "photoUrl": "/assets/banners/agriculture.jpg"
     },
     "biodiversity": {
       "title": "Biodiversity",
@@ -254,7 +254,7 @@
       "kind": "forest",
       "tagline": "Conserving our natural heritage right here, right now.",
       "position": "At C4C, we believe in protecting Australia's unique wildlife and landscapes from destruction in the here and now – not sacrificing our rainforests and endangered species in the name of reducing emissions in the future. We have partnered with Rainforest Reserves Australia to combat deforestation and enhance tree canopy cover, preserving vital habitat for wildlife.",
-      "photoUrl": ""
+      "photoUrl": "/assets/banners/biodiversity.jpg"
     },
     "shared": {
       "workEyebrow": "Recent media coverage",
@@ -308,7 +308,7 @@
       "photoLabel": "Lorikeets",
       "photoCredit": "",
       "photoKind": "forest",
-      "photoUrl": ""
+      "photoUrl": "/assets/banners/news-hero.jpg"
     },
     "filters": ["All", "Energy", "Agriculture", "Biodiversity", "Other"],
     "pageSize": 8,
@@ -332,7 +332,7 @@
       "photoLabel": "Sunset mountains",
       "photoCredit": "",
       "photoKind": "outback",
-      "photoUrl": ""
+      "photoUrl": "/assets/banners/donate-hero.jpg"
     },
     "presets": [50, 100, 250, 1000],
     "stepLabels": ["01 — Amount", "02 — Your details", "03 — Confirmation"],
@@ -362,7 +362,7 @@
       "photoLabel": "Sunset",
       "photoCredit": "",
       "photoKind": "coast",
-      "photoUrl": ""
+      "photoUrl": "/assets/banners/contact-hero.jpg"
     },
     "intro": {
       "eyebrow": "Send us a message",

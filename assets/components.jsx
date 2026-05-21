@@ -428,7 +428,7 @@ function IssueAreas({ setPage }) {
               onClick={(e) => { e.preventDefault(); setPage('issue:' + a.slug); }}
               style={{ cursor: 'pointer', color: 'inherit', textDecoration: 'none', display: 'block' }}
             >
-              <Photo kind={a.kind} height={320} label={`Issue ${a.n}`} />
+              <Photo kind={a.kind} src={a.photoUrl} alt={a.title} height={320} label={`Issue ${a.n}`} />
               <div style={{ paddingTop: 24 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                   <span className="mono" style={{ fontSize: 11, color: 'var(--ochre)', letterSpacing: '0.14em' }}>{a.n} —</span>

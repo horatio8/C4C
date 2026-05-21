@@ -45,3 +45,44 @@ const sitemap =
   routes.map(r => `  <url><loc>${baseUrl}${r}</loc><lastmod>${today}</lastmod></url>`).join('\n') +
   `\n</urlset>\n`;
 write('sitemap.xml', sitemap);
+
+// --- Banner fetch ----------------------------------------------------------
+// scripts/canva-banners.json contains one-time Canva JPG export URLs per
+// banner filename. Vercel's build environment can reach the Canva CDN; the
+// repo doesn't track the bytes, so each deploy re-fetches anything missing
+// from /assets/banners/. Already-present files (e.g. committed permanent
+// artwork) win and aren't re-fetched.
+const BANNER_MANIFEST = path.join(__dirname, 'canva-banners.json');
+const BANNER_DIR = path.join(ROOT, 'assets', 'banners');
+
+async function fetchBanners() {
+  if (!fs.existsSync(BANNER_MANIFEST)) return;
+  fs.mkdirSync(BANNER_DIR, { recursive: true });
+  const manifest = JSON.parse(fs.readFileSync(BANNER_MANIFEST, 'utf8'));
+  const banners = manifest.banners || [];
+  let fetched = 0, kept = 0, failed = 0;
+  for (const b of banners) {
+    const dest = path.join(BANNER_DIR, b.name);
+    if (fs.existsSync(dest) && fs.statSync(dest).size > 0) {
+      kept++;
+      continue;
+    }
+    try {
+      const res = await fetch(b.url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const buf = Buffer.from(await res.arrayBuffer());
+      fs.writeFileSync(dest, buf);
+      console.log(`build-static: banner ${b.name} (${buf.length} bytes) ← page ${b.page}`);
+      fetched++;
+    } catch (e) {
+      console.warn(`build-static: banner ${b.name} fetch failed (${e.message}). Falling back to gradient.`);
+      failed++;
+    }
+  }
+  console.log(`build-static: banners — ${fetched} fetched, ${kept} kept, ${failed} failed`);
+}
+
+fetchBanners().catch(e => {
+  console.error('build-static: banner fetch crashed:', e);
+  // Don't fail the build — the gradient placeholders still ship.
+});
