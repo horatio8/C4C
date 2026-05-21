@@ -213,6 +213,7 @@ function Login({ onSuccess }) {
 }
 
 const SECTION_LABELS = {
+  media: 'Media & Webinars',
   site: 'Site',
   nav: 'Navigation',
   footer: 'Footer',
@@ -225,6 +226,303 @@ const SECTION_LABELS = {
   donate: 'Donate',
   contact: 'Contact',
 };
+
+const MEDIA_TYPES = ['News', 'Op-ed', 'Media Release', 'Statement', 'Submission', 'Webinar', 'Video', 'Podcast', 'Report', 'Event', 'Other'];
+const MEDIA_TAGS = ['Energy', 'Agriculture', 'Biodiversity', 'Other'];
+
+function slugify(s) {
+  return (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80);
+}
+
+function formatDateAU(isoOrDate) {
+  if (!isoOrDate) return '';
+  const d = new Date(isoOrDate);
+  if (isNaN(d)) return isoOrDate;
+  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  return `${String(d.getDate()).padStart(2,'0')} ${months[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+function MediaItemForm({ value, onSave, onCancel }) {
+  const [item, setItem] = useState(value);
+  const update = (k, v) => setItem(prev => ({ ...prev, [k]: v }));
+
+  const submit = (e) => {
+    e.preventDefault();
+    const copy = { ...item };
+    if (!copy.id) copy.id = slugify(copy.title);
+    if (copy.iso_date && (!copy.date || copy.date === '')) copy.date = formatDateAU(copy.iso_date);
+    onSave(copy);
+  };
+
+  return (
+    <div className="modal-overlay" onClick={onCancel}>
+      <form className="modal" onClick={(e) => e.stopPropagation()} onSubmit={submit}>
+        <div className="modal-header">
+          <h3>{item._new ? 'New media item' : 'Edit media item'}</h3>
+          <button type="button" className="btn small secondary" onClick={onCancel}>Cancel</button>
+        </div>
+        <div className="modal-body">
+          <div className="field">
+            <label className="field-label">Title</label>
+            <input type="text" value={item.title || ''} onChange={e => update('title', e.target.value)} required autoFocus />
+          </div>
+          <div className="form-row">
+            <div className="field">
+              <label className="field-label">Date (display)</label>
+              <input type="text" value={item.date || ''} onChange={e => update('date', e.target.value)} placeholder="11 MAY 2026" />
+              <div className="help">DD MMM YYYY — auto-fills from ISO date if blank.</div>
+            </div>
+            <div className="field">
+              <label className="field-label">ISO date</label>
+              <input type="date" value={(item.iso_date || '').slice(0, 10)} onChange={e => update('iso_date', e.target.value)} />
+              <div className="help">Sorts newest first.</div>
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="field">
+              <label className="field-label">Type</label>
+              <select value={item.type || 'News'} onChange={e => update('type', e.target.value)}>
+                {MEDIA_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+              </select>
+            </div>
+            <div className="field">
+              <label className="field-label">Topic</label>
+              <select value={item.tag || 'Other'} onChange={e => update('tag', e.target.value)}>
+                {MEDIA_TAGS.map(t => <option key={t} value={t}>{t}</option>)}
+              </select>
+            </div>
+          </div>
+          <div className="field">
+            <label className="field-label">URL (links to article on click)</label>
+            <input type="url" value={item.url || ''} onChange={e => update('url', e.target.value)} placeholder="https://…" />
+          </div>
+          <div className="field">
+            <label className="field-label">Image URL</label>
+            <input type="url" value={item.imageUrl || ''} onChange={e => update('imageUrl', e.target.value)} placeholder="https://…" />
+            {item.imageUrl && (
+              <img src={item.imageUrl} alt="" style={{ marginTop: 8, maxWidth: 240, maxHeight: 140, objectFit: 'cover', border: '1px solid #e2e2dd', borderRadius: 4 }} />
+            )}
+          </div>
+          <div className="field">
+            <label className="field-label">Excerpt</label>
+            <textarea value={item.excerpt || ''} onChange={e => update('excerpt', e.target.value)} rows={3} />
+          </div>
+          <div className="field">
+            <label className="field-label">Body</label>
+            <textarea value={item.body || ''} onChange={e => update('body', e.target.value)} rows={10} />
+          </div>
+          <div className="field">
+            <label className="field-label">ID / slug</label>
+            <input type="text" value={item.id || ''} onChange={e => update('id', e.target.value)} placeholder="auto from title" />
+            <div className="help">Used as a stable identifier. Leave blank to auto-generate.</div>
+          </div>
+        </div>
+        <div className="modal-footer">
+          <button type="button" className="btn secondary" onClick={onCancel}>Cancel</button>
+          <button type="submit" className="btn">Apply</button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
+function MediaCRM({ onUnauthorized }) {
+  const [items, setItems] = useState(null);
+  const [original, setOriginal] = useState(null);
+  const [editing, setEditing] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const [savedAt, setSavedAt] = useState(0);
+  const [error, setError] = useState('');
+  const [q, setQ] = useState('');
+  const [typeFilter, setTypeFilter] = useState('All');
+  const [tagFilter, setTagFilter] = useState('All');
+
+  useEffect(() => {
+    fetch('/api/media').then(r => {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    }).then(j => {
+      setItems(Array.isArray(j) ? j : []);
+      setOriginal(JSON.stringify(j));
+    }).catch(e => setError('Failed to load media: ' + e.message));
+  }, []);
+
+  const dirty = items && original && JSON.stringify(items) !== original;
+
+  async function save() {
+    if (!items || saving) return;
+    setSaving(true);
+    setError('');
+    try {
+      const r = await fetch('/api/media', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(items),
+      });
+      if (r.status === 401) { onUnauthorized && onUnauthorized(); return; }
+      if (!r.ok) {
+        const j = await r.json().catch(() => ({}));
+        setError(j.error || ('Save failed: HTTP ' + r.status));
+        return;
+      }
+      setOriginal(JSON.stringify(items));
+      setSavedAt(Date.now());
+    } catch (e) {
+      setError('Network error: ' + e.message);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  function revert() {
+    if (!original) return;
+    if (!dirty || confirm('Discard unsaved changes?')) {
+      setItems(JSON.parse(original));
+    }
+  }
+
+  function addNew() {
+    setEditing({
+      _new: true,
+      id: '',
+      title: '',
+      date: formatDateAU(new Date()),
+      iso_date: new Date().toISOString().slice(0, 10),
+      type: 'News',
+      tag: 'Energy',
+      excerpt: '',
+      body: '',
+      url: '',
+      imageUrl: '',
+    });
+  }
+
+  function startEdit(idx) {
+    setEditing({ _idx: idx, ...items[idx] });
+  }
+
+  function applyEdit(updated) {
+    if (updated._new) {
+      const { _new, ...item } = updated;
+      setItems([item, ...items]);
+    } else {
+      const { _idx, ...item } = updated;
+      setItems(items.map((it, i) => i === _idx ? item : it));
+    }
+    setEditing(null);
+  }
+
+  function removeAt(idx) {
+    if (!confirm(`Delete "${items[idx].title}"?`)) return;
+    setItems(items.filter((_, i) => i !== idx));
+  }
+
+  // Save shortcut + beforeunload guard
+  useEffect(() => {
+    const onKey = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 's') { e.preventDefault(); if (dirty) save(); }
+    };
+    const onBeforeUnload = (e) => { if (dirty) { e.preventDefault(); e.returnValue = ''; } };
+    window.addEventListener('keydown', onKey);
+    window.addEventListener('beforeunload', onBeforeUnload);
+    return () => { window.removeEventListener('keydown', onKey); window.removeEventListener('beforeunload', onBeforeUnload); };
+  }, [dirty, items]);
+
+  if (!items && !error) return <div style={{ padding: 40, color: '#6a6a6a' }}>Loading media catalogue…</div>;
+  if (error && !items) return <div className="err" style={{ background: '#fde8e8', color: '#9a1f1f', padding: 14, borderRadius: 6 }}>{error}</div>;
+
+  const types = Array.from(new Set(items.map(i => i.type).filter(Boolean))).sort();
+  const tags = Array.from(new Set(items.map(i => i.tag).filter(Boolean))).sort();
+
+  const ql = q.trim().toLowerCase();
+  const filteredIdx = items
+    .map((it, i) => i)
+    .filter(i => {
+      const it = items[i];
+      if (typeFilter !== 'All' && it.type !== typeFilter) return false;
+      if (tagFilter !== 'All' && it.tag !== tagFilter) return false;
+      if (ql && !(
+        (it.title || '').toLowerCase().includes(ql) ||
+        (it.excerpt || '').toLowerCase().includes(ql) ||
+        (it.url || '').toLowerCase().includes(ql)
+      )) return false;
+      return true;
+    });
+
+  let statusEl = null;
+  if (saving) statusEl = <span className="status">Saving…</span>;
+  else if (dirty) statusEl = <span className="status dirty">Unsaved changes</span>;
+  else if (savedAt) statusEl = <span className="status saved">Saved</span>;
+
+  return (
+    <React.Fragment>
+      <div className="topbar">
+        <h2>Media & Webinars · <span style={{ color: '#6a6a6a', fontWeight: 400 }}>{items.length} items</span></h2>
+        <div className="actions">
+          {statusEl}
+          <button className="btn secondary" onClick={revert} disabled={!dirty}>Revert</button>
+          <button className="btn" onClick={save} disabled={!dirty || saving}>{saving ? 'Saving…' : 'Save all'}</button>
+        </div>
+      </div>
+
+      <div className="content">
+        {error && <div className="err" style={{ background: '#fde8e8', color: '#9a1f1f', padding: 10, borderRadius: 6, marginBottom: 16 }}>{error}</div>}
+
+        <div className="crm-toolbar">
+          <button className="btn" onClick={addNew}>+ New item</button>
+          <input type="search" className="crm-search" placeholder="Search title, excerpt, URL…" value={q} onChange={e => setQ(e.target.value)} />
+          <select className="crm-select" value={typeFilter} onChange={e => setTypeFilter(e.target.value)}>
+            <option value="All">All types ({items.length})</option>
+            {types.map(t => <option key={t} value={t}>{t} ({items.filter(i => i.type === t).length})</option>)}
+          </select>
+          <select className="crm-select" value={tagFilter} onChange={e => setTagFilter(e.target.value)}>
+            <option value="All">All topics ({items.length})</option>
+            {tags.map(t => <option key={t} value={t}>{t} ({items.filter(i => i.tag === t).length})</option>)}
+          </select>
+          <span className="crm-count">{filteredIdx.length} match{filteredIdx.length === 1 ? '' : 'es'}</span>
+        </div>
+
+        {filteredIdx.length === 0 ? (
+          <div style={{ padding: '48px 0', color: '#6a6a6a' }}>No items match. Adjust filters or add a new item.</div>
+        ) : (
+          <table className="crm-table">
+            <thead>
+              <tr>
+                <th style={{ width: '40%' }}>Title</th>
+                <th style={{ width: 110 }}>Date</th>
+                <th style={{ width: 120 }}>Type</th>
+                <th style={{ width: 100 }}>Topic</th>
+                <th style={{ width: 140 }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredIdx.map(i => {
+                const it = items[i];
+                return (
+                  <tr key={it.id || i}>
+                    <td>
+                      <div className="crm-title">{it.title || <em>(untitled)</em>}</div>
+                      {it.excerpt && <div className="crm-excerpt">{it.excerpt.length > 140 ? it.excerpt.slice(0, 140) + '…' : it.excerpt}</div>}
+                    </td>
+                    <td className="crm-mono">{it.date || ''}</td>
+                    <td>{it.type ? <span className="crm-pill">{it.type}</span> : ''}</td>
+                    <td>{it.tag ? <span className="crm-pill crm-pill-tag">{it.tag}</span> : ''}</td>
+                    <td>
+                      <button className="btn small secondary" onClick={() => startEdit(i)}>Edit</button>
+                      <button className="btn small danger" onClick={() => removeAt(i)} style={{ marginLeft: 6 }}>Delete</button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      {editing && <MediaItemForm value={editing} onSave={applyEdit} onCancel={() => setEditing(null)} />}
+    </React.Fragment>
+  );
+}
 
 function Admin({ onLogout }) {
   const [content, setContent] = useState(null);
@@ -245,7 +543,9 @@ function Admin({ onLogout }) {
 
   const sections = useMemo(() => {
     if (!content) return [];
-    return Object.keys(content);
+    // Media is its own CRM, not a generic section of content.json — but
+    // surface it in the sidebar so it sits with the other editable areas.
+    return ['media', ...Object.keys(content)];
   }, [content]);
 
   const save = async () => {
@@ -313,7 +613,7 @@ function Admin({ onLogout }) {
     return <div style={{ padding: 40, color: '#6a6a6a' }}>{error || 'Loading…'}</div>;
   }
 
-  const sectionContent = content[active];
+  const sectionContent = active === 'media' ? null : content[active];
   const updateSection = (v) => setContent({ ...content, [active]: v });
 
   let statusEl = null;
@@ -343,25 +643,31 @@ function Admin({ onLogout }) {
       </aside>
 
       <div className="main">
-        <div className="topbar">
-          <h2>{SECTION_LABELS[active] || prettifyKey(active)}</h2>
-          <div className="actions">
-            {statusEl}
-            <button className="btn secondary" onClick={revert} disabled={!dirty}>Revert</button>
-            <button className="btn" onClick={save} disabled={!dirty || saving}>
-              {saving ? 'Saving…' : 'Save'}
-            </button>
-          </div>
-        </div>
+        {active === 'media' ? (
+          <MediaCRM onUnauthorized={onLogout} />
+        ) : (
+          <React.Fragment>
+            <div className="topbar">
+              <h2>{SECTION_LABELS[active] || prettifyKey(active)}</h2>
+              <div className="actions">
+                {statusEl}
+                <button className="btn secondary" onClick={revert} disabled={!dirty}>Revert</button>
+                <button className="btn" onClick={save} disabled={!dirty || saving}>
+                  {saving ? 'Saving…' : 'Save'}
+                </button>
+              </div>
+            </div>
 
-        <div className="content">
-          {error && <div className="err" style={{ background: '#fde8e8', color: '#9a1f1f', padding: '10px 12px', borderRadius: 6, marginBottom: 16 }}>{error}</div>}
-          {isPlainObject(sectionContent) ? (
-            <ObjectField value={sectionContent} onChange={updateSection} />
-          ) : (
-            <Field value={sectionContent} onChange={updateSection} parentKey={active} />
-          )}
-        </div>
+            <div className="content">
+              {error && <div className="err" style={{ background: '#fde8e8', color: '#9a1f1f', padding: '10px 12px', borderRadius: 6, marginBottom: 16 }}>{error}</div>}
+              {isPlainObject(sectionContent) ? (
+                <ObjectField value={sectionContent} onChange={updateSection} />
+              ) : (
+                <Field value={sectionContent} onChange={updateSection} parentKey={active} />
+              )}
+            </div>
+          </React.Fragment>
+        )}
       </div>
     </div>
   );

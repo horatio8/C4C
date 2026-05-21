@@ -1,20 +1,85 @@
 {
   "_comment": "Banner-image manifest. Each entry maps a target filename in /assets/banners/ to a one-time Canva JPG export URL. scripts/build-static.js fetches anything missing from /assets/banners/ at build time so the deploy contains the bytes even though the repo doesn't track them. Replace these URLs by re-running export-design when they expire (~22h), or commit the JPGs directly into /assets/banners/ for a permanent fix.",
   "design_id": "DAHJ-ZaHecQ",
-  "exported_at": "2026-05-21T00:00:00Z",
+  "exported_at": "2026-05-21T02:56:54Z",
   "banners": [
-    { "name": "home-hero.jpg", "page": 1, "label": "Blue Mountains (home banner)", "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0001-4353232902450149795.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T135743Z&X-Amz-Expires=48896&X-Amz-Signature=2f63c392a04923e1d23b181642e847f15d8ecd82f489d0e567f8a64bfe4eba60&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2003%3A32%3A39%20GMT" },
-    { "name": "about-hero.jpg", "page": 2, "label": "Daintree coast (about banner)", "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0002-4353232902450149795.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T053858Z&X-Amz-Expires=80369&X-Amz-Signature=99b68c14a4442c01f3db7b2a248ccbf92b1d1f3bc7871600c05cf5534b44898f&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2003%3A58%3A27%20GMT" },
-    { "name": "energy.jpg", "page": 3, "label": "Lightbulb (energy issue + home pillar)", "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0003-4353232902450149795.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T162809Z&X-Amz-Expires=39814&X-Amz-Signature=9d105ff69e26517a09c01135f2b550b2ba2b74c9c2869b6d2ed1d7f48825e3e1&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2003%3A31%3A43%20GMT" },
-    { "name": "work-hero.jpg", "page": 4, "label": "Plants (what we do banner)", "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0004-4353232902450149795.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T054056Z&X-Amz-Expires=78639&X-Amz-Signature=0e11c467e98beaaae753f358159208fdf2f8c1564488650f101c23334a6ef4a7&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2003%3A31%3A35%20GMT" },
-    { "name": "agriculture.jpg", "page": 5, "label": "Soil (agriculture issue + home pillar)", "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0005-4353232902450149795.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T183120Z&X-Amz-Expires=34563&X-Amz-Signature=410a4eff5658e6c6716d11ce021ac12dc55c3cbabe6a77e3f355016537eeae7b&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2004%3A07%3A23%20GMT" },
-    { "name": "contact-hero.jpg", "page": 6, "label": "Sunset water (contact banner)", "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0006-4353232902450149795.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T174631Z&X-Amz-Expires=34667&X-Amz-Signature=6de3e49818f3f83ef7ddd3d7e126d012a52cb9d7e40b8d65c591e726bd8a58d2&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2003%3A24%3A18%20GMT" },
-    { "name": "biodiversity.jpg", "page": 7, "label": "Koala (biodiversity issue + home pillar)", "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0007-4353232902450149795.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T064257Z&X-Amz-Expires=76102&X-Amz-Signature=28ea2c8e2fef1c0d4f3eb84e64a91f6369d23a2f0380d25ced8e0e5f89d6ad4c&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2003%3A51%3A19%20GMT" },
-    { "name": "donate-band.jpg", "page": 8, "label": "Beach sunset (home donate band)", "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0008-4353232902450149795.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260521%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260521T000606Z&X-Amz-Expires=12153&X-Amz-Signature=dfbf2f2afa94483ff39ee32ce901a5edbcd14b65424ff835972c41bde7cf7ca7&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2003%3A28%3A39%20GMT" },
-    { "name": "work-energy.jpg", "page": 9, "label": "Harbour Bridge (work-page energy pillar)", "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0009-4353232902450149795.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T220401Z&X-Amz-Expires=19914&X-Amz-Signature=0f0df0b1ada08e808a754cf54e4e19215c90611f4ac152ed9de1ad27878fcac9&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2003%3A35%3A55%20GMT" },
-    { "name": "work-agriculture.jpg", "page": 10, "label": "Happy farmer (work-page agriculture pillar)", "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0010-4353232902450149795.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T131827Z&X-Amz-Expires=50778&X-Amz-Signature=1ebe81c2fd271ea2f15e54f5127288a9d8a661ade82f4e4ee44289463fcb74d9&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2003%3A24%3A45%20GMT" },
-    { "name": "work-biodiversity.jpg", "page": 11, "label": "Quoll (work-page biodiversity pillar)", "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0011-4353232902450149795.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T113933Z&X-Amz-Expires=55964&X-Amz-Signature=1b3a4768802d44eecaa7faa82356fa30bcd24df0ff795f9ec127283faf873d87&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2003%3A12%3A17%20GMT" },
-    { "name": "news-hero.jpg", "page": 12, "label": "Lorikeets (news banner)", "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0012-4353232902450149795.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T122158Z&X-Amz-Expires=55675&X-Amz-Signature=8adab2c89ba445e26d25a2a616fb4ccb23d07935e4abea20d681aa17cca2f199&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2003%3A49%3A53%20GMT" },
-    { "name": "donate-hero.jpg", "page": 13, "label": "Sunset mountains (donate banner)", "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0013-4353232902450149795.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T135423Z&X-Amz-Expires=49514&X-Amz-Signature=2484b8c2ceec0956fe0c927cb57471562daefc72c06ff2f5972fd2314f012132&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2003%3A39%3A37%20GMT" }
+    {
+      "name": "home-hero.jpg",
+      "page": 1,
+      "label": "Blue Mountains (home banner)",
+      "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0001-4749549670759951095.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T025922Z&X-Amz-Expires=90838&X-Amz-Signature=6f00769e86aafefb9581aafe42cebfbbb00e1b6a0b9523fb05912dd5abf76e3a&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2004%3A13%3A20%20GMT"
+    },
+    {
+      "name": "about-hero.jpg",
+      "page": 2,
+      "label": "Daintree coast (about banner)",
+      "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0002-4749549670759951095.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260521%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260521T002110Z&X-Amz-Expires=16164&X-Amz-Signature=0609eb2fc84cb6abc22106d535854b135eafdd1929d9b370ecec758a42b45baf&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2004%3A50%3A34%20GMT"
+    },
+    {
+      "name": "energy.jpg",
+      "page": 3,
+      "label": "Lightbulb (energy issue + home pillar)",
+      "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0003-4749549670759951095.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T192643Z&X-Amz-Expires=31719&X-Amz-Signature=44459ec46b749b0b8fe867025ed353331909cb945c7253efa07ef860ea8d5b00&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2004%3A15%3A22%20GMT"
+    },
+    {
+      "name": "work-hero.jpg",
+      "page": 4,
+      "label": "Plants (what we do banner)",
+      "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0004-4749549670759951095.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T030301Z&X-Amz-Expires=91066&X-Amz-Signature=18a7315fc826ecab78cea356cd38ee339d96c9518796c617e21d4be5c7c47509&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2004%3A20%3A47%20GMT"
+    },
+    {
+      "name": "agriculture.jpg",
+      "page": 5,
+      "label": "Soil (agriculture issue + home pillar)",
+      "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0005-4749549670759951095.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T123710Z&X-Amz-Expires=58512&X-Amz-Signature=a5421c8cf15bcced9d34ea82ba8e29c6e2617c4135c4aa1d1854980031a30e3a&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2004%3A52%3A22%20GMT"
+    },
+    {
+      "name": "contact-hero.jpg",
+      "page": 6,
+      "label": "Sunset water (contact banner)",
+      "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0006-4749549670759951095.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T202706Z&X-Amz-Expires=29297&X-Amz-Signature=3c5f2f8c2a78f2ec29fc5acf20b7e98fa6b32549531d611690559ea7a7af8699&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2004%3A35%3A23%20GMT"
+    },
+    {
+      "name": "biodiversity.jpg",
+      "page": 7,
+      "label": "Koala (biodiversity issue + home pillar)",
+      "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0007-4749549670759951095.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T105550Z&X-Amz-Expires=62660&X-Amz-Signature=f69975d9a927ee8d0ac888e3d3629f6659eed6bf93b307536130944f38009e7e&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2004%3A20%3A10%20GMT"
+    },
+    {
+      "name": "donate-band.jpg",
+      "page": 8,
+      "label": "Beach sunset (home donate band)",
+      "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0008-4749549670759951095.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T195659Z&X-Amz-Expires=31153&X-Amz-Signature=b7c7007865466325f108cd9a9aeb843dc8427386daa0b94e59c5e54123f8a6ee&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2004%3A36%3A12%20GMT"
+    },
+    {
+      "name": "work-energy.jpg",
+      "page": 9,
+      "label": "Harbour Bridge (work-page energy pillar)",
+      "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0009-4749549670759951095.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T143150Z&X-Amz-Expires=49091&X-Amz-Signature=3ba839868bf33b3b52f7d969e4a2ff43e40b5ba9411e38d779bd8b5ca24f1783&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2004%3A10%3A01%20GMT"
+    },
+    {
+      "name": "work-agriculture.jpg",
+      "page": 10,
+      "label": "Happy farmer (work-page agriculture pillar)",
+      "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0010-4749549670759951095.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T164538Z&X-Amz-Expires=41850&X-Amz-Signature=456f0103801d19ac47045f8132ade3cebfbf09f78b304a37ff46f3af5f3860c3&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2004%3A23%3A08%20GMT"
+    },
+    {
+      "name": "work-biodiversity.jpg",
+      "page": 11,
+      "label": "Quoll (work-page biodiversity pillar)",
+      "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0011-4749549670759951095.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T120754Z&X-Amz-Expires=60438&X-Amz-Signature=2a5785f177693ad7ec76ee5ea5e1fbb691592883c3b7c0f378cf27c510f14a48&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2004%3A55%3A12%20GMT"
+    },
+    {
+      "name": "news-hero.jpg",
+      "page": 12,
+      "label": "Lorikeets (news banner)",
+      "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0012-4749549670759951095.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260520%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260520T080459Z&X-Amz-Expires=73836&X-Amz-Signature=f4372dfbe8e13a4270c19f50a3a1f2ff31afc20549de93f8106d605634bf7329&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2004%3A35%3A35%20GMT"
+    },
+    {
+      "name": "donate-hero.jpg",
+      "page": 13,
+      "label": "Sunset mountains (donate banner)",
+      "url": "https://export-download.canva.com/aHecQ/DAHJ-ZaHecQ/-1/0/0013-4749549670759951095.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260521%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260521T024436Z&X-Amz-Expires=5514&X-Amz-Signature=ddb633358eaae2a85076f8d7cc91f3fe8e0f6b28b6498310cab04de605f8fe5e&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2021%20May%202026%2004%3A16%3A30%20GMT"
+    }
   ]
 }

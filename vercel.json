@@ -7,6 +7,8 @@
     { "source": "/work", "destination": "/index.html" },
     { "source": "/campaigns", "destination": "/index.html" },
     { "source": "/news", "destination": "/index.html" },
+    { "source": "/media-and-webinars", "destination": "/index.html" },
+    { "source": "/media", "destination": "/index.html" },
     { "source": "/donate", "destination": "/index.html" },
     { "source": "/contact", "destination": "/index.html" },
     { "source": "/issues/:slug", "destination": "/index.html" }

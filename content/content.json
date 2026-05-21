@@ -16,7 +16,7 @@
       { "id": "about", "label": "About", "path": "/about" },
       { "id": "work", "label": "What we do", "path": "/work" },
       { "id": "aea", "label": "Campaigns", "path": "/campaigns" },
-      { "id": "news", "label": "News", "path": "/news" },
+      { "id": "media", "label": "Media & Webinars", "path": "/media-and-webinars" },
       { "id": "contact", "label": "Contact", "path": "/contact" }
     ],
     "ctaLabel": "Donate",
@@ -299,6 +299,19 @@
       "thanksTitle": "Signed.",
       "thanksBody": "Thank you. We'll send you AEA updates roughly once a month. No spam. You can unsubscribe any time."
     }
+  },
+  "media": {
+    "hero": {
+      "eyebrow": "Media & Webinars",
+      "title1": "Our work,",
+      "titleItalic": "on the record.",
+      "photoLabel": "Lorikeets",
+      "photoCredit": "",
+      "photoKind": "forest",
+      "photoUrl": "/assets/banners/news-hero.jpg"
+    },
+    "intro": "C4C's full archive of articles, webinars, submissions, statements and videos. Everything we've published in one place.",
+    "pageSize": 12
   },
   "news": {
     "hero": {

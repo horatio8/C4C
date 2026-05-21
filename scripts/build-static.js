@@ -17,6 +17,12 @@ function write(name, body) {
 const content = JSON.parse(fs.readFileSync(CONTENT_PATH, 'utf8'));
 write('content.js', 'window.CONTENT = ' + JSON.stringify(content) + ';\n');
 
+const MEDIA_SRC = path.join(ROOT, 'content', 'media.json');
+if (fs.existsSync(MEDIA_SRC)) {
+  const media = JSON.parse(fs.readFileSync(MEDIA_SRC, 'utf8'));
+  write('media.json', JSON.stringify(media));
+}
+
 const isPreview = process.env.VERCEL_ENV && process.env.VERCEL_ENV !== 'production';
 const baseUrl =
   process.env.PUBLIC_URL ||
@@ -35,8 +41,8 @@ if (isPreview) {
 }
 
 const routes = [
-  '/', '/about', '/work', '/campaigns', '/news', '/donate', '/contact',
-  '/issues/energy', '/issues/agriculture', '/issues/biodiversity', '/issues/industry',
+  '/', '/about', '/work', '/campaigns', '/media-and-webinars', '/donate', '/contact',
+  '/issues/energy', '/issues/agriculture', '/issues/biodiversity',
 ];
 const today = new Date().toISOString().slice(0, 10);
 const sitemap =

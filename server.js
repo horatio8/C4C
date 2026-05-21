@@ -12,6 +12,7 @@ const IS_PREVIEW = process.env.VERCEL_ENV && process.env.VERCEL_ENV !== 'product
 
 const ROOT = __dirname;
 const CONTENT_PATH = path.join(ROOT, 'content', 'content.json');
+const MEDIA_PATH = path.join(ROOT, 'content', 'media.json');
 
 function readContent() {
   return JSON.parse(fs.readFileSync(CONTENT_PATH, 'utf8'));
@@ -21,6 +22,16 @@ function writeContent(obj) {
   const tmp = CONTENT_PATH + '.tmp';
   fs.writeFileSync(tmp, JSON.stringify(obj, null, 2));
   fs.renameSync(tmp, CONTENT_PATH);
+}
+
+function readMedia() {
+  return JSON.parse(fs.readFileSync(MEDIA_PATH, 'utf8'));
+}
+
+function writeMedia(arr) {
+  const tmp = MEDIA_PATH + '.tmp';
+  fs.writeFileSync(tmp, JSON.stringify(arr, null, 2));
+  fs.renameSync(tmp, MEDIA_PATH);
 }
 
 const app = express();
@@ -87,6 +98,22 @@ app.put('/api/content', requireAuth, (req, res) => {
   res.json({ ok: true });
 });
 
+app.get('/media.json', (req, res) => {
+  res.json(readMedia());
+});
+
+app.get('/api/media', (req, res) => {
+  res.json(readMedia());
+});
+
+app.put('/api/media', requireAuth, (req, res) => {
+  if (!Array.isArray(req.body)) {
+    return res.status(400).json({ error: 'media body must be an array' });
+  }
+  writeMedia(req.body);
+  res.json({ ok: true, count: req.body.length });
+});
+
 app.post('/api/login', (req, res) => {
   const { password } = req.body || {};
   if (typeof password !== 'string') return res.status(400).json({ error: 'missing password' });
@@ -131,8 +158,8 @@ app.get('/robots.txt', (req, res) => {
 app.get('/sitemap.xml', (req, res) => {
   const base = process.env.PUBLIC_URL || `${req.protocol}://${req.get('host')}`;
   const routes = [
-    '/', '/about', '/work', '/campaigns', '/news', '/donate', '/contact',
-    '/issues/energy', '/issues/agriculture', '/issues/biodiversity', '/issues/industry',
+    '/', '/about', '/work', '/campaigns', '/media-and-webinars', '/donate', '/contact',
+    '/issues/energy', '/issues/agriculture', '/issues/biodiversity',
   ];
   const today = new Date().toISOString().slice(0, 10);
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
@@ -147,7 +174,7 @@ app.get('/favicon.svg', (req, res) => res.sendFile(path.join(ROOT, 'assets', 'fa
 app.get('/favicon.ico', (req, res) => res.sendFile(path.join(ROOT, 'assets', 'favicon.svg')));
 
 const SPA_PATHS = new Set([
-  '/', '/about', '/work', '/campaigns', '/news', '/donate', '/contact',
+  '/', '/about', '/work', '/campaigns', '/news', '/media', '/media-and-webinars', '/donate', '/contact',
 ]);
 function isSpaPath(p) {
   if (SPA_PATHS.has(p)) return true;

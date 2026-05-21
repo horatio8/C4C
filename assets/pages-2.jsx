@@ -616,4 +616,210 @@ function ContactPage() {
   );
 }
 
-Object.assign(window, { AEAPage, NewsPage, DonatePage, ContactPage });
+function MediaPage({ setPage }) {
+  const m = (C().media) || {};
+  const hero = m.hero || {};
+  const pageSize = m.pageSize || 12;
+
+  const [items, setItems] = useState(null);
+  const [err, setErr] = useState('');
+  const [typeFilter, setTypeFilter] = useState('All');
+  const [tagFilter, setTagFilter] = useState('All');
+  const [q, setQ] = useState('');
+  const [visible, setVisible] = useState(pageSize);
+
+  useEffect(() => {
+    fetch('/media.json')
+      .then(r => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
+      .then(setItems)
+      .catch(e => setErr('Failed to load media: ' + e.message));
+  }, []);
+
+  useEffect(() => { setVisible(pageSize); }, [typeFilter, tagFilter, q, pageSize]);
+
+  const all = items || [];
+  const types = ['All', ...Array.from(new Set(all.map(i => i.type).filter(Boolean)))];
+  const tags = ['All', ...Array.from(new Set(all.map(i => i.tag).filter(Boolean)))];
+
+  const ql = q.trim().toLowerCase();
+  const filtered = all.filter(it => {
+    if (typeFilter !== 'All' && it.type !== typeFilter) return false;
+    if (tagFilter !== 'All' && it.tag !== tagFilter) return false;
+    if (ql && !(
+      (it.title || '').toLowerCase().includes(ql) ||
+      (it.excerpt || '').toLowerCase().includes(ql) ||
+      (it.body || '').toLowerCase().includes(ql)
+    )) return false;
+    return true;
+  });
+  const shown = filtered.slice(0, visible);
+  const hasMore = visible < filtered.length;
+
+  return (
+    <React.Fragment>
+      <section style={{ position: 'relative' }}>
+        <Photo kind={hero.photoKind || 'forest'} src={hero.photoUrl} alt="" eager label={hero.photoLabel} credit={hero.photoCredit} height={520}>
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(20,17,11,0.2) 0%, rgba(20,17,11,0.7) 100%)', zIndex: 2 }} />
+          <div className="container-wide" style={{ position: 'relative', zIndex: 4, height: '100%', display: 'flex', alignItems: 'flex-end', padding: '0 var(--gutter) 72px' }}>
+            <div>
+              <Eyebrow dark>{hero.eyebrow || 'Media & Webinars'}</Eyebrow>
+              <h1 className="h-display display" style={{ color: 'var(--bone)', marginTop: 28 }}>
+                {hero.title1 || 'Our work,'}{hero.titleItalic && (<><br /><span className="italic" style={{ color: '#e6c97a' }}>{hero.titleItalic}</span></>)}
+              </h1>
+            </div>
+          </div>
+        </Photo>
+      </section>
+
+      {m.intro && (
+        <section className="section" style={{ paddingTop: 48, paddingBottom: 0 }}>
+          <div className="container-wide">
+            <p className="lead" style={{ maxWidth: 800 }}>{m.intro}</p>
+          </div>
+        </section>
+      )}
+
+      <section style={{ padding: '24px 0 32px', background: 'var(--paper-warm)', borderBottom: '1px solid var(--rule)', position: 'sticky', top: 79, zIndex: 10 }}>
+        <div className="container-wide" style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap', rowGap: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+            <div className="eyebrow">Type</div>
+            <div role="tablist" aria-label="Filter by type" style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+              {types.map(t => (
+                <button
+                  key={t}
+                  type="button"
+                  role="tab"
+                  aria-selected={typeFilter === t}
+                  onClick={() => setTypeFilter(t)}
+                  style={{
+                    padding: '6px 12px',
+                    fontFamily: 'var(--mono)',
+                    fontSize: 10,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    border: '1px solid var(--rule-2)',
+                    borderRadius: 999,
+                    background: typeFilter === t ? 'var(--ink)' : 'transparent',
+                    color: typeFilter === t ? 'var(--bone)' : 'var(--ink-2)',
+                    cursor: 'pointer',
+                  }}>
+                  {t}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+            <div className="eyebrow">Topic</div>
+            <div role="tablist" aria-label="Filter by topic" style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+              {tags.map(t => (
+                <button
+                  key={t}
+                  type="button"
+                  role="tab"
+                  aria-selected={tagFilter === t}
+                  onClick={() => setTagFilter(t)}
+                  style={{
+                    padding: '6px 12px',
+                    fontFamily: 'var(--mono)',
+                    fontSize: 10,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    border: '1px solid var(--rule-2)',
+                    borderRadius: 999,
+                    background: tagFilter === t ? 'var(--ochre-2)' : 'transparent',
+                    color: tagFilter === t ? 'var(--bone)' : 'var(--ink-2)',
+                    cursor: 'pointer',
+                  }}>
+                  {t}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div style={{ marginLeft: 'auto', display: 'flex', gap: 14, alignItems: 'center' }}>
+            <span className="mono small" aria-live="polite">{shown.length} of {filtered.length}</span>
+            <label htmlFor="media_search" style={{ position: 'absolute', left: -9999 }}>Search media</label>
+            <input
+              id="media_search"
+              type="search"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              className="input"
+              placeholder="Search…"
+              style={{ width: 220, padding: '8px 12px', fontSize: 13, borderBottom: 'none', borderRadius: 999, border: '1px solid var(--rule-2)', background: 'var(--paper)' }}
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container-wide">
+          {!items && !err && <div className="body" style={{ padding: '64px 0', color: 'var(--ink-3)' }}>Loading…</div>}
+          {err && <div className="body" style={{ padding: '64px 0', color: '#9a1f1f' }}>{err}</div>}
+
+          {items && filtered.length === 0 && (
+            <div className="body" style={{ padding: '64px 0', color: 'var(--ink-3)' }}>
+              No items match. Try a different filter or search term.
+            </div>
+          )}
+
+          {items && filtered.length > 0 && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32 }}>
+              {shown.map((it, i) => {
+                const card = (
+                  <React.Fragment>
+                    {it.imageUrl ? (
+                      <img
+                        src={it.imageUrl}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        style={{ width: '100%', height: 200, objectFit: 'cover', display: 'block', background: 'var(--paper-warm)' }}
+                      />
+                    ) : (
+                      <div className={`ph ph-${(it.tag || 'forest').toLowerCase() === 'energy' ? 'coast' : (it.tag || '').toLowerCase() === 'agriculture' ? 'wheat' : 'forest'}`} style={{ height: 200 }} />
+                    )}
+                    <div style={{ padding: '20px 0' }}>
+                      <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 12 }}>
+                        <span className="mono" style={{ fontSize: 10, letterSpacing: '0.12em', color: 'var(--ochre-2)', textTransform: 'uppercase' }}>{it.type}</span>
+                        <span style={{ color: 'var(--ink-4)' }}>·</span>
+                        <span className="mono" style={{ fontSize: 11, color: 'var(--ink-3)' }}>{it.date}</span>
+                        {it.tag && <><span style={{ color: 'var(--ink-4)' }}>·</span><span className="chip" style={{ fontSize: 10, padding: '3px 8px' }}>{it.tag}</span></>}
+                      </div>
+                      <h3 className="display" style={{ fontSize: 22, lineHeight: 1.2, fontWeight: 400, letterSpacing: '-0.01em', marginBottom: 12 }}>
+                        {it.title}
+                      </h3>
+                      {it.excerpt && <p className="body" style={{ fontSize: 14, color: 'var(--ink-2)' }}>{it.excerpt}</p>}
+                    </div>
+                  </React.Fragment>
+                );
+                if (it.url) {
+                  return (
+                    <a key={it.id || i} href={it.url} target="_blank" rel="noopener noreferrer"
+                       style={{ display: 'block', color: 'inherit', textDecoration: 'none', borderBottom: '1px solid var(--rule)', paddingBottom: 24 }}>
+                      {card}
+                    </a>
+                  );
+                }
+                return (
+                  <div key={it.id || i} style={{ borderBottom: '1px solid var(--rule)', paddingBottom: 24 }}>
+                    {card}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {hasMore && (
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 56 }}>
+              <button type="button" className="btn btn-outline" onClick={() => setVisible(v => v + pageSize)}>
+                See older posts ↓
+              </button>
+            </div>
+          )}
+        </div>
+      </section>
+    </React.Fragment>
+  );
+}
+
+Object.assign(window, { AEAPage, NewsPage, DonatePage, ContactPage, MediaPage });
