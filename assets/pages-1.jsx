@@ -34,8 +34,8 @@ function AboutPage({ setPage }) {
         </Photo>
       </section>
 
-      <section className="section">
-        <div className="container-wide">
+      <section className="section" style={{ paddingTop: 0 }}>
+        <div className="container-wide" style={{ paddingTop: 64 }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.6fr', gap: 96 }}>
             <Eyebrow ochre>{a.story.eyebrow}</Eyebrow>
             <div>
