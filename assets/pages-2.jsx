@@ -101,11 +101,12 @@ function AEAPage({ setPage }) {
             {sq.stats && sq.stats.length > 0 && (
               <div style={{ display: 'grid', gridTemplateColumns: `repeat(${sq.stats.length}, 1fr)`, gap: 0, marginTop: 80, borderTop: '1px solid var(--ink)' }}>
                 {sq.stats.map((s, i) => (
-                  <div key={i} style={{ padding: '40px 24px 0 0', borderRight: i < sq.stats.length - 1 ? '1px solid var(--rule)' : 'none', paddingLeft: i > 0 ? 32 : 0 }}>
-                    <div className="display" style={{ fontSize: 'clamp(48px, 6vw, 88px)', color: '#0A1F44', lineHeight: 0.92, fontWeight: 300, letterSpacing: '-0.04em' }}>
+                  <div key={i} style={{ padding: '40px 24px 0 0', borderRight: i < sq.stats.length - 1 ? '1px solid var(--rule)' : 'none', paddingLeft: i > 0 ? 32 : 0, display: 'flex', flexDirection: 'column' }}>
+                    <div className="display" style={{ fontSize: 'clamp(44px, 5vw, 76px)', color: '#0A1F44', lineHeight: 0.92, fontWeight: 300, letterSpacing: '-0.04em' }}>
                       {s.value}
                     </div>
                     {s.label && <div className="small" style={{ marginTop: 16 }}>{s.label}</div>}
+                    {s.source && <div className="mono" style={{ marginTop: 'auto', paddingTop: 16, fontSize: 10, lineHeight: 1.45, color: 'var(--ink-4)', letterSpacing: '0.02em' }}>{s.source}</div>}
                   </div>
                 ))}
               </div>
