@@ -487,7 +487,7 @@ function PartnerStrip() {
                     alt={name}
                     loading="lazy"
                     decoding="async"
-                    style={{ height: 40, width: 'auto', maxWidth: 180, objectFit: 'contain', filter: 'grayscale(1)', opacity: 0.85 }}
+                    style={{ height: 52, width: 'auto', maxWidth: 180, objectFit: 'contain' }}
                   />
                 );
               }
