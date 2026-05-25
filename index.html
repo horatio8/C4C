@@ -52,6 +52,7 @@ const PAGE_META = {
   media:   { title: () => 'Media & Webinars — ' + CONTENT.site.title, desc: () => 'C4C’s full archive of articles, webinars, submissions, statements and videos.' },
   donate:  { title: () => 'Donate — ' + CONTENT.site.title, desc: () => 'Fund the policy work. Tax-deductible. DGR endorsed.' },
   contact: { title: () => 'Contact — ' + CONTENT.site.title, desc: () => 'Get in touch with C4C — we read everything.' },
+  privacy: { title: () => 'Privacy Policy — ' + CONTENT.site.title, desc: () => 'How the Coalition for Conservation collects, uses and protects your information.' },
 };
 
 function metaFor(page) {
@@ -59,6 +60,9 @@ function metaFor(page) {
     const slug = page.split(':')[1];
     const issue = (CONTENT.issues || {})[slug];
     if (issue) return { title: () => issue.title + ' — ' + CONTENT.site.title, desc: () => issue.tagline };
+  }
+  if (page.startsWith('article:')) {
+    return { title: () => 'Media & Webinars — ' + CONTENT.site.title, desc: () => CONTENT.site.description };
   }
   return PAGE_META[page] || PAGE_META.home;
 }
@@ -72,6 +76,9 @@ function pathToPage(path) {
   if (path === '/media-and-webinars' || path === '/media') return 'media';
   if (path === '/donate') return 'donate';
   if (path === '/contact') return 'contact';
+  if (path === '/privacy') return 'privacy';
+  const am = path.match(/^\/media\/([a-z0-9-]+)$/);
+  if (am) return 'article:' + am[1];
   const m = path.match(/^\/issues\/([a-z-]+)$/);
   if (m) return 'issue:' + m[1];
   return 'home';
@@ -86,6 +93,8 @@ function pageToPath(page) {
   if (page === 'media') return '/media-and-webinars';
   if (page === 'donate') return '/donate';
   if (page === 'contact') return '/contact';
+  if (page === 'privacy') return '/privacy';
+  if (page.startsWith('article:')) return '/media/' + page.split(':')[1];
   if (page.startsWith('issue:')) return '/issues/' + page.split(':')[1];
   return '/';
 }
@@ -144,10 +153,12 @@ function App() {
   else if (page === 'media') body = <MediaPage setPage={setPage} />;
   else if (page === 'donate') body = <DonatePage setPage={setPage} />;
   else if (page === 'contact') body = <ContactPage setPage={setPage} />;
+  else if (page === 'privacy') body = <PrivacyPage setPage={setPage} />;
+  else if (page.startsWith('article:')) body = <MediaArticlePage slug={page.split(':')[1]} setPage={setPage} />;
   else if (page.startsWith('issue:')) body = <IssuePage slug={page.split(':')[1]} setPage={setPage} />;
   else body = <HomePage setPage={setPage} />;
 
-  const navPage = page.startsWith('issue:') ? 'work' : page;
+  const navPage = page.startsWith('issue:') ? 'work' : (page.startsWith('article:') ? 'media' : page);
 
   return (
     <React.Fragment>

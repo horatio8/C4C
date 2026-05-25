@@ -37,12 +37,27 @@ function AboutPage({ setPage }) {
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="container-wide" style={{ paddingTop: 64 }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.6fr', gap: 96 }}>
-            <Eyebrow ochre>{a.story.eyebrow}</Eyebrow>
+            <div style={{ display: 'flex', flexDirection: 'column', minHeight: 200 }}>
+              {C().site.iconUrl && <img src={C().site.iconUrl} alt="" aria-hidden="true" style={{ height: 84, width: 'auto', display: 'block' }} />}
+              <div style={{ marginTop: 'auto', textAlign: 'right' }}>
+                <Eyebrow ochre>{a.story.eyebrow}</Eyebrow>
+              </div>
+            </div>
             <div>
               <p className="lead" style={{ marginBottom: 32 }}>{a.story.lead}</p>
-              {storyParagraphs.map((para, i) => (
-                <p key={i} className="body" style={{ fontSize: 17, marginBottom: 20, whiteSpace: 'pre-line' }}>{para}</p>
-              ))}
+              {storyParagraphs.map((para, i) => {
+                const isSignature = i === storyParagraphs.length - 1;
+                if (isSignature) {
+                  return (
+                    <p key={i} className="body italic" style={{ fontSize: 18, marginTop: 32, textAlign: 'right', whiteSpace: 'pre-line', color: 'var(--ink-2)' }}>
+                      — {para}
+                    </p>
+                  );
+                }
+                return (
+                  <p key={i} className="body" style={{ fontSize: 17, marginBottom: 20, whiteSpace: 'pre-line' }}>{para}</p>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -66,12 +81,8 @@ function AboutPage({ setPage }) {
       {a.team && a.team.groups && a.team.groups.length > 0 && (
         <section className="section warm-bg" style={{ borderTop: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)' }}>
           <div className="container-wide">
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 96, marginBottom: 80, alignItems: 'flex-end' }}>
+            <div style={{ marginBottom: 64 }}>
               <Eyebrow ochre>{a.team.eyebrow}</Eyebrow>
-              <div>
-                <h2 className="h-1 display">{a.team.headlinePre}<span className="italic">{a.team.headlineItalic}</span></h2>
-                {a.team.lead && <p className="lead" style={{ marginTop: 24, maxWidth: 600 }}>{a.team.lead}</p>}
-              </div>
             </div>
 
             {a.team.groups.map(group => (
@@ -221,9 +232,9 @@ function BriefingForm({ topic, submitLabel }) {
         <input id="brief_postcode" name="postcode" type="text" inputMode="numeric" pattern="[0-9]{4}" className="input" placeholder=" " style={{ borderBottomColor: 'rgba(236,225,200,0.3)', color: 'var(--bone)' }} />
       </div>
       {err && <div style={{ gridColumn: '1 / -1', color: '#ff9a7a', fontSize: 13 }}>{err}</div>}
-      <div style={{ gridColumn: '1 / -1', marginTop: 24 }}>
-        <button type="submit" className="btn btn-ochre" disabled={busy} style={{ width: '100%' }}>
-          {busy ? 'Subscribing…' : (submitLabel || 'Subscribe ↗')}
+      <div style={{ gridColumn: '1 / -1', marginTop: 24, display: 'flex', justifyContent: 'flex-end' }}>
+        <button type="submit" className="btn btn-ochre" disabled={busy}>
+          {busy ? 'Subscribing…' : `${submitLabel || 'Subscribe'} →`}
         </button>
       </div>
     </form>
@@ -250,7 +261,7 @@ function IssuePage({ slug, setPage }) {
               {a.tag} · {a.title.toUpperCase()}
             </div>
             <h1 className="h-display display" style={{ maxWidth: 1200, color: 'var(--bone)' }}>
-              <span className="italic" style={{ color: '#e6c97a' }}>{a.tagline}</span>
+              <span style={{ color: '#e6c97a' }}>{a.tagline}</span>
             </h1>
           </div>
         </Photo>

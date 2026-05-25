@@ -5,6 +5,7 @@
     "url": "",
     "ogImage": "",
     "logoUrl": "/assets/c4c-logo.png",
+    "iconUrl": "/assets/c4c-icon.png",
     "wordmarkLine1Pre": "Coalition ",
     "wordmarkLine1Italic": "for",
     "wordmarkLine1Post": " Conservation",
@@ -25,22 +26,28 @@
   "footer": {
     "blurb": "An Australian environmental charity advancing practical, technology-neutral policy solutions that protect Australia's unique natural heritage and help families, businesses and communities thrive.",
     "social": [
-      { "label": "LI", "url": "" },
-      { "label": "IG", "url": "" },
-      { "label": "YT", "url": "" },
-      { "label": "FB", "url": "" },
-      { "label": "TT", "url": "" }
+      { "label": "LI", "url": "https://www.linkedin.com/company/coalitionforconservation/" },
+      { "label": "IG", "url": "https://www.instagram.com/c4conservation/" },
+      { "label": "YT", "url": "https://www.youtube.com/@coalitionforconservation" },
+      { "label": "FB", "url": "https://www.facebook.com/coalition4conservation" },
+      { "label": "TT", "url": "https://www.tiktok.com/@c4conservation" }
     ],
     "columns": [
       {
         "title": "Explore",
         "links": [
+          { "label": "Home", "page": "/" },
+          { "label": "About", "page": "/about" },
+          { "label": "What we do", "page": "/work" },
+          { "label": "Campaigns", "page": "/campaigns" },
+          { "label": "Media & Webinars", "page": "/media-and-webinars" },
+          { "label": "Contact", "page": "/contact" },
           { "label": "Donate", "page": "/donate" }
         ]
       }
     ],
     "office": {
-      "title": "Sydney",
+      "title": "Contact",
       "addressLine1": "Level 9, 255 George Street",
       "addressLine2": "Sydney NSW 2000",
       "phone": "02 9188 8838",
@@ -48,7 +55,7 @@
     },
     "legal": "ABN 82 201 923 025 · ACNC registered · DGR endorsed · © 2026",
     "legalLinks": [
-      { "label": "Privacy", "page": "/about" }
+      { "label": "Privacy", "page": "/privacy" }
     ]
   },
   "home": {
@@ -65,7 +72,7 @@
       "photoUrl": "/assets/banners/home-hero.jpg"
     },
     "stats": [
-      { "value": "9", "label": "years of policy and advocacy work with the help of thousands of supporters" }
+      { "value": "9", "label": "years of policy and advocacy work, with the help of thousands of supporters" }
     ],
     "mission": {
       "eyebrow": "The proposition",
@@ -288,10 +295,10 @@
     },
     "petition": {
       "topLabel": "JOIN THE AEA SUPPORTER LIST",
-      "headlinePre": "Sign the petition. ",
+      "headlinePre": "Sign the petition.",
       "headlineItalic": "Join the movement.",
       "body": "We need your help to make the voices of everyday Australians heard. By adding your signature, you are sending a message Australia's leaders cannot ignore.",
-      "statement": "\"We call on Australia's leaders to prioritise affordable & reliable energy.\"",
+      "statement": "\"We call on Australia's leaders to prioritise affordable and reliable energy.\"",
       "stats": [],
       "formTitle": "SIGN THE PETITION",
       "consent": "I'd like AEA campaign updates by email. I can unsubscribe anytime.",
@@ -311,7 +318,8 @@
       "photoUrl": "/assets/banners/news-hero.jpg"
     },
     "intro": "C4C's full archive of articles, webinars, submissions, statements and videos. Everything we've published in one place.",
-    "pageSize": 12
+    "pageSize": 12,
+    "olderStep": 6
   },
   "news": {
     "hero": {
@@ -364,7 +372,8 @@
     "thankYouBody": "You'll receive a tax-deductible receipt in your inbox in the next 60 seconds. We'll send you a quarterly update on the work your contribution funded — no spam, no chain of fundraising emails.",
     "trustEyebrow": "Trust & transparency",
     "trustItems": [
-      ["DGR", "Deductible Gift Recipient endorsed by the ATO. Donations over $2 are tax-deductible."]
+      ["DGR", "Deductible Gift Recipient endorsed by the ATO. Donations over $2 are tax-deductible."],
+      ["ACNC", "Registered with the Australian Charities and Not-for-profits Commission since 2018."]
     ]
   },
   "contact": {
@@ -394,5 +403,10 @@
       "urgentLabel": "URGENT",
       "ctaLabel": "Send another message"
     }
+  },
+  "privacy": {
+    "eyebrow": "Legal",
+    "title": "Privacy Policy",
+    "body": "The Coalition for Conservation (C4C) ABN 82 201 923 025 is committed to protecting your privacy. This policy explains how we collect, use, store and disclose your personal information, in accordance with the Privacy Act 1988 (Cth) and the Australian Privacy Principles.\n\nWhat we collect — We collect personal information you provide directly: your name, email address, postcode, phone number and any message content when you contact us, sign a petition, subscribe to our briefing, or make a donation. We collect donation and payment details through our secure payment processor; we do not store full card numbers.\n\nHow we use it — We use your information to respond to enquiries, send campaign and briefing updates you have opted into, process and acknowledge donations, and meet our legal and reporting obligations as a registered charity.\n\nDisclosure — We do not sell your personal information. We share it only with service providers who help us operate (for example email, payment and analytics providers), and where required by law.\n\nYour choices — You can unsubscribe from our emails at any time using the link in any message, or by contacting us. You may request access to, or correction of, the personal information we hold about you.\n\nContact — For any privacy question or request, email admin@coalitionforconservation.com.au or write to Level 9, 255 George Street, Sydney NSW 2000.\n\nThis policy is a starting template and should be reviewed by the organisation before launch."
   }
 }

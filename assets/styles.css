@@ -165,8 +165,14 @@ p { margin: 0; }
   gap: 24px;
   color: var(--bone);
 }
-.brand { display: flex; align-items: center; gap: 14px; cursor: pointer; color: var(--bone); }
-.nav-links { display: flex; gap: 36px; align-items: center; }
+.brand { display: flex; align-items: center; gap: 14px; cursor: pointer; color: var(--bone); flex-shrink: 0; }
+.nav-inner { flex-wrap: nowrap; }
+.nav-links { display: flex; gap: 36px; align-items: center; flex-shrink: 0; flex-wrap: nowrap; }
+/* Tablet: keep logo-left / buttons-right by shrinking the gap before wrapping. */
+@media (max-width: 1180px) and (min-width: 801px) {
+  .nav-links { gap: 22px; }
+  .nav-link { font-size: 13px; }
+}
 .nav-link {
   font-size: 14px;
   color: rgba(236,235,226,0.78);

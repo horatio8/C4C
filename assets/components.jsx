@@ -20,30 +20,18 @@ function Logo({ size = 40 }) {
 
 function Wordmark({ dark }) {
   const s = C().site;
-  if (s.logoUrl) {
-    return (
-      <img
-        src={s.logoUrl}
-        alt="Coalition for Conservation"
-        style={{
-          height: 44,
-          width: 'auto',
-          maxWidth: 280,
-          display: 'block',
-        }}
-      />
-    );
-  }
   const c = 'var(--bone)';
   const sub = 'rgba(236,235,226,0.6)';
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-      <Logo size={44} />
+    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+      {s.iconUrl
+        ? <img src={s.iconUrl} alt="" aria-hidden="true" style={{ height: 42, width: 'auto', display: 'block', flexShrink: 0 }} />
+        : <Logo size={44} />}
       <div style={{ lineHeight: 1 }}>
-        <div className="display" style={{ fontSize: 24, color: c, letterSpacing: '-0.02em', fontWeight: 400 }}>
+        <div className="display" style={{ fontSize: 22, color: c, letterSpacing: '-0.02em', fontWeight: 400, whiteSpace: 'nowrap' }}>
           {s.wordmarkLine1Pre}<span className="italic" style={{ fontFamily: 'var(--display)' }}>{s.wordmarkLine1Italic}</span>{s.wordmarkLine1Post}
         </div>
-        <div style={{ fontFamily: 'var(--mono)', fontSize: 10.5, letterSpacing: '0.18em', textTransform: 'uppercase', color: sub, marginTop: 6 }}>
+        <div style={{ fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: sub, marginTop: 6, whiteSpace: 'nowrap' }}>
           {s.wordmarkLine2}
         </div>
       </div>
@@ -219,7 +207,7 @@ function Eyebrow({ children, ochre, dark }) {
   );
 }
 
-function Photo({ kind = 'outback', label, credit, height = 480, style, src, alt, eager, children }) {
+function Photo({ kind = 'outback', label, credit, height = 480, style, src, alt, eager, imgPosition, children }) {
   const cls = `ph ph-${kind}${src ? ' ph-has-image' : ''}`;
   return (
     <div className={cls} style={{ height, ...style }}>
@@ -229,10 +217,9 @@ function Photo({ kind = 'outback', label, credit, height = 480, style, src, alt,
           alt={alt || ''}
           loading={eager ? 'eager' : 'lazy'}
           decoding="async"
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block', zIndex: 1 }}
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: imgPosition || 'center', display: 'block', zIndex: 1 }}
         />
       )}
-      {label && <div className="ph-label">{label}</div>}
       {credit && <div className="ph-credit">{credit}</div>}
       {children}
     </div>
@@ -280,7 +267,7 @@ function HomeHero({ setPage }) {
                     borderRight: i < stats.length - 1 ? '1px solid rgba(236,225,200,0.15)' : 'none',
                     display: 'flex',
                     alignItems: 'baseline',
-                    gap: solo ? 40 : 20,
+                    gap: solo ? 18 : 20,
                   }}
                 >
                   <div
@@ -291,16 +278,19 @@ function HomeHero({ setPage }) {
                       lineHeight: 0.9,
                       color: 'var(--bone)',
                       letterSpacing: '-0.04em',
+                      flexShrink: 0,
                     }}
                   >
                     {s.value}
                   </div>
                   <div
+                    className={solo ? 'display italic' : ''}
                     style={{
                       fontSize: solo ? 'clamp(18px, 2.2vw, 28px)' : 13,
-                      lineHeight: 1.35,
+                      lineHeight: 1.3,
                       color: 'rgba(236,225,200,0.85)',
                       maxWidth: solo ? 'none' : 180,
+                      fontWeight: solo ? 400 : undefined,
                     }}
                   >
                     {s.label}
@@ -411,14 +401,12 @@ function IssueAreas({ setPage }) {
   return (
     <section className="section umber-bg">
       <div className="container-wide">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 96, marginBottom: 80, alignItems: 'flex-end' }}>
+        <div style={{ marginBottom: 80, maxWidth: 760 }}>
           <Eyebrow dark>{ia.eyebrow}</Eyebrow>
-          <div>
-            <h2 className="h-1 display">{ia.headline}{ia.headlineItalic && (<><br /><span className="italic">{ia.headlineItalic}</span></>)}</h2>
-            <p className="lead" style={{ marginTop: 24, maxWidth: 600 }}>
-              {ia.lead}
-            </p>
-          </div>
+          <h2 className="h-1 display" style={{ marginTop: 24 }}>{ia.headline}{ia.headlineItalic && (<><br /><span className="italic">{ia.headlineItalic}</span></>)}</h2>
+          <p className="lead" style={{ marginTop: 24 }}>
+            {ia.lead}
+          </p>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: `repeat(${ia.areas.length}, 1fr)`, gap: 16 }}>
@@ -518,14 +506,27 @@ function PartnerStrip() {
 
 function PressBand({ setPage }) {
   const pr = C().home.press;
+  const [recent, setRecent] = useState(null);
+
+  useEffect(() => {
+    fetch('/media.json')
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(items => setRecent(items.slice(0, 3)))
+      .catch(() => setRecent([]));
+  }, []);
+
+  // Show the three most recent Media & Webinars headlines; fall back to the
+  // configured press quotes until media loads.
+  const useMedia = recent && recent.length > 0;
+
   return (
     <section className="section dark">
       <div className="container-wide">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 56 }}>
           <Eyebrow dark>{pr.eyebrow}</Eyebrow>
           <a
-            href="/news"
-            onClick={(e) => { e.preventDefault(); setPage('news'); }}
+            href="/media-and-webinars"
+            onClick={(e) => { e.preventDefault(); setPage('media'); }}
             className="mono"
             style={{ fontSize: 11, letterSpacing: '0.12em', color: 'rgba(236,225,200,0.7)', borderBottom: '1px solid rgba(236,225,200,0.3)', paddingBottom: 4, textDecoration: 'none' }}
           >
@@ -533,13 +534,26 @@ function PressBand({ setPage }) {
           </a>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 48 }}>
-          {pr.items.map((p, i) => (
-            <div key={i} style={{ paddingTop: 32, borderTop: '1px solid rgba(236,225,200,0.25)' }}>
-              <div className="display italic" style={{ fontSize: 22, color: '#e6c97a', marginBottom: 32, fontWeight: 400 }}>{p.masthead}</div>
-              <p className="display" style={{ fontSize: 28, lineHeight: 1.2, fontWeight: 300, color: 'var(--bone)' }}>"{p.headline}"</p>
-              <div className="mono" style={{ fontSize: 11, color: 'rgba(236,225,200,0.5)', marginTop: 32, letterSpacing: '0.1em' }}>{p.when}</div>
-            </div>
-          ))}
+          {useMedia
+            ? recent.map((it, i) => (
+                <a
+                  key={it.id || i}
+                  href={`/media/${it.id}`}
+                  onClick={(e) => { e.preventDefault(); setPage('article:' + it.id); }}
+                  style={{ paddingTop: 32, borderTop: '1px solid rgba(236,225,200,0.25)', textDecoration: 'none', color: 'inherit', display: 'block' }}
+                >
+                  <div className="display italic" style={{ fontSize: 20, color: '#e6c97a', marginBottom: 24, fontWeight: 400 }}>{it.type}</div>
+                  <p className="display" style={{ fontSize: 26, lineHeight: 1.2, fontWeight: 300, color: 'var(--bone)' }}>{it.title}</p>
+                  <div className="mono" style={{ fontSize: 11, color: 'rgba(236,225,200,0.5)', marginTop: 28, letterSpacing: '0.1em' }}>{it.date}</div>
+                </a>
+              ))
+            : pr.items.map((p, i) => (
+                <div key={i} style={{ paddingTop: 32, borderTop: '1px solid rgba(236,225,200,0.25)' }}>
+                  <div className="display italic" style={{ fontSize: 22, color: '#e6c97a', marginBottom: 32, fontWeight: 400 }}>{p.masthead}</div>
+                  <p className="display" style={{ fontSize: 28, lineHeight: 1.2, fontWeight: 300, color: 'var(--bone)' }}>"{p.headline}"</p>
+                  <div className="mono" style={{ fontSize: 11, color: 'rgba(236,225,200,0.5)', marginTop: 32, letterSpacing: '0.1em' }}>{p.when}</div>
+                </div>
+              ))}
         </div>
       </div>
     </section>

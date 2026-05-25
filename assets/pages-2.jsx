@@ -120,7 +120,7 @@ function AEAPage({ setPage }) {
             <div>
               {a.petition.topLabel && <div className="mono" style={{ fontSize: 11, letterSpacing: '0.14em', color: '#0A1F44' }}>{a.petition.topLabel}</div>}
               <h2 className="h-1 display" style={{ marginTop: 24, color: '#0A1F44', fontWeight: 300 }}>
-                {a.petition.headlinePre}<span className="italic">{a.petition.headlineItalic}</span>
+                {a.petition.headlinePre}{a.petition.headlineItalic && (<><br /><span className="italic">{a.petition.headlineItalic}</span></>)}
               </h2>
               {a.petition.body && <p className="body" style={{ marginTop: 24, fontSize: 17 }}>{a.petition.body}</p>}
               {a.petition.statement && (
@@ -386,15 +386,6 @@ function DonatePage() {
                     <input id="donate_amount" type="number" min="1" step="1" inputMode="numeric" className="input" value={amount} onChange={e => setAmount(e.target.value === '' ? 0 : Number(e.target.value))} style={{ paddingLeft: 24, fontFamily: 'var(--display)', fontSize: 22, fontWeight: 300 }} />
                   </div>
                 </div>
-                <div style={{ marginTop: 40, padding: 28, background: 'var(--paper)', border: '1px solid var(--rule)' }}>
-                  <div className="eyebrow" style={{ marginBottom: 12 }}>What ${amount}{recurring ? '/mo' : ''} funds</div>
-                  <p className="body italic" style={{ fontSize: 18, fontFamily: 'var(--display)', color: 'var(--ink)', fontWeight: 300 }}>
-                    {amount < 100 && d.fundsLabels.under100}
-                    {amount >= 100 && amount < 500 && d.fundsLabels.under500}
-                    {amount >= 500 && amount < 2500 && d.fundsLabels.under2500}
-                    {amount >= 2500 && d.fundsLabels.over2500}
-                  </p>
-                </div>
                 <button type="button" onClick={() => setStep(2)} disabled={!amount || amount < 1} className="btn btn-primary" style={{ marginTop: 32 }}>Continue ↗</button>
               </div>
             )}
@@ -626,6 +617,7 @@ function MediaPage({ setPage }) {
   const [typeFilter, setTypeFilter] = useState('All');
   const [tagFilter, setTagFilter] = useState('All');
   const [q, setQ] = useState('');
+  const [visible, setVisible] = useState(pageSize);
 
   useEffect(() => {
     fetch('/media.json')
@@ -634,9 +626,14 @@ function MediaPage({ setPage }) {
       .catch(e => setErr('Failed to load media: ' + e.message));
   }, []);
 
+  useEffect(() => { setVisible(pageSize); }, [typeFilter, tagFilter, q, pageSize]);
+
   const all = items || [];
   const types = ['All', ...Array.from(new Set(all.map(i => i.type).filter(Boolean)))];
-  const tags = ['All', ...Array.from(new Set(all.map(i => i.tag).filter(Boolean)))];
+  // Topic order: known pillars first, then Other last.
+  const TAG_ORDER = ['Energy', 'Agriculture', 'Biodiversity', 'Other'];
+  const presentTags = Array.from(new Set(all.map(i => i.tag).filter(Boolean)));
+  const tags = ['All', ...TAG_ORDER.filter(t => presentTags.includes(t)), ...presentTags.filter(t => !TAG_ORDER.includes(t))];
 
   const ql = q.trim().toLowerCase();
   const filtered = all.filter(it => {
@@ -649,12 +646,14 @@ function MediaPage({ setPage }) {
     )) return false;
     return true;
   });
-  const shown = filtered;
+  const shown = filtered.slice(0, visible);
+  const hasMore = visible < filtered.length;
+  const olderStep = m.olderStep || 6;
 
   return (
     <React.Fragment>
       <section style={{ position: 'relative' }}>
-        <Photo kind={hero.photoKind || 'forest'} src={hero.photoUrl} alt="" eager label={hero.photoLabel} credit={hero.photoCredit} height={520}>
+        <Photo kind={hero.photoKind || 'forest'} src={hero.photoUrl} alt="" eager imgPosition={hero.imgPosition || 'center 32%'} label={hero.photoLabel} credit={hero.photoCredit} height={520}>
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(20,17,11,0.2) 0%, rgba(20,17,11,0.7) 100%)', zIndex: 2 }} />
           <div className="container-wide" style={{ position: 'relative', zIndex: 4, height: '100%', display: 'flex', alignItems: 'flex-end', padding: '0 var(--gutter) 72px' }}>
             <div>
@@ -788,20 +787,24 @@ function MediaPage({ setPage }) {
                     </div>
                   </React.Fragment>
                 );
-                if (it.url) {
-                  return (
-                    <a key={it.id || i} href={it.url} target="_blank" rel="noopener noreferrer"
-                       style={{ display: 'block', color: 'inherit', textDecoration: 'none', borderBottom: '1px solid var(--rule)', paddingBottom: 24 }}>
-                      {card}
-                    </a>
-                  );
-                }
                 return (
-                  <div key={it.id || i} style={{ borderBottom: '1px solid var(--rule)', paddingBottom: 24 }}>
+                  <a
+                    key={it.id || i}
+                    href={`/media/${it.id}`}
+                    onClick={(e) => { e.preventDefault(); setPage('article:' + it.id); }}
+                    style={{ display: 'block', color: 'inherit', textDecoration: 'none', borderBottom: '1px solid var(--rule)', paddingBottom: 24 }}>
                     {card}
-                  </div>
+                  </a>
                 );
               })}
+            </div>
+          )}
+
+          {hasMore && (
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 56 }}>
+              <button type="button" className="btn btn-outline" onClick={() => setVisible(v => v + olderStep)}>
+                See older posts ↓
+              </button>
             </div>
           )}
         </div>
@@ -810,4 +813,103 @@ function MediaPage({ setPage }) {
   );
 }
 
-Object.assign(window, { AEAPage, NewsPage, DonatePage, ContactPage, MediaPage });
+function MediaArticlePage({ slug, setPage }) {
+  const [items, setItems] = useState(null);
+  const [err, setErr] = useState('');
+
+  useEffect(() => {
+    fetch('/media.json')
+      .then(r => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
+      .then(setItems)
+      .catch(e => setErr('Failed to load: ' + e.message));
+  }, []);
+
+  const item = items && items.find(x => x.id === slug);
+
+  useEffect(() => {
+    if (item) document.title = item.title + ' — ' + C().site.title;
+  }, [item]);
+
+  if (!items && !err) return <div className="section"><div className="container-wide"><p className="body" style={{ color: 'var(--ink-3)' }}>Loading…</p></div></div>;
+  if (err) return <div className="section"><div className="container-wide"><p className="body" style={{ color: '#9a1f1f' }}>{err}</p></div></div>;
+  if (!item) {
+    return (
+      <section className="section">
+        <div className="container-wide">
+          <Eyebrow ochre>Not found</Eyebrow>
+          <h1 className="h-1 display" style={{ marginTop: 16 }}>That article doesn't exist.</h1>
+          <button type="button" className="btn btn-outline" style={{ marginTop: 24 }} onClick={() => setPage('media')}>← Back to Media &amp; Webinars</button>
+        </div>
+      </section>
+    );
+  }
+
+  const paras = (item.body || '').split('\n\n').filter(p => p.trim());
+
+  return (
+    <article>
+      <section style={{ position: 'relative' }}>
+        <Photo kind={(item.tag || '').toLowerCase() === 'energy' ? 'coast' : (item.tag || '').toLowerCase() === 'agriculture' ? 'wheat' : 'forest'} src={item.imageUrl} alt="" eager height={460}>
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(20,17,11,0.25) 0%, rgba(20,17,11,0.75) 100%)', zIndex: 2 }} />
+          <div className="container-wide" style={{ position: 'relative', zIndex: 4, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '0 var(--gutter) 56px' }}>
+            <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 20 }}>
+              <span className="mono" style={{ fontSize: 11, letterSpacing: '0.14em', color: '#e6c97a', textTransform: 'uppercase' }}>{item.type}</span>
+              <span style={{ color: 'rgba(236,225,200,0.6)' }}>·</span>
+              <span className="mono" style={{ fontSize: 12, color: 'rgba(236,225,200,0.75)' }}>{item.date}</span>
+              {item.tag && <><span style={{ color: 'rgba(236,225,200,0.6)' }}>·</span><span className="mono" style={{ fontSize: 11, color: 'rgba(236,225,200,0.75)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{item.tag}</span></>}
+            </div>
+            <h1 className="display" style={{ fontSize: 'clamp(32px, 4.5vw, 60px)', lineHeight: 1.05, fontWeight: 300, color: 'var(--bone)', letterSpacing: '-0.02em', maxWidth: 1000 }}>
+              {item.title}
+            </h1>
+          </div>
+        </Photo>
+      </section>
+
+      <section className="section">
+        <div className="container-wide" style={{ maxWidth: 820, marginLeft: 'auto', marginRight: 'auto' }}>
+          <a href="/media-and-webinars" onClick={(e) => { e.preventDefault(); setPage('media'); }}
+             className="mono" style={{ fontSize: 12, letterSpacing: '0.1em', color: 'var(--ochre-2)', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block', marginBottom: 32 }}>
+            ← Media &amp; Webinars
+          </a>
+          {paras.length > 0 ? paras.map((p, i) => (
+            <p key={i} className="body" style={{ fontSize: 18, lineHeight: 1.7, marginBottom: 24 }}>{p}</p>
+          )) : (
+            <p className="body" style={{ fontSize: 18 }}>{item.excerpt}</p>
+          )}
+          {item.url && (
+            <p className="small" style={{ marginTop: 40, paddingTop: 24, borderTop: '1px solid var(--rule)', color: 'var(--ink-3)' }}>
+              Originally published at{' '}
+              <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--ochre-2)', borderBottom: '1px solid var(--rule-2)' }}>coalitionforconservation.com.au</a>.
+            </p>
+          )}
+        </div>
+      </section>
+    </article>
+  );
+}
+
+function PrivacyPage({ setPage }) {
+  const p = C().privacy || {};
+  const paras = (p.body || '').split('\n\n').filter(x => x.trim());
+  return (
+    <React.Fragment>
+      <section className="section" style={{ background: 'var(--umber)' }}>
+        <div className="container-wide">
+          <Eyebrow dark>{p.eyebrow || 'Legal'}</Eyebrow>
+          <h1 className="h-1 display" style={{ color: 'var(--bone)', marginTop: 20 }}>{p.title || 'Privacy Policy'}</h1>
+        </div>
+      </section>
+      <section className="section">
+        <div className="container-wide" style={{ maxWidth: 820, marginLeft: 'auto', marginRight: 'auto' }}>
+          {paras.length > 0 ? paras.map((para, i) => (
+            <p key={i} className="body" style={{ fontSize: 17, lineHeight: 1.7, marginBottom: 20, whiteSpace: 'pre-line' }}>{para}</p>
+          )) : (
+            <p className="body" style={{ color: 'var(--ink-3)' }}>Privacy policy content coming soon.</p>
+          )}
+        </div>
+      </section>
+    </React.Fragment>
+  );
+}
+
+Object.assign(window, { AEAPage, NewsPage, DonatePage, ContactPage, MediaPage, MediaArticlePage, PrivacyPage });

@@ -174,11 +174,12 @@ app.get('/favicon.svg', (req, res) => res.sendFile(path.join(ROOT, 'assets', 'fa
 app.get('/favicon.ico', (req, res) => res.sendFile(path.join(ROOT, 'assets', 'favicon.svg')));
 
 const SPA_PATHS = new Set([
-  '/', '/about', '/work', '/campaigns', '/news', '/media', '/media-and-webinars', '/donate', '/contact',
+  '/', '/about', '/work', '/campaigns', '/news', '/media', '/media-and-webinars', '/donate', '/contact', '/privacy',
 ]);
 function isSpaPath(p) {
   if (SPA_PATHS.has(p)) return true;
   if (/^\/issues\/[a-z-]+$/.test(p)) return true;
+  if (/^\/media\/[a-z0-9-]+$/.test(p)) return true;
   return false;
 }
 
