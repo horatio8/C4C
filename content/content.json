@@ -169,7 +169,7 @@
       "photoCredit": "",
       "photoKind": "coast",
       "photoUrl": "",
-      "logoUrl": ""
+      "logoUrl": "https://preview.affordableenergy.org.au/assets/logo.png"
     },
     "issueAreas": {
       "eyebrow": "What we work on · 02",
@@ -207,36 +207,32 @@
       "eyebrow": "In partnership with",
       "items": [
         {
-          "name": "",
-          "logoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/1-2.png"
+          "name": "International Livestock Research Institute / CGIAR",
+          "logoUrl": "/assets/partners/ilri-cgiar.png"
         },
         {
-          "name": "",
-          "logoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/2-2.png"
+          "name": "Mulloon Institute",
+          "logoUrl": "/assets/partners/mulloon-institute.png"
         },
         {
-          "name": "",
-          "logoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/3-1.png"
+          "name": "Rainforest Reserves Australia",
+          "logoUrl": "/assets/partners/rainforest-reserves-australia.png"
         },
         {
-          "name": "",
-          "logoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/4-1.png"
+          "name": "Regenerative Australian Farmers",
+          "logoUrl": "/assets/partners/regenerative-australian-farmers.png"
         },
         {
-          "name": "",
-          "logoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/5.png"
+          "name": "Taronga Conservation Society Australia",
+          "logoUrl": "/assets/partners/taronga.png"
         },
         {
-          "name": "",
-          "logoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/6.png"
+          "name": "WePlanet Australia",
+          "logoUrl": "/assets/partners/weplanet-australia.png"
         },
         {
-          "name": "",
-          "logoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/7.png"
-        },
-        {
-          "name": "",
-          "logoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/8-1.png"
+          "name": "World Nuclear Association",
+          "logoUrl": "/assets/partners/world-nuclear-association.png"
         }
       ]
     },
