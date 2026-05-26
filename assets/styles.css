@@ -641,6 +641,7 @@ textarea:invalid:not(:placeholder-shown):focus {
   .nav-links { display: none; }
   .nav-toggle { display: inline-flex; }
   .nav img { height: 34px !important; width: auto !important; max-width: none !important; }
+  .aea-stat-grid { grid-template-columns: repeat(2, 1fr) !important; }
   .section { padding: 56px 0; }
   .h-display { font-size: clamp(40px, 11vw, 56px); line-height: 0.98; }
   .h-1 { font-size: clamp(32px, 9vw, 48px); }

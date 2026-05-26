@@ -245,6 +245,14 @@ function IssuePage({ slug, setPage }) {
   const issues = C().issues;
   const a = issues[slug] || issues.energy;
   const shared = issues.shared || {};
+  const [posts, setPosts] = useState(null);
+
+  useEffect(() => {
+    fetch('/media.json')
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(items => setPosts(items.filter(it => (it.tag || '').toLowerCase() === a.title.toLowerCase()).slice(0, 6)))
+      .catch(() => setPosts([]));
+  }, [a.title]);
 
   return (
     <React.Fragment>
@@ -261,7 +269,9 @@ function IssuePage({ slug, setPage }) {
               {a.tag} · {a.title.toUpperCase()}
             </div>
             <h1 className="h-display display" style={{ maxWidth: 1200, color: 'var(--bone)' }}>
-              <span style={{ color: '#e6c97a' }}>{a.tagline}</span>
+              {a.titleWhite
+                ? (<React.Fragment>{a.titleWhite}{' '}<span className="italic" style={{ color: '#e6c97a', display: 'block' }}>{a.titleAccent}</span></React.Fragment>)
+                : (<span style={{ color: '#e6c97a' }}>{a.tagline}</span>)}
             </h1>
           </div>
         </Photo>
@@ -276,22 +286,22 @@ function IssuePage({ slug, setPage }) {
         </div>
       </section>
 
-      {shared.workItems && shared.workItems.length > 0 && (
+      {posts && posts.length > 0 && (
         <section className="section warm-bg" style={{ borderTop: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)' }}>
           <div className="container-wide">
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 96 }}>
-              <Eyebrow ochre>{shared.workEyebrow || 'Recent coverage'}</Eyebrow>
+              <Eyebrow ochre>{shared.workEyebrow || 'From Media & Webinars'}</Eyebrow>
               <div>
-                {shared.workItems.map((it, i) => (
+                {posts.map((it, i) => (
                   <a
-                    key={i}
-                    href="/news"
-                    onClick={(e) => { e.preventDefault(); setPage('news'); }}
+                    key={it.id || i}
+                    href={`/media/${it.id}`}
+                    onClick={(e) => { e.preventDefault(); setPage('article:' + it.id); }}
                     style={{ display: 'grid', gridTemplateColumns: '140px 1fr 240px 40px', gap: 24, padding: '28px 0', borderBottom: '1px solid var(--rule)', borderTop: i === 0 ? '1px solid var(--ink)' : 'none', alignItems: 'baseline', cursor: 'pointer', color: 'inherit', textDecoration: 'none' }}
                   >
                     <span className="mono" style={{ fontSize: 11, letterSpacing: '0.12em', color: 'var(--ochre-2)', textTransform: 'uppercase' }}>{it.type}</span>
-                    <div className="display" style={{ fontSize: 22, lineHeight: 1.2, fontWeight: 400 }}>{it.t}</div>
-                    <span className="mono small">{it.d}</span>
+                    <div className="display" style={{ fontSize: 22, lineHeight: 1.2, fontWeight: 400 }}>{it.title}</div>
+                    <span className="mono small">{it.date}</span>
                     <span aria-hidden="true" style={{ fontSize: 18, textAlign: 'right' }}>↗</span>
                   </a>
                 ))}

@@ -99,10 +99,10 @@ function AEAPage({ setPage }) {
               <p className="body" style={{ fontSize: 18 }}>{sq.body}</p>
             </div>
             {sq.stats && sq.stats.length > 0 && (
-              <div style={{ display: 'grid', gridTemplateColumns: `repeat(${sq.stats.length}, 1fr)`, gap: 0, marginTop: 80, borderTop: '1px solid var(--ink)' }}>
+              <div className="aea-stat-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', columnGap: 32, rowGap: 56, marginTop: 80, borderTop: '1px solid var(--ink)', paddingTop: 8 }}>
                 {sq.stats.map((s, i) => (
-                  <div key={i} style={{ padding: '40px 24px 0 0', borderRight: i < sq.stats.length - 1 ? '1px solid var(--rule)' : 'none', paddingLeft: i > 0 ? 32 : 0, display: 'flex', flexDirection: 'column' }}>
-                    <div className="display" style={{ fontSize: 'clamp(44px, 5vw, 76px)', color: '#0A1F44', lineHeight: 0.92, fontWeight: 300, letterSpacing: '-0.04em' }}>
+                  <div key={i} style={{ paddingTop: 32, display: 'flex', flexDirection: 'column' }}>
+                    <div className="display" style={{ fontSize: 'clamp(40px, 4vw, 64px)', color: '#0A1F44', lineHeight: 0.92, fontWeight: 300, letterSpacing: '-0.04em' }}>
                       {s.value}
                     </div>
                     {s.label && <div className="small" style={{ marginTop: 16 }}>{s.label}</div>}
@@ -440,12 +440,19 @@ function DonatePage() {
                 <p className="lead" style={{ marginTop: 32 }}>{d.thankYouBody}</p>
                 <div style={{ marginTop: 48, padding: 28, background: 'var(--paper)', border: '1px solid var(--rule)' }}>
                   <div className="eyebrow eyebrow-ochre" style={{ marginBottom: 16 }}>Receipt summary</div>
-                  <div className="mono" style={{ fontSize: 13, lineHeight: 1.9 }}>
-                    AMOUNT ........ ${amount} AUD<br />
-                    FREQUENCY ..... {recurring ? 'Monthly' : 'One-time'}<br />
-                    DGR STATUS .... Tax-deductible (donations over $2)<br />
-                    ABN ........... 82 201 923 025<br />
-                    REF NO ........ C4C-2026-{String(Math.floor(Math.random() * 99999)).padStart(5, '0')}
+                  <div className="mono" style={{ fontSize: 13, lineHeight: 2 }}>
+                    {[
+                      ['Amount', `$${amount} AUD`],
+                      ['Frequency', recurring ? 'Monthly' : 'One-time'],
+                      ['DGR status', 'Tax-deductible (donations over $2)'],
+                      ['ABN', '82 201 923 025'],
+                      ['Ref no', `C4C-2026-${String(Math.floor(Math.random() * 99999)).padStart(5, '0')}`],
+                    ].map(([k, v]) => (
+                      <div key={k} style={{ display: 'flex', gap: 16 }}>
+                        <span style={{ width: 120, flex: '0 0 auto', color: 'var(--ink-soft, #6b6b5e)' }}>{k}</span>
+                        <span>{v}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -499,7 +506,7 @@ function ContactPage() {
   return (
     <React.Fragment>
       <section style={{ position: 'relative' }}>
-        <Photo kind={c.hero.photoKind} src={c.hero.photoUrl} alt="" eager label={c.hero.photoLabel} credit={c.hero.photoCredit} height={420}>
+        <Photo kind={c.hero.photoKind} src={c.hero.photoUrl} alt="" eager label={c.hero.photoLabel} credit={c.hero.photoCredit} height={520}>
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(20,17,11,0.2) 0%, rgba(20,17,11,0.7) 100%)', zIndex: 2 }} />
           <div className="container-wide" style={{ position: 'relative', zIndex: 4, height: '100%', display: 'flex', alignItems: 'flex-end', padding: '0 var(--gutter) 72px' }}>
             <div>

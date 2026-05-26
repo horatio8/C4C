@@ -238,7 +238,7 @@
     },
     "press": {
       "eyebrow": "C4C in the press · 04",
-      "linkLabel": "VIEW ALL ARTICLES ↗",
+      "linkLabel": "Learn more ↗",
       "items": [
         {
           "masthead": "The Australian",
@@ -558,6 +558,8 @@
       "tag": "01 Pillar",
       "kind": "coast",
       "tagline": "Affordable, reliable energy that preserves nature.",
+      "titleWhite": "Affordable, reliable energy that",
+      "titleAccent": "preserves nature.",
       "position": "Australia needs affordable, reliable energy so our families, businesses and communities can thrive. This doesn't have to come at the cost of our unique natural heritage. At C4C, we believe protecting high biodiversity areas and prime agricultural land from unnecessary energy infrastructure is the best way to steward our natural resources. Australia's energy mix should prioritise technologies that keep costs down, provide 24/7 power and have high energy density which allows for a smaller spatial footprint.",
       "photoUrl": "/assets/banners/energy.jpg"
     },
@@ -566,6 +568,8 @@
       "tag": "02 Pillar",
       "kind": "wheat",
       "tagline": "Sharing Australian farming know-how with the world.",
+      "titleWhite": "Sharing Australian farming know-how",
+      "titleAccent": "with the world.",
       "position": "Australia is a global leader in sustainable agriculture, ag tech, and climate adaptation. In partnership with the Bill and Melinda Gates Foundation and local farming research organisations, C4C has helped connect Australian experts with farmers in Sub-Saharan Africa and the Pacific. Our work has helped farmers in drought-prone areas improve their water and soil carbon management practices, improving soil health and increasing productivity.",
       "photoUrl": "/assets/banners/agriculture.jpg"
     },
@@ -574,6 +578,8 @@
       "tag": "03 Pillar",
       "kind": "forest",
       "tagline": "Conserving our natural heritage right here, right now.",
+      "titleWhite": "Conserving our natural heritage",
+      "titleAccent": "right here, right now.",
       "position": "At C4C, we believe in protecting Australia's unique wildlife and landscapes from destruction in the here and now – not sacrificing our rainforests and endangered species in the name of reducing emissions in the future. We have partnered with Rainforest Reserves Australia to combat deforestation and enhance tree canopy cover, preserving vital habitat for wildlife.",
       "photoUrl": "/assets/banners/biodiversity.jpg"
     },
@@ -602,24 +608,44 @@
       "body": "The energy transition is not working for Australians or the environment. Australia's unique rainforests and fauna are being destroyed to make way for renewable energy projects. Meanwhile, families are struggling to put food on the table and businesses are collapsing under the weight of high energy costs. We need to change course – and that means putting all energy sources back on the table so that Australians can have the energy mix they deserve. Affordable, reliable, protecting Australia's unique natural heritage for generations to come.",
       "stats": [
         {
+          "value": "1 in 5",
+          "label": "Households in hardship or on the brink",
+          "source": "Energy Consumers Australia"
+        },
+        {
           "value": "$1,367",
-          "label": "average energy debt now carried by Australian households who have fallen behind on their power bills.",
+          "label": "Average household energy debt",
+          "source": "Australian Energy Regulator"
+        },
+        {
+          "value": "340k",
+          "label": "Households in long-term debt",
           "source": "Australian Energy Regulator"
         },
         {
           "value": "220%",
-          "label": "rise in wholesale electricity prices across the National Electricity Market over the past decade.",
-          "source": "Australian Energy Regulator"
+          "label": "Electricity price rise for households since 2008",
+          "source": "Australian Bureau of Statistics"
+        },
+        {
+          "value": "24%",
+          "label": "Projected further price rise Nov 2025 to July 2026",
+          "source": "Australian Bureau of Statistics, Westpac"
+        },
+        {
+          "value": "200+",
+          "label": "NSW spot price spikes >$10k/MWh in 2024",
+          "source": "Australian Energy Market Operator"
+        },
+        {
+          "value": "20%",
+          "label": "Households skipping meals due to financial strain",
+          "source": "Foodbank Hunger Report"
         },
         {
           "value": "84%",
-          "label": "of Australians want affordable, reliable energy put first in the nation's energy policy.",
-          "source": "Affordable Energy Australia"
-        },
-        {
-          "value": "1 in 5",
-          "label": "Australian households is struggling to pay their power bills — forced to choose between the lights and the grocery shop.",
-          "source": "Affordable Energy Australia"
+          "label": "Households seriously concerned about power costs",
+          "source": "Choice National Survey"
         }
       ]
     },
@@ -762,7 +788,7 @@
     },
     "briefingConsent": "Add me to the C4C quarterly briefing list (optional).",
     "thankYou": "Thank you.",
-    "thankYouBody": "You'll receive a tax-deductible receipt in your inbox in the next 60 seconds. We'll send you a quarterly update on the work your contribution funded — no spam, no chain of fundraising emails.",
+    "thankYouBody": "You'll receive a tax-deductible receipt in your inbox in the next 60 seconds. See below for a summary.",
     "trustEyebrow": "Trust & transparency",
     "trustItems": [
       [

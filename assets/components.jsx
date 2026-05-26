@@ -362,7 +362,15 @@ function FlagshipCampaign({ setPage }) {
       <div className="container-wide">
         <Eyebrow ochre>{f.eyebrow}</Eyebrow>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, marginTop: 40, background: 'var(--ink)', color: 'var(--bone)', minHeight: 560 }}>
-          <Photo kind={f.photoKind} src={f.photoUrl || f.logoUrl} label={f.photoLabel} credit={f.photoCredit} alt={f.logoUrl ? 'Affordable Energy Australia' : ''} height="100%" />
+          {f.photoUrl
+            ? <Photo kind={f.photoKind} src={f.photoUrl} label={f.photoLabel} credit={f.photoCredit} alt="" height="100%" />
+            : (
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--ink)', padding: '48px 56px', minHeight: 560 }}>
+                {f.logoUrl
+                  ? <img src={f.logoUrl} alt="Affordable Energy Australia" loading="lazy" decoding="async" style={{ maxWidth: '78%', maxHeight: 220, width: 'auto', height: 'auto', objectFit: 'contain', display: 'block' }} />
+                  : <Photo kind={f.photoKind} label={f.photoLabel} credit={f.photoCredit} alt="" height="100%" />}
+              </div>
+            )}
           <div style={{ padding: '64px 56px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <div>
               {(f.chipLabel || f.subBrandLabel) && (
@@ -505,7 +513,7 @@ function PartnerStrip() {
                     alt={name}
                     loading="lazy"
                     decoding="async"
-                    style={{ height: 52, width: 'auto', maxWidth: 180, objectFit: 'contain' }}
+                    style={{ height: 78, width: 'auto', maxWidth: 220, objectFit: 'contain' }}
                   />
                 );
               }
