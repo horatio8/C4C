@@ -164,8 +164,8 @@ function AEAPage({ setPage }) {
                     <input id="aea_email" name="email" type="email" autoComplete="email" required placeholder=" " className="input" />
                   </div>
                   <div>
-                    <label htmlFor="aea_postcode" className="label">Postcode</label>
-                    <input id="aea_postcode" name="postcode" type="text" inputMode="numeric" pattern="[0-9]{4}" autoComplete="postal-code" required placeholder=" " className="input" />
+                    <label htmlFor="aea_postcode" className="label">Postcode (optional)</label>
+                    <input id="aea_postcode" name="postcode" type="text" inputMode="numeric" pattern="[0-9]{4}" autoComplete="postal-code" placeholder=" " className="input" />
                   </div>
                   <div>
                     <label htmlFor="aea_mobile" className="label">Mobile (optional)</label>
@@ -615,7 +615,7 @@ function MediaPage({ setPage }) {
 
   const [items, setItems] = useState(null);
   const [err, setErr] = useState('');
-  const [typeFilter, setTypeFilter] = useState('All');
+  const [catFilter, setCatFilter] = useState('All');
   const [tagFilter, setTagFilter] = useState('All');
   const [q, setQ] = useState('');
   const [visible, setVisible] = useState(pageSize);
@@ -627,10 +627,13 @@ function MediaPage({ setPage }) {
       .catch(e => setErr('Failed to load media: ' + e.message));
   }, []);
 
-  useEffect(() => { setVisible(pageSize); }, [typeFilter, tagFilter, q, pageSize]);
+  useEffect(() => { setVisible(pageSize); }, [catFilter, tagFilter, q, pageSize]);
 
   const all = items || [];
-  const types = ['All', ...Array.from(new Set(all.map(i => i.type).filter(Boolean)))];
+  // Category tabs (Interview / Comment / Press Release / Media), in fixed order.
+  const CAT_ORDER = ['Interview', 'Comment', 'Press Release', 'Media'];
+  const presentCats = Array.from(new Set(all.map(i => i.category).filter(Boolean)));
+  const cats = ['All', ...CAT_ORDER.filter(c => presentCats.includes(c)), ...presentCats.filter(c => !CAT_ORDER.includes(c))];
   // Topic order: known pillars first, then Other last.
   const TAG_ORDER = ['Energy', 'Agriculture', 'Biodiversity', 'Other'];
   const presentTags = Array.from(new Set(all.map(i => i.tag).filter(Boolean)));
@@ -638,7 +641,7 @@ function MediaPage({ setPage }) {
 
   const ql = q.trim().toLowerCase();
   const filtered = all.filter(it => {
-    if (typeFilter !== 'All' && it.type !== typeFilter) return false;
+    if (catFilter !== 'All' && it.category !== catFilter) return false;
     if (tagFilter !== 'All' && it.tag !== tagFilter) return false;
     if (ql && !(
       (it.title || '').toLowerCase().includes(ql) ||
@@ -678,15 +681,15 @@ function MediaPage({ setPage }) {
       <section style={{ padding: '24px 0 32px', background: 'var(--paper-warm)', borderBottom: '1px solid var(--rule)', position: 'sticky', top: 79, zIndex: 10 }}>
         <div className="container-wide" style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap', rowGap: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-            <div className="eyebrow">Type</div>
-            <div role="tablist" aria-label="Filter by type" style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-              {types.map(t => (
+            <div className="eyebrow">Category</div>
+            <div role="tablist" aria-label="Filter by category" style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+              {cats.map(t => (
                 <button
                   key={t}
                   type="button"
                   role="tab"
-                  aria-selected={typeFilter === t}
-                  onClick={() => setTypeFilter(t)}
+                  aria-selected={catFilter === t}
+                  onClick={() => setCatFilter(t)}
                   style={{
                     padding: '6px 12px',
                     fontFamily: 'var(--mono)',
@@ -695,8 +698,8 @@ function MediaPage({ setPage }) {
                     textTransform: 'uppercase',
                     border: '1px solid var(--rule-2)',
                     borderRadius: 999,
-                    background: typeFilter === t ? 'var(--ink)' : 'transparent',
-                    color: typeFilter === t ? 'var(--bone)' : 'var(--ink-2)',
+                    background: catFilter === t ? 'var(--ink)' : 'transparent',
+                    color: catFilter === t ? 'var(--bone)' : 'var(--ink-2)',
                     cursor: 'pointer',
                   }}>
                   {t}
@@ -849,39 +852,39 @@ function MediaArticlePage({ slug, setPage }) {
 
   return (
     <article>
-      <section style={{ position: 'relative' }}>
-        <Photo kind={(item.tag || '').toLowerCase() === 'energy' ? 'coast' : (item.tag || '').toLowerCase() === 'agriculture' ? 'wheat' : 'forest'} src={item.imageUrl} alt="" eager height={460}>
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(20,17,11,0.25) 0%, rgba(20,17,11,0.75) 100%)', zIndex: 2 }} />
-          <div className="container-wide" style={{ position: 'relative', zIndex: 4, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '0 var(--gutter) 56px' }}>
-            <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 20 }}>
-              <span className="mono" style={{ fontSize: 11, letterSpacing: '0.14em', color: '#e6c97a', textTransform: 'uppercase' }}>{item.type}</span>
-              <span style={{ color: 'rgba(236,225,200,0.6)' }}>·</span>
-              <span className="mono" style={{ fontSize: 12, color: 'rgba(236,225,200,0.75)' }}>{item.date}</span>
-              {item.tag && <><span style={{ color: 'rgba(236,225,200,0.6)' }}>·</span><span className="mono" style={{ fontSize: 11, color: 'rgba(236,225,200,0.75)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{item.tag}</span></>}
-            </div>
-            <h1 className="display" style={{ fontSize: 'clamp(32px, 4.5vw, 60px)', lineHeight: 1.05, fontWeight: 300, color: 'var(--bone)', letterSpacing: '-0.02em', maxWidth: 1000 }}>
-              {item.title}
-            </h1>
-          </div>
-        </Photo>
-      </section>
-
-      <section className="section">
-        <div className="container-wide" style={{ maxWidth: 820, marginLeft: 'auto', marginRight: 'auto' }}>
+      {/* Text-only header band — no stretched cover image, so portrait
+          photos are never cropped into a banner. */}
+      <section className="umber-bg" style={{ padding: '56px 0 48px' }}>
+        <div className="container-wide" style={{ maxWidth: 900, marginLeft: 'auto', marginRight: 'auto' }}>
           <a href="/media-and-webinars" onClick={(e) => { e.preventDefault(); setPage('media'); }}
-             className="mono" style={{ fontSize: 12, letterSpacing: '0.1em', color: 'var(--ochre-2)', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block', marginBottom: 32 }}>
+             className="mono" style={{ fontSize: 12, letterSpacing: '0.1em', color: '#e6c97a', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block', marginBottom: 28 }}>
             ← Media &amp; Webinars
           </a>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 18, flexWrap: 'wrap' }}>
+            <span className="mono" style={{ fontSize: 11, letterSpacing: '0.14em', color: '#e6c97a', textTransform: 'uppercase' }}>{item.type}</span>
+            <span style={{ color: 'rgba(236,225,200,0.6)' }}>·</span>
+            <span className="mono" style={{ fontSize: 12, color: 'rgba(236,225,200,0.75)' }}>{item.date}</span>
+            {item.tag && <><span style={{ color: 'rgba(236,225,200,0.6)' }}>·</span><span className="mono" style={{ fontSize: 11, color: 'rgba(236,225,200,0.75)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{item.tag}</span></>}
+          </div>
+          <h1 className="display" style={{ fontSize: 'clamp(30px, 4vw, 54px)', lineHeight: 1.08, fontWeight: 300, color: 'var(--bone)', letterSpacing: '-0.02em' }}>
+            {item.title}
+          </h1>
+        </div>
+      </section>
+
+      <section className="section" style={{ paddingTop: 48 }}>
+        <div className="container-wide" style={{ maxWidth: 820, marginLeft: 'auto', marginRight: 'auto' }}>
+          {item.imageUrl && (
+            <img
+              src={item.imageUrl}
+              alt=""
+              style={{ width: '100%', maxHeight: 520, objectFit: 'contain', display: 'block', background: 'var(--paper-warm)', borderRadius: 4, marginBottom: 40 }}
+            />
+          )}
           {paras.length > 0 ? paras.map((p, i) => (
             <p key={i} className="body" style={{ fontSize: 18, lineHeight: 1.7, marginBottom: 24 }}>{p}</p>
           )) : (
             <p className="body" style={{ fontSize: 18 }}>{item.excerpt}</p>
-          )}
-          {item.url && (
-            <p className="small" style={{ marginTop: 40, paddingTop: 24, borderTop: '1px solid var(--rule)', color: 'var(--ink-3)' }}>
-              Originally published at{' '}
-              <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--ochre-2)', borderBottom: '1px solid var(--rule-2)' }}>coalitionforconservation.com.au</a>.
-            </p>
           )}
         </div>
       </section>
