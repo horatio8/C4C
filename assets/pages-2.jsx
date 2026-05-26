@@ -913,7 +913,9 @@ function PrivacyPage({ setPage }) {
       <section className="section">
         <div className="container-wide" style={{ maxWidth: 820, marginLeft: 'auto', marginRight: 'auto' }}>
           {paras.length > 0 ? paras.map((para, i) => (
-            <p key={i} className="body" style={{ fontSize: 17, lineHeight: 1.7, marginBottom: 20, whiteSpace: 'pre-line' }}>{para}</p>
+            para.startsWith('## ')
+              ? <h2 key={i} className="display" style={{ fontSize: 26, fontWeight: 400, marginTop: i === 0 ? 0 : 40, marginBottom: 16 }}>{para.slice(3)}</h2>
+              : <p key={i} className="body" style={{ fontSize: 17, lineHeight: 1.7, marginBottom: 20, whiteSpace: 'pre-line' }}>{para}</p>
           )) : (
             <p className="body" style={{ color: 'var(--ink-3)' }}>Privacy policy content coming soon.</p>
           )}
