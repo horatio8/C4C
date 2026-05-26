@@ -3,8 +3,3 @@ node_modules/
 .env
 .env.local
 .DS_Store
-
-# Banner artwork is fetched at build time from scripts/canva-banners.json.
-# Don't commit the JPGs unless you want to pin them permanently — in which
-# case `git add -f assets/banners/*.jpg`.
-assets/banners/
