@@ -27,7 +27,7 @@ function Wordmark({ dark }) {
       {s.iconUrl
         ? <img src={s.iconUrl} alt="" aria-hidden="true" style={{ height: 42, width: 'auto', display: 'block', flexShrink: 0 }} />
         : <Logo size={44} />}
-      <div style={{ lineHeight: 1 }}>
+      <div className="wordmark-text" style={{ lineHeight: 1 }}>
         <div className="display" style={{ fontSize: 22, color: c, letterSpacing: '-0.02em', fontWeight: 400, whiteSpace: 'nowrap' }}>
           {s.wordmarkLine1Pre}<span className="italic" style={{ fontFamily: 'var(--display)' }}>{s.wordmarkLine1Italic}</span>{s.wordmarkLine1Post}
         </div>
@@ -365,7 +365,7 @@ function FlagshipCampaign({ setPage }) {
           {f.photoUrl
             ? <Photo kind={f.photoKind} src={f.photoUrl} label={f.photoLabel} credit={f.photoCredit} alt="" height="100%" />
             : (
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--ink)', padding: '48px 56px', minHeight: 560 }}>
+              <div className="flagship-media" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--ink)', padding: '48px 56px', minHeight: 560 }}>
                 {f.logoUrl
                   ? <img src={f.logoUrl} alt="Affordable Energy Australia" loading="lazy" decoding="async" style={{ maxWidth: '78%', maxHeight: 220, width: 'auto', height: 'auto', objectFit: 'contain', display: 'block' }} />
                   : <Photo kind={f.photoKind} label={f.photoLabel} credit={f.photoCredit} alt="" height="100%" />}
