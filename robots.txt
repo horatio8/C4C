@@ -2,4 +2,3 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /api/
-Sitemap: https://coalition.affordableenergy.org.au/sitemap.xml

@@ -602,24 +602,24 @@
       "body": "The energy transition is not working for Australians or the environment. Australia's unique rainforests and fauna are being destroyed to make way for renewable energy projects. Meanwhile, families are struggling to put food on the table and businesses are collapsing under the weight of high energy costs. We need to change course – and that means putting all energy sources back on the table so that Australians can have the energy mix they deserve. Affordable, reliable, protecting Australia's unique natural heritage for generations to come.",
       "stats": [
         {
-          "value": "~39%",
-          "label": "rise in household electricity prices since net zero was adopted — despite a promised $275 cut.",
-          "source": "Page Research Centre, Delivering a High Energy Australia (Policy Paper 04, 2025)"
+          "value": "$1,367",
+          "label": "average energy debt now carried by Australian households who have fallen behind on their power bills.",
+          "source": "Australian Energy Regulator"
         },
         {
-          "value": "$800",
-          "label": "increase in average household power bills since 2022, against that same promised $275 cut.",
-          "source": "Page Research Centre / AER Default Market Offer (2025)"
+          "value": "220%",
+          "label": "rise in wholesale electricity prices across the National Electricity Market over the past decade.",
+          "source": "Australian Energy Regulator"
         },
         {
-          "value": "$2.4bn",
-          "label": "taxpayer bailout of the Whyalla steelworks (Feb 2025), with rising energy costs a key cause of its failure.",
-          "source": "Hilton, Z. & Stutchbury, M. — A Future No Longer Made in Australia (CIS Issue Analysis 154, 2025)"
+          "value": "84%",
+          "label": "of Australians want affordable, reliable energy put first in the nation's energy policy.",
+          "source": "Affordable Energy Australia"
         },
         {
-          "value": "7,000+",
-          "label": "direct heavy-industry jobs lost since 2020, with a further 73,000 at risk.",
-          "source": "Page Research Centre, Delivering a High Energy Australia (Policy Paper 04, 2025)"
+          "value": "1 in 5",
+          "label": "Australian households is struggling to pay their power bills — forced to choose between the lights and the grocery shop.",
+          "source": "Affordable Energy Australia"
         }
       ]
     },
