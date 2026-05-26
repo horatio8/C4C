@@ -1,94 +1,145 @@
 #!/usr/bin/env node
-// Generates content.js, robots.txt, sitemap.xml at the project root.
-// Runs at deploy time on Vercel (via vercel.json buildCommand) and any
-// time content.json changes locally.
+// Build step: emits content.js, media.json, robots.txt, sitemap.xml at the
+// project root. Also imports remote images (team photos, media featured
+// images, logos) into /assets/imported/ and rewrites the *served* copies to
+// same-origin paths, so production never depends on a third-party host
+// (which broke when the old WordPress site hot-link-protected its images).
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const ROOT = path.resolve(__dirname, '..');
 const CONTENT_PATH = path.join(ROOT, 'content', 'content.json');
+const MEDIA_SRC = path.join(ROOT, 'content', 'media.json');
+const IMPORT_DIR = path.join(ROOT, 'assets', 'imported');
+const BANNER_MANIFEST = path.join(__dirname, 'canva-banners.json');
+const BANNER_DIR = path.join(ROOT, 'assets', 'banners');
 
 function write(name, body) {
   fs.writeFileSync(path.join(ROOT, name), body);
   console.log(`build-static: wrote ${name} (${body.length} bytes)`);
 }
 
-const content = JSON.parse(fs.readFileSync(CONTENT_PATH, 'utf8'));
-write('content.js', 'window.CONTENT = ' + JSON.stringify(content) + ';\n');
+// --- Remote image import ---------------------------------------------------
+const IMG_RE = /https?:\/\/[^"'\s)]+\.(?:png|jpe?g|webp|gif)(?:\?[^"'\s)]*)?/gi;
 
-const MEDIA_SRC = path.join(ROOT, 'content', 'media.json');
-if (fs.existsSync(MEDIA_SRC)) {
-  const media = JSON.parse(fs.readFileSync(MEDIA_SRC, 'utf8'));
-  write('media.json', JSON.stringify(media));
+function collectUrls(...jsonStrings) {
+  const set = new Set();
+  for (const s of jsonStrings) {
+    const m = s.match(IMG_RE);
+    if (m) m.forEach(u => set.add(u));
+  }
+  return [...set];
 }
 
-const isPreview = process.env.VERCEL_ENV && process.env.VERCEL_ENV !== 'production';
-const baseUrl =
-  process.env.PUBLIC_URL ||
-  (content.site && content.site.url) ||
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '') ||
-  '';
-
-if (isPreview) {
-  write('robots.txt', 'User-agent: *\nDisallow: /\n');
-} else {
-  const sitemapLine = baseUrl ? `Sitemap: ${baseUrl}/sitemap.xml\n` : '';
-  write(
-    'robots.txt',
-    `User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /api/\n${sitemapLine}`
-  );
+function localNameFor(url) {
+  const ext = (url.split('?')[0].match(/\.(png|jpe?g|webp|gif)$/i) || ['.jpg'])[0].toLowerCase();
+  return crypto.createHash('sha1').update(url).digest('hex').slice(0, 16) + ext;
 }
 
-const routes = [
-  '/', '/about', '/work', '/campaigns', '/media-and-webinars', '/donate', '/contact',
-  '/issues/energy', '/issues/agriculture', '/issues/biodiversity',
-];
-const today = new Date().toISOString().slice(0, 10);
-const sitemap =
-  `<?xml version="1.0" encoding="UTF-8"?>\n` +
-  `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-  routes.map(r => `  <url><loc>${baseUrl}${r}</loc><lastmod>${today}</lastmod></url>`).join('\n') +
-  `\n</urlset>\n`;
-write('sitemap.xml', sitemap);
+async function importImages(urls) {
+  fs.mkdirSync(IMPORT_DIR, { recursive: true });
+  const map = {};
+  let fetched = 0, kept = 0, failed = 0;
+  for (const url of urls) {
+    const name = localNameFor(url);
+    const dest = path.join(IMPORT_DIR, name);
+    const localPath = '/assets/imported/' + name;
+    if (fs.existsSync(dest) && fs.statSync(dest).size > 0) {
+      map[url] = localPath; kept++; continue;
+    }
+    try {
+      // Send a same-host Referer to defeat referer-based hot-link protection.
+      let referer = '';
+      try { const u = new URL(url); referer = u.origin + '/'; } catch {}
+      const res = await fetch(url, {
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; C4C-Importer/1.0)', 'Referer': referer },
+        redirect: 'follow',
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const buf = Buffer.from(await res.arrayBuffer());
+      if (buf.length < 100) throw new Error('too small');
+      fs.writeFileSync(dest, buf);
+      map[url] = localPath; fetched++;
+    } catch (e) {
+      console.warn(`build-static: image import failed (${e.message}) ${url.slice(0, 80)}`);
+      failed++; // leave original URL in place as a fallback
+    }
+  }
+  console.log(`build-static: images — ${fetched} fetched, ${kept} kept, ${failed} failed`);
+  return map;
+}
 
-// --- Banner fetch ----------------------------------------------------------
-// scripts/canva-banners.json contains one-time Canva JPG export URLs per
-// banner filename. Vercel's build environment can reach the Canva CDN; the
-// repo doesn't track the bytes, so each deploy re-fetches anything missing
-// from /assets/banners/. Already-present files (e.g. committed permanent
-// artwork) win and aren't re-fetched.
-const BANNER_MANIFEST = path.join(__dirname, 'canva-banners.json');
-const BANNER_DIR = path.join(ROOT, 'assets', 'banners');
+function rewrite(jsonString, map) {
+  let out = jsonString;
+  for (const [orig, local] of Object.entries(map)) {
+    out = out.split(orig).join(local);
+  }
+  return out;
+}
 
+async function main() {
+  const contentStr = fs.readFileSync(CONTENT_PATH, 'utf8');
+  const mediaStr = fs.existsSync(MEDIA_SRC) ? fs.readFileSync(MEDIA_SRC, 'utf8') : '';
+
+  const urls = collectUrls(contentStr, mediaStr);
+  const map = await importImages(urls);
+
+  const content = JSON.parse(rewrite(contentStr, map));
+  write('content.js', 'window.CONTENT = ' + JSON.stringify(content) + ';\n');
+  if (mediaStr) {
+    write('media.json', JSON.stringify(JSON.parse(rewrite(mediaStr, map))));
+  }
+
+  const isPreview = process.env.VERCEL_ENV && process.env.VERCEL_ENV !== 'production';
+  const baseUrl =
+    process.env.PUBLIC_URL ||
+    (content.site && content.site.url) ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '') ||
+    '';
+
+  if (isPreview) {
+    write('robots.txt', 'User-agent: *\nDisallow: /\n');
+  } else {
+    const sitemapLine = baseUrl ? `Sitemap: ${baseUrl}/sitemap.xml\n` : '';
+    write('robots.txt', `User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /api/\n${sitemapLine}`);
+  }
+
+  const routes = [
+    '/', '/about', '/work', '/campaigns', '/media-and-webinars', '/donate', '/contact',
+    '/issues/energy', '/issues/agriculture', '/issues/biodiversity',
+  ];
+  const today = new Date().toISOString().slice(0, 10);
+  write('sitemap.xml',
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+    routes.map(r => `  <url><loc>${baseUrl}${r}</loc><lastmod>${today}</lastmod></url>`).join('\n') +
+    `\n</urlset>\n`);
+
+  await fetchBanners();
+}
+
+// --- Banner fetch (committed bytes win; manifest URLs are a fallback) -------
 async function fetchBanners() {
   if (!fs.existsSync(BANNER_MANIFEST)) return;
   fs.mkdirSync(BANNER_DIR, { recursive: true });
   const manifest = JSON.parse(fs.readFileSync(BANNER_MANIFEST, 'utf8'));
-  const banners = manifest.banners || [];
   let fetched = 0, kept = 0, failed = 0;
-  for (const b of banners) {
+  for (const b of (manifest.banners || [])) {
     const dest = path.join(BANNER_DIR, b.name);
-    if (fs.existsSync(dest) && fs.statSync(dest).size > 0) {
-      kept++;
-      continue;
-    }
+    if (fs.existsSync(dest) && fs.statSync(dest).size > 0) { kept++; continue; }
     try {
       const res = await fetch(b.url);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
       const buf = Buffer.from(await res.arrayBuffer());
       fs.writeFileSync(dest, buf);
-      console.log(`build-static: banner ${b.name} (${buf.length} bytes) ← page ${b.page}`);
       fetched++;
     } catch (e) {
-      console.warn(`build-static: banner ${b.name} fetch failed (${e.message}). Falling back to gradient.`);
+      console.warn(`build-static: banner ${b.name} fetch failed (${e.message}).`);
       failed++;
     }
   }
   console.log(`build-static: banners — ${fetched} fetched, ${kept} kept, ${failed} failed`);
 }
 
-fetchBanners().catch(e => {
-  console.error('build-static: banner fetch crashed:', e);
-  // Don't fail the build — the gradient placeholders still ship.
-});
+main().catch(e => { console.error('build-static failed:', e); process.exit(1); });
