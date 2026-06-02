@@ -498,33 +498,31 @@ function PartnerStrip() {
   const p = C().home.partners;
   return (
     <section style={{ background: 'var(--paper-warm)', borderTop: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)' }}>
-      <div className="container-wide" style={{ padding: '48px var(--gutter)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 56, flexWrap: 'wrap' }}>
-          <div className="eyebrow" style={{ flexShrink: 0 }}>{p.eyebrow}</div>
-          <div className="partner-row" style={{ display: 'flex', flex: 1, gap: 48, flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' }}>
-            {p.items.map((item, i) => {
-              const name = typeof item === 'string' ? item : item.name;
-              const logoUrl = typeof item === 'string' ? '' : (item.logoUrl || '');
-              if (logoUrl) {
-                return (
-                  <img
-                    key={name || i}
-                    src={logoUrl}
-                    alt={name}
-                    loading="lazy"
-                    decoding="async"
-                    style={{ height: 78, width: 'auto', maxWidth: 220, objectFit: 'contain' }}
-                  />
-                );
-              }
-              return (
-                <div key={name || i} className="display italic" style={{ fontSize: 18, color: 'var(--ink-2)', fontWeight: 400 }}>
-                  {name}
+      <div className="container-wide" style={{ padding: '56px var(--gutter)' }}>
+        <div className="eyebrow" style={{ marginBottom: 40 }}>{p.eyebrow}</div>
+        {(() => {
+          const top = p.items.slice(0, 4);
+          const bot = p.items.slice(4);
+          const renderItem = (item, i) => {
+            const name = typeof item === 'string' ? item : item.name;
+            const logoUrl = typeof item === 'string' ? '' : (item.logoUrl || '');
+            return logoUrl
+              ? <img key={name || i} src={logoUrl} alt={name} loading="lazy" decoding="async" style={{ height: 96, width: 'auto', maxWidth: '100%', objectFit: 'contain' }} />
+              : <div key={name || i} className="display italic" style={{ fontSize: 18, color: 'var(--ink-2)', fontWeight: 400 }}>{name}</div>;
+          };
+          return (
+            <div className="partner-grid" style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', columnGap: 56, alignItems: 'center', justifyItems: 'center' }}>
+                {top.map(renderItem)}
+              </div>
+              {bot.length > 0 && (
+                <div style={{ display: 'grid', gridTemplateColumns: `repeat(${bot.length}, minmax(0, 1fr))`, columnGap: 56, alignItems: 'center', justifyItems: 'center', maxWidth: bot.length === 3 ? '75%' : '100%', margin: '0 auto', width: '100%' }}>
+                  {bot.map(renderItem)}
                 </div>
-              );
-            })}
-          </div>
-        </div>
+              )}
+            </div>
+          );
+        })()}
       </div>
     </section>
   );

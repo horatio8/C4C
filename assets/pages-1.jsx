@@ -38,7 +38,7 @@ function AboutPage({ setPage }) {
         <div className="container-wide" style={{ paddingTop: 64 }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.6fr', gap: 96 }}>
             <div style={{ display: 'flex', flexDirection: 'column', minHeight: 200 }}>
-              {C().site.iconUrl && <img src={C().site.iconUrl} alt="" aria-hidden="true" style={{ height: 84, width: 'auto', display: 'block' }} />}
+              {C().site.iconUrl && <img src={C().site.iconUrl} alt="" aria-hidden="true" style={{ height: 96, width: 96, objectFit: 'contain', display: 'block' }} />}
               <div style={{ marginTop: 'auto', textAlign: 'right' }}>
                 <Eyebrow ochre>{a.story.eyebrow}</Eyebrow>
               </div>
@@ -94,7 +94,9 @@ function AboutPage({ setPage }) {
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32 }}>
                     {group.members.map(t => (
                       <div key={t.name}>
-                        <Photo kind={t.kind || 'portrait'} src={t.photoUrl} alt={t.name} height={300} label={t.tag || ''} />
+                        <div style={{ aspectRatio: '1 / 1', position: 'relative', overflow: 'hidden' }}>
+                          <Photo kind={t.kind || 'portrait'} src={t.photoUrl} alt={t.name} height="100%" label={t.tag || ''} imgPosition="center 25%" />
+                        </div>
                         <div style={{ paddingTop: 20 }}>
                           <h4 className="display" style={{ fontSize: 22, fontWeight: 400, lineHeight: 1.1 }}>{t.name}</h4>
                           {t.role && <div className="mono" style={{ fontSize: 11, letterSpacing: '0.1em', color: 'var(--ink-3)', textTransform: 'uppercase', marginTop: 6 }}>{t.role}</div>}
@@ -259,8 +261,8 @@ function IssuePage({ slug, setPage }) {
       <section style={{ position: 'relative' }}>
         <Photo kind={a.kind} src={a.photoUrl} alt="" eager height={620} label={a.title} credit="">
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(20,17,11,0.2) 0%, rgba(20,17,11,0.75) 100%)', zIndex: 2 }} />
-          <div className="container-wide" style={{ position: 'relative', zIndex: 4, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '0 var(--gutter) 80px' }}>
-            <div style={{ display: 'flex', gap: 12, alignItems: 'center', fontSize: 13, color: 'rgba(236,225,200,0.7)', marginBottom: 32 }}>
+          <div className="container-wide" style={{ position: 'relative', zIndex: 4, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '0 var(--gutter) 120px' }}>
+            <div style={{ display: 'flex', gap: 12, alignItems: 'center', fontSize: 13, color: 'rgba(236,225,200,0.7)', marginBottom: 48 }}>
               <a href="/work" onClick={(e) => { e.preventDefault(); setPage('work'); }} style={{ cursor: 'pointer', borderBottom: '1px solid rgba(236,225,200,0.3)', color: 'inherit', textDecoration: 'none' }}>What we do</a>
               <span aria-hidden="true">/</span>
               <span>{a.title}</span>

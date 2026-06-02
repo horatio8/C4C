@@ -678,7 +678,7 @@ function MediaPage({ setPage }) {
       </section>
 
       {m.intro && (
-        <section className="section" style={{ paddingTop: 48, paddingBottom: 0 }}>
+        <section className="section" style={{ paddingTop: 48, paddingBottom: 56 }}>
           <div className="container-wide">
             <p className="lead" style={{ maxWidth: 800 }}>{m.intro}</p>
           </div>
