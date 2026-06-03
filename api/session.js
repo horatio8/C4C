@@ -1,6 +1,7 @@
-// Vercel deploys are stateless — admin auth requires a Node-hosted backend
-// (see README). Always reports unauthenticated so the admin UI shows the
-// login screen rather than a half-broken editor.
+const { sessionFromReq } = require('../lib/auth');
+
 module.exports = (req, res) => {
-  return res.status(200).json({ admin: false });
+  const sess = sessionFromReq(req);
+  if (!sess || !sess.sub) return res.status(200).json({ admin: false });
+  return res.status(200).json({ admin: true, username: sess.sub });
 };

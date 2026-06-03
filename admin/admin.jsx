@@ -135,11 +135,69 @@ function ObjectField({ value, onChange }) {
   );
 }
 
+const IMAGE_KEY_RE = /(photoUrl|logoUrl|imageUrl|iconUrl|founderPhotoUrl|ogImage|featuredImage)$/i;
+
+function isImageKey(k) { return typeof k === 'string' && IMAGE_KEY_RE.test(k); }
+
+function ImageField({ value, onChange }) {
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState('');
+  const onFile = async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    setBusy(true); setErr('');
+    try {
+      const buf = await file.arrayBuffer();
+      // base64 from bytes (chunked to avoid call-stack issues on large files)
+      const bytes = new Uint8Array(buf);
+      let bin = '';
+      const CHUNK = 0x8000;
+      for (let i = 0; i < bytes.length; i += CHUNK) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK));
+      const b64 = btoa(bin);
+      const r = await fetch('/api/admin/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename: file.name, contentBase64: b64 }),
+      });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) { setErr(j.error || `Upload failed (${r.status})`); return; }
+      onChange(j.url);
+    } catch (ex) {
+      setErr(String(ex && ex.message || ex));
+    } finally {
+      setBusy(false);
+      if (e.target) e.target.value = '';
+    }
+  };
+  return (
+    <div className="image-field">
+      <div className="image-row">
+        {value
+          ? <img className="image-preview" src={value} alt="" />
+          : <div className="image-preview image-preview-empty">no image</div>}
+        <div className="image-controls">
+          <input type="text" value={value || ''} onChange={e => onChange(e.target.value)} placeholder="/assets/imported/… or https://…" />
+          <div className="image-actions">
+            <label className="btn btn-sm">
+              {busy ? 'Uploading…' : 'Upload…'}
+              <input type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" onChange={onFile} disabled={busy} style={{ display: 'none' }} />
+            </label>
+            {value && <button type="button" className="btn btn-sm btn-ghost" onClick={() => onChange('')}>Clear</button>}
+          </div>
+          {err && <div className="err">{err}</div>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Field({ value, onChange, parentKey, hideLabel }) {
   if (value === null || value === undefined) {
+    if (isImageKey(parentKey)) return <ImageField value="" onChange={onChange} />;
     return <input type="text" value="" onChange={e => onChange(e.target.value)} />;
   }
   if (typeof value === 'string') {
+    if (isImageKey(parentKey)) return <ImageField value={value} onChange={onChange} />;
     return <StringField value={value} onChange={onChange} />;
   }
   if (typeof value === 'number') {
@@ -298,10 +356,7 @@ function MediaItemForm({ value, onSave, onCancel }) {
           </div>
           <div className="field">
             <label className="field-label">Image URL</label>
-            <input type="url" value={item.imageUrl || ''} onChange={e => update('imageUrl', e.target.value)} placeholder="https://…" />
-            {item.imageUrl && (
-              <img src={item.imageUrl} alt="" style={{ marginTop: 8, maxWidth: 240, maxHeight: 140, objectFit: 'cover', border: '1px solid #e2e2dd', borderRadius: 4 }} />
-            )}
+            <ImageField value={item.imageUrl || ''} onChange={v => update('imageUrl', v)} />
           </div>
           <div className="field">
             <label className="field-label">Excerpt</label>

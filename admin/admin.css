@@ -412,3 +412,38 @@ input:focus, textarea:focus, select:focus {
   .form-row { grid-template-columns: 1fr; }
   .modal { max-height: 100vh; border-radius: 0; }
 }
+
+/* Image field — upload + preview combo */
+.image-field { display: block; }
+.image-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+.image-preview {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border: 1px solid #d5d5cf;
+  border-radius: 6px;
+  background: #fafaf7;
+  display: block;
+}
+.image-preview-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.image-controls { display: flex; flex-direction: column; gap: 8px; }
+.image-actions { display: flex; gap: 8px; }
+.btn.btn-sm { padding: 6px 12px; font-size: 13px; }
+.btn.btn-ghost { background: transparent; color: var(--ink, #111); border: 1px solid #d5d5cf; }
+@media (max-width: 600px) {
+  .image-row { grid-template-columns: 1fr; }
+  .image-preview { width: 100%; height: 200px; }
+}
