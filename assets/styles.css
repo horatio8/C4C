@@ -742,3 +742,13 @@ textarea:invalid:not(:placeholder-shown):focus {
     scroll-behavior: auto !important;
   }
 }
+
+/* === Nav text colour override — TEMP. Delete this block to revert. === */
+.nav-link,
+.nav-link:hover,
+.nav-link.active,
+.nav-drawer .nav-link {
+  color: #d22 !important;
+}
+.nav-link.active::after { background: #d22 !important; }
+/* === end nav colour override === */
