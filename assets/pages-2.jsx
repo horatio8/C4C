@@ -483,24 +483,48 @@ function ContactPage() {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState('');
 
+  // Map our topic labels to the Nucleus form's `type` field values.
+  const TOPIC_TO_TYPE = {
+    'General enquiry': 'general',
+    'Press & media': 'Press',
+    'Partnerships': 'Partnerships',
+    'Donations & giving': 'Donations',
+    'Speaking & events': 'speaking',
+    'Other': 'Other',
+  };
+
   async function submit(e) {
     e.preventDefault();
     setBusy(true);
     setErr('');
     const fd = new FormData(e.currentTarget);
-    const ok = await postJson('/api/contact', {
-      topic,
-      first_name: fd.get('first_name'),
-      last_name: fd.get('last_name'),
-      email: fd.get('email'),
-      org: fd.get('org'),
-      subject: fd.get('subject'),
-      message: fd.get('message'),
-      consent: !!fd.get('consent'),
-    });
-    setBusy(false);
-    if (ok) setSent(true);
-    else setErr('Submission failed. Please try again.');
+    const payload = {
+      first_name: fd.get('first_name') || '',
+      last_name: fd.get('last_name') || '',
+      email: fd.get('email') || '',
+      organisation: fd.get('organisation') || '',
+      subject: fd.get('subject') || '',
+      message: fd.get('message') || '',
+      type: TOPIC_TO_TYPE[topic] || topic,
+    };
+    try {
+      const r = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!r.ok) {
+        let detail = '';
+        try { const j = await r.json(); detail = j && (j.message || j.error || '') || ''; } catch {}
+        setErr(detail || `Submission failed (HTTP ${r.status}). Please try again.`);
+      } else {
+        setSent(true);
+      }
+    } catch (ex) {
+      setErr('Network error — please try again.');
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -544,7 +568,7 @@ function ContactPage() {
                 <button type="button" onClick={() => setSent(false)} className="btn btn-outline" style={{ marginTop: 40 }}>{c.thanks.ctaLabel}</button>
               </div>
             ) : (
-              <form onSubmit={submit} method="post" action="/api/contact" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, padding: 56, border: '1px solid var(--ink)', background: 'var(--bone)' }}>
+              <form onSubmit={submit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, padding: 56, border: '1px solid var(--ink)', background: 'var(--bone)' }}>
                 <div style={{ gridColumn: '1 / -1' }}>
                   <span className="label">What's this about?</span>
                   <div role="radiogroup" aria-label="Topic" style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 8 }}>
@@ -586,7 +610,7 @@ function ContactPage() {
                 </div>
                 <div>
                   <label htmlFor="ct_org" className="label">Organisation (optional)</label>
-                  <input id="ct_org" name="org" type="text" autoComplete="organization" placeholder=" " className="input" />
+                  <input id="ct_org" name="organisation" type="text" autoComplete="organization" placeholder=" " className="input" />
                 </div>
                 <div style={{ gridColumn: '1 / -1' }}>
                   <label htmlFor="ct_subject" className="label">Subject</label>
