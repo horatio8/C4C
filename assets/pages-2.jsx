@@ -166,15 +166,15 @@ function AEAPage({ setPage }) {
                 <div className="mono" style={{ fontSize: 11, letterSpacing: '0.14em', color: '#0A1F44', marginBottom: 32 }}>{a.petition.formTitle}</div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
                   <div>
-                    <label htmlFor="aea_first" className="label">First name</label>
+                    <label htmlFor="aea_first" className="label">First name <span aria-hidden="true" style={{ color: '#c44' }}>*</span></label>
                     <input id="aea_first" name="first_name" type="text" autoComplete="given-name" required placeholder=" " className="input" />
                   </div>
                   <div>
-                    <label htmlFor="aea_last" className="label">Last name</label>
+                    <label htmlFor="aea_last" className="label">Last name <span aria-hidden="true" style={{ color: '#c44' }}>*</span></label>
                     <input id="aea_last" name="last_name" type="text" autoComplete="family-name" required placeholder=" " className="input" />
                   </div>
                   <div style={{ gridColumn: '1 / -1' }}>
-                    <label htmlFor="aea_email" className="label">Email</label>
+                    <label htmlFor="aea_email" className="label">Email <span aria-hidden="true" style={{ color: '#c44' }}>*</span></label>
                     <input id="aea_email" name="email" type="email" autoComplete="email" required placeholder=" " className="input" />
                   </div>
                   <div>
@@ -414,19 +414,19 @@ function DonatePage() {
                 <Eyebrow ochre>Your details</Eyebrow>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginTop: 24 }}>
                   <div>
-                    <label htmlFor="don_first" className="label">First name</label>
+                    <label htmlFor="don_first" className="label">First name <span aria-hidden="true" style={{ color: '#c44' }}>*</span></label>
                     <input id="don_first" name="first_name" type="text" autoComplete="given-name" required placeholder=" " className="input" />
                   </div>
                   <div>
-                    <label htmlFor="don_last" className="label">Last name</label>
+                    <label htmlFor="don_last" className="label">Last name <span aria-hidden="true" style={{ color: '#c44' }}>*</span></label>
                     <input id="don_last" name="last_name" type="text" autoComplete="family-name" required placeholder=" " className="input" />
                   </div>
                   <div style={{ gridColumn: '1 / -1' }}>
-                    <label htmlFor="don_email" className="label">Email</label>
+                    <label htmlFor="don_email" className="label">Email <span aria-hidden="true" style={{ color: '#c44' }}>*</span></label>
                     <input id="don_email" name="email" type="email" autoComplete="email" required placeholder=" " className="input" />
                   </div>
                   <div>
-                    <label htmlFor="don_post" className="label">Postcode</label>
+                    <label htmlFor="don_post" className="label">Postcode <span aria-hidden="true" style={{ color: '#c44' }}>*</span></label>
                     <input id="don_post" name="postcode" type="text" inputMode="numeric" pattern="[0-9]{4}" autoComplete="postal-code" required placeholder=" " className="input" />
                   </div>
                   <div>
@@ -615,15 +615,15 @@ function ContactPage() {
                   <input type="hidden" name="topic" value={topic} />
                 </div>
                 <div>
-                  <label htmlFor="ct_first" className="label">First name</label>
+                  <label htmlFor="ct_first" className="label">First name <span aria-hidden="true" style={{ color: '#c44' }}>*</span></label>
                   <input id="ct_first" name="first_name" type="text" autoComplete="given-name" required placeholder=" " className="input" />
                 </div>
                 <div>
-                  <label htmlFor="ct_last" className="label">Last name</label>
+                  <label htmlFor="ct_last" className="label">Last name <span aria-hidden="true" style={{ color: '#c44' }}>*</span></label>
                   <input id="ct_last" name="last_name" type="text" autoComplete="family-name" required placeholder=" " className="input" />
                 </div>
                 <div>
-                  <label htmlFor="ct_email" className="label">Email</label>
+                  <label htmlFor="ct_email" className="label">Email <span aria-hidden="true" style={{ color: '#c44' }}>*</span></label>
                   <input id="ct_email" name="email" type="email" autoComplete="email" required placeholder=" " className="input" />
                 </div>
                 <div>
@@ -631,11 +631,11 @@ function ContactPage() {
                   <input id="ct_org" name="organisation" type="text" autoComplete="organization" placeholder=" " className="input" />
                 </div>
                 <div style={{ gridColumn: '1 / -1' }}>
-                  <label htmlFor="ct_subject" className="label">Subject</label>
+                  <label htmlFor="ct_subject" className="label">Subject <span aria-hidden="true" style={{ color: '#c44' }}>*</span></label>
                   <input id="ct_subject" name="subject" type="text" required placeholder=" " className="input" />
                 </div>
                 <div style={{ gridColumn: '1 / -1' }}>
-                  <label htmlFor="ct_msg" className="label">Your message</label>
+                  <label htmlFor="ct_msg" className="label">Your message <span aria-hidden="true" style={{ color: '#c44' }}>*</span></label>
                   <textarea id="ct_msg" name="message" rows={6} required placeholder=" " className="input" style={{ resize: 'vertical', minHeight: 140, lineHeight: 1.5, paddingTop: 14 }} />
                 </div>
                 <label style={{ gridColumn: '1 / -1', display: 'flex', gap: 12, alignItems: 'flex-start', fontSize: 13, color: 'var(--ink-3)' }}>

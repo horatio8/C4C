@@ -194,16 +194,29 @@ function BriefingForm({ topic, submitLabel }) {
     setBusy(true);
     setErr('');
     const fd = new FormData(e.currentTarget);
-    const ok = await postJson('/api/newsletter', {
-      topic,
-      first_name: fd.get('first_name'),
-      last_name: fd.get('last_name'),
-      email: fd.get('email'),
-      postcode: fd.get('postcode'),
-    });
-    setBusy(false);
-    if (ok) setSent(true);
-    else setErr('Something went wrong. Please try again.');
+    try {
+      const r = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          first_name: fd.get('first_name') || '',
+          last_name: fd.get('last_name') || '',
+          email: fd.get('email') || '',
+          postcode: fd.get('postcode') || '',
+        }),
+      });
+      if (!r.ok) {
+        let detail = '';
+        try { const j = await r.json(); detail = j && (j.message || j.error || '') || ''; } catch {}
+        setErr(detail || `Submission failed (HTTP ${r.status}). Please try again.`);
+      } else {
+        setSent(true);
+      }
+    } catch (ex) {
+      setErr('Network error — please try again.');
+    } finally {
+      setBusy(false);
+    }
   }
 
   if (sent) {
@@ -218,15 +231,15 @@ function BriefingForm({ topic, submitLabel }) {
   return (
     <form onSubmit={submit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
       <div>
-        <label htmlFor="brief_first" className="label" style={{ color: 'rgba(236,225,200,0.6)' }}>First name</label>
+        <label htmlFor="brief_first" className="label" style={{ color: 'rgba(236,225,200,0.6)' }}>First name <span aria-hidden="true" style={{ color: '#c44' }}>*</span></label>
         <input id="brief_first" name="first_name" className="input" required placeholder=" " style={{ borderBottomColor: 'rgba(236,225,200,0.3)', color: 'var(--bone)' }} />
       </div>
       <div>
-        <label htmlFor="brief_last" className="label" style={{ color: 'rgba(236,225,200,0.6)' }}>Last name</label>
+        <label htmlFor="brief_last" className="label" style={{ color: 'rgba(236,225,200,0.6)' }}>Last name <span aria-hidden="true" style={{ color: '#c44' }}>*</span></label>
         <input id="brief_last" name="last_name" className="input" required placeholder=" " style={{ borderBottomColor: 'rgba(236,225,200,0.3)', color: 'var(--bone)' }} />
       </div>
       <div style={{ gridColumn: '1 / -1' }}>
-        <label htmlFor="brief_email" className="label" style={{ color: 'rgba(236,225,200,0.6)' }}>Email</label>
+        <label htmlFor="brief_email" className="label" style={{ color: 'rgba(236,225,200,0.6)' }}>Email <span aria-hidden="true" style={{ color: '#c44' }}>*</span></label>
         <input id="brief_email" name="email" type="email" autoComplete="email" className="input" required placeholder=" " style={{ borderBottomColor: 'rgba(236,225,200,0.3)', color: 'var(--bone)' }} />
       </div>
       <div style={{ gridColumn: '1 / -1' }}>
