@@ -19,17 +19,31 @@ function AEAPage({ setPage }) {
     setBusy(true);
     setErr('');
     const fd = new FormData(e.currentTarget);
-    const ok = await postJson('/api/petition', {
-      first_name: fd.get('first_name'),
-      last_name: fd.get('last_name'),
-      email: fd.get('email'),
-      postcode: fd.get('postcode'),
-      mobile: fd.get('mobile'),
-      consent: !!fd.get('consent'),
-    });
-    setBusy(false);
-    if (ok) setSigned(true);
-    else setErr('Submission failed. Please try again.');
+    try {
+      const r = await fetch('/api/petition', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          first_name: fd.get('first_name') || '',
+          last_name: fd.get('last_name') || '',
+          email: fd.get('email') || '',
+          phone: fd.get('phone') || '',
+          postcode: fd.get('postcode') || '',
+          whysigned: fd.get('whysigned') || '',
+        }),
+      });
+      if (!r.ok) {
+        let detail = '';
+        try { const j = await r.json(); detail = j && (j.message || j.error || '') || ''; } catch {}
+        setErr(detail || `Submission failed (HTTP ${r.status}). Please try again.`);
+      } else {
+        setSigned(true);
+      }
+    } catch (ex) {
+      setErr('Network error — please try again.');
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -168,8 +182,12 @@ function AEAPage({ setPage }) {
                     <input id="aea_postcode" name="postcode" type="text" inputMode="numeric" pattern="[0-9]{4}" autoComplete="postal-code" placeholder=" " className="input" />
                   </div>
                   <div>
-                    <label htmlFor="aea_mobile" className="label">Mobile (optional)</label>
-                    <input id="aea_mobile" name="mobile" type="tel" autoComplete="tel" placeholder=" " className="input" />
+                    <label htmlFor="aea_phone" className="label">Phone (optional)</label>
+                    <input id="aea_phone" name="phone" type="tel" autoComplete="tel" placeholder=" " className="input" />
+                  </div>
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <label htmlFor="aea_whysigned" className="label">Why I signed (optional)</label>
+                    <textarea id="aea_whysigned" name="whysigned" rows={4} placeholder=" " className="input" style={{ resize: 'vertical', minHeight: 96, lineHeight: 1.5, paddingTop: 14 }} />
                   </div>
                   <label style={{ gridColumn: '1 / -1', display: 'flex', gap: 12, alignItems: 'flex-start', fontSize: 13, color: 'var(--ink-3)', marginTop: 16 }}>
                     <input type="checkbox" name="consent" value="yes" defaultChecked style={{ marginTop: 4 }} /> {a.petition.consent}
