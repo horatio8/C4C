@@ -627,6 +627,11 @@ textarea:invalid:not(:placeholder-shown):focus {
   .container-wide { max-width: 100%; }
   .h-display { font-size: clamp(56px, 9vw, 96px); }
 
+  /* Collapse the menu into a hamburger before the links start overlapping
+     the wordmark. */
+  .nav-links { display: none; }
+  .nav-toggle { display: inline-flex; }
+
   /* Two-column splits stay two-column on tablet but the headlines need room. */
   [style*="grid-template-columns: '1fr 1.6fr'"],
   [style*="grid-template-columns: '1.4fr 1fr'"],
@@ -638,8 +643,6 @@ textarea:invalid:not(:placeholder-shown):focus {
 /* mobile */
 @media (max-width: 800px) {
   :root { --gutter: 20px; }
-  .nav-links { display: none; }
-  .nav-toggle { display: inline-flex; }
   .nav img { height: 34px !important; width: auto !important; max-width: none !important; }
   .aea-stat-grid { grid-template-columns: repeat(2, 1fr) !important; }
   /* Flagship AEA logo panel: don't reserve a 560px-tall empty box on phones. */
