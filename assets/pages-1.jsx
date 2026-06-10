@@ -94,7 +94,7 @@ function AboutPage({ setPage }) {
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32 }}>
                     {group.members.map(t => (
                       <div key={t.name}>
-                        <div className="team-headshot" style={{ aspectRatio: '1 / 1', position: 'relative', overflow: 'hidden' }}>
+                        <div className="team-headshot" style={{ aspectRatio: '1 / 1', position: 'relative', overflow: 'hidden', borderRadius: '50%' }}>
                           <Photo kind={t.kind || 'portrait'} src={t.photoUrl} alt={t.name} height="100%" label={t.tag || ''} imgPosition="center 25%" />
                         </div>
                         <div style={{ paddingTop: 20 }}>

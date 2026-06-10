@@ -316,7 +316,7 @@
           "title": "Our Executive",
           "members": [
             {
-              "photoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2026/03/3.png",
+              "photoUrl": "/assets/team/01-zoe-hilton.jpg",
               "name": "Zoe Hilton",
               "role": "",
               "bio": "Zoe Hilton is a policy analyst and media commentator with a background in energy policy, government and environmental research.",
@@ -328,49 +328,49 @@
           "title": "Our Board",
           "members": [
             {
-              "photoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/larry-anthony.png",
+              "photoUrl": "/assets/team/02-hon-larry-anthony-ao.jpg",
               "name": "Hon. Larry Anthony AO",
               "role": "",
               "bio": "Larry Anthony is the former Federal President of the Australian National Party and founding Director of the Government Relations and Media Advisory, SAS Group.",
               "kind": "portrait"
             },
             {
-              "photoUrl": "https://media.muckrack.com/profile/images/8568572/cristina-talacko.jpeg.256x256_q100_crop-smart.jpg",
+              "photoUrl": "/assets/team/03-cristina-talacko.jpg",
               "role": "",
               "bio": "Cristina has more than 20 years of experience in executive boards and management of not-for-profit associations.",
               "kind": "portrait",
               "name": "Cristina Talacko"
             },
             {
-              "photoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/Ellipse-28.png",
+              "photoUrl": "/assets/team/04-david-nixon.jpg",
               "name": "David Nixon",
               "role": "",
               "bio": "David is a Company Director, Board and Executive Advisor with 35 years of experience across multinationals, utilities, councils, and small businesses.",
               "kind": "portrait"
             },
             {
-              "photoUrl": "https://media.licdn.com/dms/image/v2/D5603AQH_uSlMsCnZjA/profile-displayphoto-shrink_800_800/B56ZPOUDRvGkAc-/0/1734333183683?e=1781740800&v=beta&t=UChXoDh84dP5n8OhYmUWt706zsFHinqzbqgQUGjnYlQ",
+              "photoUrl": "/assets/team/05-dorian-von-freyhold.jpg",
               "role": "",
               "bio": "Dorian von Freyhold is a corporate strategist with experience across energy, infrastructure, and complex investment environments.",
               "kind": "portrait",
               "name": "Dr Dorian von Freyhold"
             },
             {
-              "photoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/kerry-chikarovski.png",
+              "photoUrl": "/assets/team/06-kerry-chikarovski.jpg",
               "name": "Kerry Chikarovski",
               "role": "",
               "bio": "Kerry Chikarovski is a former NSW Liberal Leader and the first woman to lead a major political party in New South Wales.",
               "kind": "portrait"
             },
             {
-              "photoUrl": "https://media.licdn.com/dms/image/v2/D5603AQFSRT0B-0cUvQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1693564699374?e=1781740800&v=beta&t=gXYBvRjoR0Yxm84upjFsYk_Q3sfOg-FDTvD84JHt8eE",
+              "photoUrl": "/assets/team/07-sarah-lawley.jpg",
               "role": "",
               "bio": "Sarah is an experienced energy industry professional with over 20 years of experience.",
               "kind": "portrait",
               "name": "Sarah Lawley"
             },
             {
-              "photoUrl": "https://media.theaustralian.com.au/authors/images/bio/patrick_gibbons2.png",
+              "photoUrl": "/assets/team/08-patrick-gibbons.jpg",
               "name": "Patrick Gibbons",
               "role": "",
               "bio": "Patrick is a partner at Orizontas Group and a former diplomat, policy advisor, and business consultant.",
@@ -382,14 +382,14 @@
           "title": "Our Patrons",
           "members": [
             {
-              "photoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/david-paradice.png",
+              "photoUrl": "/assets/team/09-david-paradice-ao.jpg",
               "name": "David Paradice AO",
               "role": "",
               "bio": "",
               "kind": "portrait"
             },
             {
-              "photoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/trevor-st-baker.png",
+              "photoUrl": "/assets/team/10-trevor-st-baker-patron.jpg",
               "name": "Trevor St. Baker",
               "role": "",
               "bio": "",
@@ -401,63 +401,63 @@
           "title": "Our Ambassadors",
           "members": [
             {
-              "photoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/Ellipse-27-10.png",
+              "photoUrl": "/assets/team/11-hon-robyn-parker.jpg",
               "name": "Hon. Robyn Parker",
               "role": "",
               "bio": "",
               "kind": "portrait"
             },
             {
-              "photoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/nick-greiner-2.png",
+              "photoUrl": "/assets/team/12-hon-nick-greiner-ac.jpg",
               "name": "Hon. Nick Greiner AC",
               "role": "",
               "bio": "",
               "kind": "portrait"
             },
             {
-              "photoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/Ellipse-27-7.png",
+              "photoUrl": "/assets/team/13-hon-philip-ruddock-ao.jpg",
               "name": "Hon. Philip Ruddock AO",
               "role": "",
               "bio": "",
               "kind": "portrait"
             },
             {
-              "photoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/robert-hill.png",
+              "photoUrl": "/assets/team/14-hon-robert-hill-ac.jpg",
               "name": "Hon. Robert Hill AC",
               "role": "",
               "bio": "",
               "kind": "portrait"
             },
             {
-              "photoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/Ellipse-27-9.png",
+              "photoUrl": "/assets/team/15-hon-arthur-sinodinos-ao.jpg",
               "name": "Hon. Arthur Sinodinos AO",
               "role": "",
               "bio": "",
               "kind": "portrait"
             },
             {
-              "photoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/Ellipse-27-8.png",
+              "photoUrl": "/assets/team/16-chris-mcdiven-am.jpg",
               "name": "Chris McDiven AM",
               "role": "",
               "bio": "",
               "kind": "portrait"
             },
             {
-              "photoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/Ellipse-27-11.png",
+              "photoUrl": "/assets/team/17-ian-carson-am.jpg",
               "name": "Ian Carson AM",
               "role": "",
               "bio": "",
               "kind": "portrait"
             },
             {
-              "photoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/Ellipse-27-12.png",
+              "photoUrl": "/assets/team/18-hon-damian-drum-mp.jpg",
               "name": "Hon. Damian Drum MP",
               "role": "",
               "bio": "",
               "kind": "portrait"
             },
             {
-              "photoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/Ellipse-27-13.png",
+              "photoUrl": "/assets/team/19-craig-chung.jpg",
               "name": "Craig Chung",
               "role": "",
               "bio": "",
@@ -469,28 +469,28 @@
           "title": "Our Advisory Committee",
           "members": [
             {
-              "photoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/trevor-st-baker.png",
+              "photoUrl": "/assets/team/20-trevor-st-baker-advisory.jpg",
               "name": "Trevor St Baker AO",
               "role": "",
               "bio": "",
               "kind": "portrait"
             },
             {
-              "photoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/tamahara-kierath.png",
+              "photoUrl": "/assets/team/21-tamahra-kierath.jpg",
               "name": "Tamahra Kierath",
               "role": "",
               "bio": "",
               "kind": "portrait"
             },
             {
-              "photoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/cameron-kelly.png",
+              "photoUrl": "/assets/team/22-dr-cameron-kelly.jpg",
               "name": "Dr. Cameron Kelly",
               "role": "",
               "bio": "",
               "kind": "portrait"
             },
             {
-              "photoUrl": "https://coalitionforconservation.com.au/wp-content/uploads/2024/06/brad-holzberger.png",
+              "photoUrl": "/assets/team/23-brad-holzberger.jpg",
               "name": "Brad Holzberger",
               "role": "",
               "bio": "",
