@@ -38,7 +38,7 @@ function AboutPage({ setPage }) {
         <div className="container-wide" style={{ paddingTop: 64 }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.6fr', gap: 96 }}>
             <div style={{ display: 'flex', flexDirection: 'column', minHeight: 200 }}>
-              {C().site.iconUrl && <img src={C().site.iconUrl} alt="" aria-hidden="true" style={{ height: 96, width: 96, objectFit: 'contain', display: 'block' }} />}
+              {C().site.iconUrl && <img src={C().site.iconUrl} alt="" aria-hidden="true" style={{ height: 200, width: 200, objectFit: 'contain', display: 'block' }} />}
               <div style={{ marginTop: 'auto', textAlign: 'right' }}>
                 <Eyebrow ochre>{a.story.eyebrow}</Eyebrow>
               </div>
@@ -94,7 +94,7 @@ function AboutPage({ setPage }) {
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32 }}>
                     {group.members.map(t => (
                       <div key={t.name}>
-                        <div style={{ aspectRatio: '1 / 1', position: 'relative', overflow: 'hidden' }}>
+                        <div className="team-headshot" style={{ aspectRatio: '1 / 1', position: 'relative', overflow: 'hidden' }}>
                           <Photo kind={t.kind || 'portrait'} src={t.photoUrl} alt={t.name} height="100%" label={t.tag || ''} imgPosition="center 25%" />
                         </div>
                         <div style={{ paddingTop: 20 }}>
