@@ -581,7 +581,7 @@ function ContactPage() {
                   {c.thanks.title}
                 </div>
                 <p className="lead" style={{ marginTop: 24, maxWidth: 480 }}>
-                  {c.thanks.body} <span className="mono" style={{ background: 'var(--ink)', color: 'var(--bone)', padding: '2px 8px', fontSize: 13 }}>{c.thanks.urgentLabel}</span>.
+                  {c.thanks.body}
                 </p>
                 <button type="button" onClick={() => setSent(false)} className="btn btn-outline" style={{ marginTop: 40 }}>{c.thanks.ctaLabel}</button>
               </div>
@@ -638,9 +638,6 @@ function ContactPage() {
                   <label htmlFor="ct_msg" className="label">Your message <span aria-hidden="true" style={{ color: '#c44' }}>*</span></label>
                   <textarea id="ct_msg" name="message" rows={6} required placeholder=" " className="input" style={{ resize: 'vertical', minHeight: 140, lineHeight: 1.5, paddingTop: 14 }} />
                 </div>
-                <label style={{ gridColumn: '1 / -1', display: 'flex', gap: 12, alignItems: 'flex-start', fontSize: 13, color: 'var(--ink-3)' }}>
-                  <input type="checkbox" name="consent" value="yes" style={{ marginTop: 4 }} /> {c.consent}
-                </label>
                 {err && <div style={{ gridColumn: '1 / -1', color: '#9a1f1f', fontSize: 13 }}>{err}</div>}
                 <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 16, borderTop: '1px solid var(--rule)' }}>
                   <span className="mono small" style={{ color: 'var(--ink-3)' }}>

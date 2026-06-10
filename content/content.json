@@ -831,8 +831,8 @@
     "thanks": {
       "eyebrow": "Received",
       "title": "Thank you.",
-      "body": "Your message is on its way to the right person at C4C. Expect a reply within two business days. If it's urgent, mark your subject line with",
-      "urgentLabel": "URGENT",
+      "body": "Your message is on its way to the right person at C4C. Expect a reply within two business days.",
+      "urgentLabel": "",
       "ctaLabel": "Send another message"
     }
   },
