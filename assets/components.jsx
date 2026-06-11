@@ -613,6 +613,27 @@ function DonateBand({ setPage }) {
   );
 }
 
+function HomeBriefing() {
+  const b = (C().work && C().work.briefing) || null;
+  if (!b) return null;
+  return (
+    <section className="section umber-bg">
+      <div className="container-wide">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 96, alignItems: 'flex-start' }}>
+          <div>
+            <Eyebrow dark>{b.eyebrow}</Eyebrow>
+            <h2 className="h-1 display" style={{ marginTop: 24, color: 'var(--bone)' }}>
+              {b.headlinePre}<span className="italic" style={{ color: '#e6c97a' }}>{b.headlineItalic}</span>{b.headlinePost}
+            </h2>
+            {b.lead && <p className="lead" style={{ color: 'rgba(236,225,200,0.78)', marginTop: 24 }}>{b.lead}</p>}
+          </div>
+          <BriefingForm topic="C4C" submitLabel={b.submitLabel || 'Subscribe'} />
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function HomePage({ setPage }) {
   return (
     <React.Fragment>
@@ -620,6 +641,7 @@ function HomePage({ setPage }) {
       <PartnerStrip />
       <MissionStatement setPage={setPage} />
       <FlagshipCampaign setPage={setPage} />
+      <HomeBriefing />
       <IssueAreas setPage={setPage} />
       <PressBand setPage={setPage} />
       <DonateBand setPage={setPage} />
