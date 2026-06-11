@@ -34,12 +34,14 @@ module.exports = async (req, res) => {
   if (!payload.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) return res.status(400).json({ error: 'valid email required' });
 
   // 1. Campaign Nucleus — awaited. Failure here returns a 502 to the donor.
-  const nucleusPayload = { ...payload, tags: ['C4CWebsite'] };
+  // Note: don't send `tags` here — Nucleus form receivers can 500 on
+  // unrecognised top-level keys. Use the Field Tagging tab on the Nucleus
+  // form to auto-apply tags to every submission instead.
   try {
     const r = await fetch(NUCLEUS_RECEIVER, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'User-Agent': 'C4C-Site/1.0' },
-      body: JSON.stringify(nucleusPayload),
+      body: JSON.stringify(payload),
     });
     const text = await r.text();
     if (!r.ok) {

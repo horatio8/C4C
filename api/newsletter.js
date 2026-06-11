@@ -29,8 +29,9 @@ module.exports = async (req, res) => {
   if (!payload.last_name) return res.status(400).json({ error: 'last name required' });
   if (!payload.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) return res.status(400).json({ error: 'valid email required' });
 
-  // Tag every submission so Nucleus can segment.
-  payload.tags = ['C4CWebsite', 'Briefing'];
+  // Note: don't send `tags` here — Nucleus form receivers can 500 on
+  // unrecognised top-level keys. Use the Field Tagging tab on the Nucleus
+  // form to auto-apply tags to every submission instead.
 
   try {
     const r = await fetch(NUCLEUS_RECEIVER, {
