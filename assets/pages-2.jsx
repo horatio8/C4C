@@ -353,7 +353,13 @@ function DonatePage() {
   const goToStripe = (key) => {
     const freq = recurring ? 'month' : 'once';
     const url = STRIPE_LINKS[freq][key];
-    if (url) window.location.href = url;
+    if (!url) return;
+    // Tag the Checkout Session so the Stripe webhook can resolve the Site
+    // (AEA vs Coalition) when writing into Airtable. The value flows through
+    // to Checkout Session.client_reference_id and is preserved on the
+    // donor's return-URL too.
+    const ref = encodeURIComponent('coalition.affordableenergy.org.au');
+    window.location.href = url + (url.includes('?') ? '&' : '?') + `client_reference_id=${ref}`;
   };
 
   return (
