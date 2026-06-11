@@ -617,7 +617,7 @@ function HomeBriefing() {
   const b = (C().work && C().work.briefing) || null;
   if (!b) return null;
   return (
-    <section className="section umber-bg">
+    <section className="umber-bg" style={{ padding: '72px 0' }}>
       <div className="container-wide">
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 96, alignItems: 'flex-start' }}>
           <div>
