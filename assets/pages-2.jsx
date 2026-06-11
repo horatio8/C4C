@@ -318,33 +318,43 @@ function NewsPage({ setPage }) {
   );
 }
 
+// Stripe payment links — LIVE. acct_1KSyH4B1lSf62lWQ (Coalition for Conservation).
+// All charges tagged metadata.campaign=C4C; receipts emailed by Stripe.
+const STRIPE_LINKS = {
+  once: {
+    50:    'https://donate.stripe.com/5kQ4gy2LWgKN1f65280gw0F',
+    100:   'https://donate.stripe.com/4gMbJ086g2TXe1S2U00gw0G',
+    250:   'https://donate.stripe.com/28E4gyaeocuxe1SgKQ0gw0H',
+    1000:  'https://donate.stripe.com/3cIbJ04U4fGJ7DugKQ0gw0I',
+    other: 'https://donate.stripe.com/28EcN4bis669e1S1PW0gw0N',
+  },
+  month: {
+    50:    'https://buy.stripe.com/14AfZg5Y8dyBaPGeCI0gw0J',
+    100:   'https://buy.stripe.com/14A6oG5Y83Y1e1S66c0gw0K',
+    250:   'https://buy.stripe.com/4gMbJ0aeo1PT0b2dyE0gw0L',
+    1000:  'https://buy.stripe.com/aFabJ0aeodyB3ne2U00gw0M',
+    // Stripe doesn't allow custom amounts on subscriptions — no "other" here.
+  },
+};
+
 function DonatePage() {
   const d = C().donate;
-  const [amount, setAmount] = useState(d.presets[1] || 100);
   const [recurring, setRecurring] = useState(true);
-  const [step, setStep] = useState(1);
-  const [busy, setBusy] = useState(false);
-  const [err, setErr] = useState('');
 
-  async function handleStep2(e) {
-    e.preventDefault();
-    setBusy(true);
-    setErr('');
-    const fd = new FormData(e.currentTarget);
-    const ok = await postJson('/api/donate-intent', {
-      amount: Number(amount),
-      recurring,
-      first_name: fd.get('first_name'),
-      last_name: fd.get('last_name'),
-      email: fd.get('email'),
-      postcode: fd.get('postcode'),
-      phone: fd.get('phone'),
-      briefing: !!fd.get('briefing'),
-    });
-    setBusy(false);
-    if (ok) setStep(3);
-    else setErr('Submission failed. Please try again.');
-  }
+  // Read ?status=success&amount=…&freq=… for the thank-you state
+  const params = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
+  const success = params.get('status') === 'success';
+  const successAmount = params.get('amount') || '';
+  const successFreq = (params.get('freq') || '').toLowerCase();
+  const successRecurring = successFreq === 'month' || successFreq === 'monthly';
+
+  const presets = recurring ? [50, 100, 250, 1000] : [50, 100, 250, 1000, 'other'];
+
+  const goToStripe = (key) => {
+    const freq = recurring ? 'month' : 'once';
+    const url = STRIPE_LINKS[freq][key];
+    if (url) window.location.href = url;
+  };
 
   return (
     <React.Fragment>
@@ -364,115 +374,63 @@ function DonatePage() {
 
       <section style={{ background: 'var(--paper-warm)', borderBottom: '1px solid var(--rule)' }}>
         <div className="container-wide" style={{ padding: '80px var(--gutter)' }}>
-          <div style={{ display: 'flex', gap: 0, marginBottom: 56, borderBottom: '1px solid var(--rule)' }}>
-            {d.stepLabels.map((s, i) => (
-              <div key={s} style={{ flex: 1, padding: '24px 0', borderBottom: step === i + 1 ? '2px solid var(--ink)' : 'none', marginBottom: -1 }}>
-                <span className="mono" style={{ fontSize: 11, letterSpacing: '0.14em', color: step === i + 1 ? 'var(--ink)' : 'var(--ink-4)', textTransform: 'uppercase' }}>{s}</span>
-              </div>
-            ))}
-          </div>
-
           <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 80, alignItems: 'flex-start' }}>
-            {step === 1 && (
+            {success ? (
+              <div>
+                <div className="display italic" style={{ fontSize: 88, color: 'var(--terracotta-2)', fontWeight: 300, lineHeight: 0.9 }}>{d.thankYou}</div>
+                <p className="lead" style={{ marginTop: 32 }}>{d.thankYouBody}</p>
+                {(successAmount || successFreq) && (
+                  <div style={{ marginTop: 48, padding: 28, background: 'var(--paper)', border: '1px solid var(--rule)' }}>
+                    <div className="eyebrow eyebrow-ochre" style={{ marginBottom: 16 }}>Receipt summary</div>
+                    <div className="mono" style={{ fontSize: 13, lineHeight: 2 }}>
+                      {[
+                        successAmount && ['Amount', `$${successAmount} AUD`],
+                        successFreq && ['Frequency', successRecurring ? 'Monthly' : 'One-time'],
+                        ['DGR status', 'Tax-deductible (donations over $2)'],
+                        ['ABN', '82 201 923 025'],
+                      ].filter(Boolean).map(([k, v]) => (
+                        <div key={k} style={{ display: 'flex', gap: 16 }}>
+                          <span style={{ width: 120, flex: '0 0 auto', color: 'var(--ink-soft, #6b6b5e)' }}>{k}</span>
+                          <span>{v}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
               <div>
                 <Eyebrow ochre>{d.amountEyebrow}</Eyebrow>
                 <div style={{ display: 'flex', gap: 12, marginTop: 24, marginBottom: 32 }}>
                   <button type="button" onClick={() => setRecurring(false)} aria-pressed={!recurring} className="btn" style={{ flex: 1, background: !recurring ? 'var(--ink)' : 'transparent', color: !recurring ? 'var(--paper)' : 'var(--ink)', border: '1px solid var(--ink)', justifyContent: 'center' }}>{d.oneTimeLabel}</button>
                   <button type="button" onClick={() => setRecurring(true)} aria-pressed={recurring} className="btn" style={{ flex: 1, background: recurring ? 'var(--ink)' : 'transparent', color: recurring ? 'var(--paper)' : 'var(--ink)', border: '1px solid var(--ink)', justifyContent: 'center' }}>{d.monthlyLabel}</button>
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 24 }}>
-                  {d.presets.map(p => (
+                <div style={{ display: 'grid', gridTemplateColumns: `repeat(${presets.length}, 1fr)`, gap: 12 }}>
+                  {presets.map(p => (
                     <button
                       type="button"
                       key={p}
-                      onClick={() => setAmount(p)}
-                      aria-pressed={amount === p}
+                      onClick={() => goToStripe(p)}
                       style={{
                         padding: '36px 0',
-                        border: '1px solid ' + (amount === p ? 'var(--ink)' : 'var(--rule-2)'),
-                        background: amount === p ? 'var(--paper)' : 'transparent',
+                        border: '1px solid var(--rule-2)',
+                        background: 'transparent',
                         cursor: 'pointer',
-                      }}>
-                      <div className="display" style={{ fontSize: 40, fontWeight: 300, lineHeight: 1 }}>${p}</div>
-                      {recurring && <div className="mono" style={{ fontSize: 10, letterSpacing: '0.1em', color: 'var(--ink-3)', marginTop: 6 }}>/MONTH</div>}
+                        transition: 'background 0.15s, border-color 0.15s',
+                      }}
+                      onMouseEnter={e => { e.currentTarget.style.background = 'var(--paper)'; e.currentTarget.style.borderColor = 'var(--ink)'; }}
+                      onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'var(--rule-2)'; }}
+                    >
+                      <div className="display" style={{ fontSize: p === 'other' ? 32 : 40, fontWeight: 300, lineHeight: 1 }}>
+                        {p === 'other' ? 'Other' : `$${p}`}
+                      </div>
+                      {recurring && p !== 'other' && <div className="mono" style={{ fontSize: 10, letterSpacing: '0.1em', color: 'var(--ink-3)', marginTop: 6 }}>/MONTH</div>}
                     </button>
                   ))}
                 </div>
-                <div>
-                  <label htmlFor="donate_amount" className="label">{d.customLabel}</label>
-                  <div style={{ position: 'relative' }}>
-                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, top: 14, fontFamily: 'var(--display)', fontSize: 20, color: 'var(--ink-3)' }}>$</span>
-                    <input id="donate_amount" type="number" min="1" step="1" inputMode="numeric" className="input" value={amount} onChange={e => setAmount(e.target.value === '' ? 0 : Number(e.target.value))} style={{ paddingLeft: 24, fontFamily: 'var(--display)', fontSize: 22, fontWeight: 300 }} />
-                  </div>
-                </div>
-                <button type="button" onClick={() => setStep(2)} disabled={!amount || amount < 1} className="btn btn-primary" style={{ marginTop: 32 }}>Continue ↗</button>
-              </div>
-            )}
-
-            {step === 2 && (
-              <form onSubmit={handleStep2}>
-                <Eyebrow ochre>Your details</Eyebrow>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginTop: 24 }}>
-                  <div>
-                    <label htmlFor="don_first" className="label">First name <span aria-hidden="true" style={{ color: '#c44' }}>*</span></label>
-                    <input id="don_first" name="first_name" type="text" autoComplete="given-name" required placeholder=" " className="input" />
-                  </div>
-                  <div>
-                    <label htmlFor="don_last" className="label">Last name <span aria-hidden="true" style={{ color: '#c44' }}>*</span></label>
-                    <input id="don_last" name="last_name" type="text" autoComplete="family-name" required placeholder=" " className="input" />
-                  </div>
-                  <div style={{ gridColumn: '1 / -1' }}>
-                    <label htmlFor="don_email" className="label">Email <span aria-hidden="true" style={{ color: '#c44' }}>*</span></label>
-                    <input id="don_email" name="email" type="email" autoComplete="email" required placeholder=" " className="input" />
-                  </div>
-                  <div>
-                    <label htmlFor="don_post" className="label">Postcode <span aria-hidden="true" style={{ color: '#c44' }}>*</span></label>
-                    <input id="don_post" name="postcode" type="text" inputMode="numeric" pattern="[0-9]{4}" autoComplete="postal-code" required placeholder=" " className="input" />
-                  </div>
-                  <div>
-                    <label htmlFor="don_phone" className="label">Phone (optional)</label>
-                    <input id="don_phone" name="phone" type="tel" autoComplete="tel" placeholder=" " className="input" />
-                  </div>
-                  {d.briefingConsent && (
-                    <label style={{ gridColumn: '1 / -1', display: 'flex', gap: 12, alignItems: 'flex-start', fontSize: 13, color: 'var(--ink-3)', marginTop: 8 }}>
-                      <input type="checkbox" name="briefing" value="yes" style={{ marginTop: 4 }} /> {d.briefingConsent}
-                    </label>
-                  )}
-                  <div style={{ gridColumn: '1 / -1' }}>
-                    <p className="small" style={{ color: 'var(--ink-3)' }}>
-                      A real payment processor will be wired here before launch — this confirmation step records your intent only.
-                    </p>
-                  </div>
-                </div>
-                {err && <div style={{ marginTop: 16, color: '#9a1f1f', fontSize: 13 }}>{err}</div>}
-                <div style={{ display: 'flex', gap: 12, marginTop: 40 }}>
-                  <button type="button" onClick={() => setStep(1)} className="btn btn-outline">← Back</button>
-                  <button type="submit" disabled={busy} className="btn btn-primary">{busy ? 'Submitting…' : `Donate $${amount}${recurring ? '/mo' : ''} ↗`}</button>
-                </div>
-              </form>
-            )}
-
-            {step === 3 && (
-              <div>
-                <div className="display italic" style={{ fontSize: 88, color: 'var(--terracotta-2)', fontWeight: 300, lineHeight: 0.9 }}>{d.thankYou}</div>
-                <p className="lead" style={{ marginTop: 32 }}>{d.thankYouBody}</p>
-                <div style={{ marginTop: 48, padding: 28, background: 'var(--paper)', border: '1px solid var(--rule)' }}>
-                  <div className="eyebrow eyebrow-ochre" style={{ marginBottom: 16 }}>Receipt summary</div>
-                  <div className="mono" style={{ fontSize: 13, lineHeight: 2 }}>
-                    {[
-                      ['Amount', `$${amount} AUD`],
-                      ['Frequency', recurring ? 'Monthly' : 'One-time'],
-                      ['DGR status', 'Tax-deductible (donations over $2)'],
-                      ['ABN', '82 201 923 025'],
-                      ['Ref no', `C4C-2026-${String(Math.floor(Math.random() * 99999)).padStart(5, '0')}`],
-                    ].map(([k, v]) => (
-                      <div key={k} style={{ display: 'flex', gap: 16 }}>
-                        <span style={{ width: 120, flex: '0 0 auto', color: 'var(--ink-soft, #6b6b5e)' }}>{k}</span>
-                        <span>{v}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                <p className="small" style={{ color: 'var(--ink-3)', marginTop: 24 }}>
+                  Secure checkout via Stripe. {recurring ? 'Monthly donations can be cancelled any time from your Stripe receipt email.' : 'Choose "Other" to enter a custom amount on the next screen.'}
+                </p>
               </div>
             )}
 
