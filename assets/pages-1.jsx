@@ -223,7 +223,7 @@ function BriefingForm({ topic, submitLabel }) {
     return (
       <div style={{ padding: 32, border: '1px solid rgba(236,225,200,0.3)', color: 'var(--bone)' }}>
         <div className="display" style={{ fontSize: 32, color: '#e6c97a' }}>You're on the list.</div>
-        <p style={{ marginTop: 16, color: 'rgba(236,225,200,0.78)' }}>We'll send the briefing to your inbox four times a year. Check your email for confirmation.</p>
+        <p style={{ marginTop: 16, color: 'rgba(236,225,200,0.78)' }}>We're looking forward to being in touch.</p>
       </div>
     );
   }
