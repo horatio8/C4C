@@ -754,3 +754,32 @@ textarea:invalid:not(:placeholder-shown):focus {
 .team-headshot .ph-has-image {
   background: var(--paper-warm) !important;
 }
+
+/* === Edits2 PDF fixes === */
+
+/* Team headshots: zoom out so faces aren't clipped at top/bottom of the
+   circle. object-fit:contain shows the whole source image; corners outside
+   the image take the .team-headshot background (paper-warm) and are then
+   clipped by border-radius:50% anyway. */
+.team-headshot .ph-has-image > img {
+  object-fit: contain !important;
+  object-position: center !important;
+}
+
+/* Media & Webinars page filter bar: too tall on phones (chips wrap into many
+   rows) — leaves no room for posts when sticky. Unstick on mobile so it
+   scrolls away as you read. */
+@media (max-width: 800px) {
+  section[style*="position: 'sticky'"][style*="top: 79"] {
+    position: static !important;
+    top: auto !important;
+  }
+}
+
+/* What we do page: each pillar row uses `order` to flip text-left/image-right
+   on alternate rows. On mobile (single column) the alternation makes the
+   middle pillar (Agriculture) show its image above the text — undesired.
+   Reset `order` at ≤800px so source order applies (text always first). */
+@media (max-width: 800px) {
+  .work-area-row > * { order: unset !important; }
+}

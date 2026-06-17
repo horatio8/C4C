@@ -250,7 +250,7 @@ function HomeHero({ setPage }) {
   return (
     <section style={{ position: 'relative', overflow: 'hidden' }}>
       <Photo kind={h.photoKind} label={h.photoLabel} credit={h.photoCredit} src={h.photoUrl} alt="" eager height={'78vh'} style={{ minHeight: 640, position: 'relative' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(20,17,11,0.15) 0%, rgba(20,17,11,0.4) 60%, rgba(20,17,11,0.7) 100%)', zIndex: 2 }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(20,17,11,0.55) 0%, rgba(20,17,11,0.3) 25%, rgba(20,17,11,0.45) 60%, rgba(20,17,11,0.75) 100%)', zIndex: 2 }} />
 
         <div className="container-wide" style={{ position: 'relative', zIndex: 4, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', paddingBottom: 80, paddingTop: 80 }}>
           <div style={{ maxWidth: 1100 }}>

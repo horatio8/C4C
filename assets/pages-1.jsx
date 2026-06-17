@@ -38,8 +38,12 @@ function AboutPage({ setPage }) {
         <div className="container-wide" style={{ paddingTop: 64 }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.6fr', gap: 96 }}>
             <div style={{ display: 'flex', flexDirection: 'column', minHeight: 200 }}>
-              {C().site.iconUrl && <img src={C().site.iconUrl} alt="" aria-hidden="true" style={{ height: 200, width: 200, objectFit: 'contain', display: 'block' }} />}
-              <div style={{ marginTop: 'auto', textAlign: 'right' }}>
+              {C().site.iconUrl && (
+                <div style={{ flex: '1 1 auto', display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+                  <img src={C().site.iconUrl} alt="" aria-hidden="true" style={{ height: 200, width: 200, objectFit: 'contain', display: 'block' }} />
+                </div>
+              )}
+              <div style={{ textAlign: 'right', flexShrink: 0 }}>
                 <Eyebrow ochre>{a.story.eyebrow}</Eyebrow>
               </div>
             </div>
@@ -142,7 +146,7 @@ function WorkPage({ setPage }) {
       {w.areas.map((a, i) => (
         <section key={a.slug} style={{ background: i % 2 === 0 ? 'var(--paper)' : 'var(--paper-warm)', borderBottom: '1px solid var(--rule)' }}>
           <div className="container-wide" style={{ padding: '120px var(--gutter)' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
+            <div className="work-area-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
               <div style={{ order: i % 2 === 0 ? 1 : 2 }}>
                 <div className="mono" style={{ fontSize: 12, letterSpacing: '0.14em', color: 'var(--ochre-2)', marginBottom: 24 }}>
                   {a.topLabel || (a.n + ' Pillar')}
