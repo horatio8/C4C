@@ -39,7 +39,7 @@ function AboutPage({ setPage }) {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.6fr', gap: 96 }}>
             <div style={{ display: 'flex', flexDirection: 'column', minHeight: 200 }}>
               {C().site.iconUrl && (
-                <div style={{ flex: '1 1 auto', display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+                <div style={{ flex: '1 1 auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <img src={C().site.iconUrl} alt="" aria-hidden="true" style={{ height: 200, width: 200, objectFit: 'contain', display: 'block' }} />
                 </div>
               )}

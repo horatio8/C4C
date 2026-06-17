@@ -766,13 +766,25 @@ textarea:invalid:not(:placeholder-shown):focus {
   object-position: center !important;
 }
 
-/* Media & Webinars page filter bar: too tall on phones (chips wrap into many
-   rows) — leaves no room for posts when sticky. Unstick on mobile so it
-   scrolls away as you read. */
+/* Media & Webinars page filter bar: keep the bar sticky on phones (so it's
+   easy to switch filters while scrolling) but stop the chips from wrapping
+   into 10 rows that ate the viewport. Each chip-row now scrolls horizontally
+   on mobile, so the whole bar stays just two or three rows tall. */
 @media (max-width: 800px) {
+  .chip-row {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* fade-out hint that there's more to scroll */
+    mask-image: linear-gradient(to right, black 92%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, black 92%, transparent 100%);
+  }
+  .chip-row::-webkit-scrollbar { display: none; }
+  .chip-row > button { flex-shrink: 0; }
+  /* tighten the sticky bar's own padding */
   section[style*="position: 'sticky'"][style*="top: 79"] {
-    position: static !important;
-    top: auto !important;
+    padding: 12px 0 14px !important;
   }
 }
 

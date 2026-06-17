@@ -641,7 +641,7 @@ function MediaPage({ setPage }) {
 
   const all = items || [];
   // Category tabs (Interview / Comment / Press Release / Media), in fixed order.
-  const CAT_ORDER = ['Interview', 'Comment', 'Press Release', 'Media'];
+  const CAT_ORDER = ['Interview', 'Comment', 'Press Release', 'Media', 'Video'];
   const presentCats = Array.from(new Set(all.map(i => i.category).filter(Boolean)));
   const cats = ['All', ...CAT_ORDER.filter(c => presentCats.includes(c)), ...presentCats.filter(c => !CAT_ORDER.includes(c))];
   // Topic order: known pillars first, then Other last.
@@ -692,7 +692,7 @@ function MediaPage({ setPage }) {
         <div className="container-wide" style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap', rowGap: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
             <div className="eyebrow">Category</div>
-            <div role="tablist" aria-label="Filter by category" style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+            <div role="tablist" aria-label="Filter by category" className="chip-row" style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
               {cats.map(t => (
                 <button
                   key={t}
@@ -719,7 +719,7 @@ function MediaPage({ setPage }) {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
             <div className="eyebrow">Topic</div>
-            <div role="tablist" aria-label="Filter by topic" style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+            <div role="tablist" aria-label="Filter by topic" className="chip-row" style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
               {tags.map(t => (
                 <button
                   key={t}
