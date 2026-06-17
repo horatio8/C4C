@@ -771,7 +771,12 @@ textarea:invalid:not(:placeholder-shown):focus {
    rows that ate the viewport. Each chip-row scrolls horizontally; eyebrow +
    chip-row stay on the same line; the bar itself stays ~3 rows tall. */
 @media (max-width: 800px) {
-  .media-filter-bar { padding: 12px 0 14px !important; }
+  .media-filter-bar {
+    padding: 12px 0 14px !important;
+    /* Don't pin to the top on mobile — let the user scroll past it. */
+    position: static !important;
+    top: auto !important;
+  }
   /* Outer toolbar: force one filter-group per row */
   .media-filter-bar > .container-wide {
     flex-direction: column !important;
