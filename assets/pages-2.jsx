@@ -688,9 +688,9 @@ function MediaPage({ setPage }) {
         </section>
       )}
 
-      <section style={{ padding: '24px 0 32px', background: 'var(--paper-warm)', borderBottom: '1px solid var(--rule)', position: 'sticky', top: 79, zIndex: 10 }}>
+      <section className="media-filter-bar" style={{ padding: '24px 0 32px', background: 'var(--paper-warm)', borderBottom: '1px solid var(--rule)', position: 'sticky', top: 79, zIndex: 10 }}>
         <div className="container-wide" style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap', rowGap: 16 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+          <div className="filter-group" style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
             <div className="eyebrow">Category</div>
             <div role="tablist" aria-label="Filter by category" className="chip-row" style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
               {cats.map(t => (
@@ -717,7 +717,7 @@ function MediaPage({ setPage }) {
               ))}
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+          <div className="filter-group" style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
             <div className="eyebrow">Topic</div>
             <div role="tablist" aria-label="Filter by topic" className="chip-row" style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
               {tags.map(t => (

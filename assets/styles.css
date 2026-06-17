@@ -766,26 +766,40 @@ textarea:invalid:not(:placeholder-shown):focus {
   object-position: center !important;
 }
 
-/* Media & Webinars page filter bar: keep the bar sticky on phones (so it's
-   easy to switch filters while scrolling) but stop the chips from wrapping
-   into 10 rows that ate the viewport. Each chip-row now scrolls horizontally
-   on mobile, so the whole bar stays just two or three rows tall. */
+/* Media & Webinars page filter bar: keep the bar sticky on phones (easy to
+   switch filters while scrolling) but stop the chips from wrapping into 10
+   rows that ate the viewport. Each chip-row scrolls horizontally; eyebrow +
+   chip-row stay on the same line; the bar itself stays ~3 rows tall. */
 @media (max-width: 800px) {
+  .media-filter-bar { padding: 12px 0 14px !important; }
+  /* Outer toolbar: force one filter-group per row */
+  .media-filter-bar > .container-wide {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    row-gap: 10px !important;
+  }
+  /* Each group (Category + Topic): eyebrow + scrollable chips on one line */
+  .filter-group {
+    width: 100% !important;
+    flex-wrap: nowrap !important;
+    min-width: 0;
+  }
+  /* The chip strip itself — no wrap, horizontal scroll */
   .chip-row {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
     flex-wrap: nowrap !important;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    /* fade-out hint that there's more to scroll */
+    /* soft fade on the right edge so it's obvious there's more to swipe */
     mask-image: linear-gradient(to right, black 92%, transparent 100%);
     -webkit-mask-image: linear-gradient(to right, black 92%, transparent 100%);
+    padding-right: 16px;
   }
   .chip-row::-webkit-scrollbar { display: none; }
-  .chip-row > button { flex-shrink: 0; }
-  /* tighten the sticky bar's own padding */
-  section[style*="position: 'sticky'"][style*="top: 79"] {
-    padding: 12px 0 14px !important;
-  }
+  .chip-row > button { flex-shrink: 0 !important; }
 }
 
 /* What we do page: each pillar row uses `order` to flip text-left/image-right
