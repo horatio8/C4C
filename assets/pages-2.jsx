@@ -640,9 +640,9 @@ function MediaPage({ setPage }) {
   useEffect(() => { setVisible(pageSize); }, [catFilter, tagFilter, q, pageSize]);
 
   const all = items || [];
-  // Category tabs (Interview / Comment / Press Release / Media), in fixed order.
-  const CAT_ORDER = ['Interview', 'Comment', 'Press Release', 'Media'];
-  const presentCats = Array.from(new Set(all.map(i => i.category).filter(Boolean)));
+  // Type tabs (News / Webinar / Video / Media Release), in fixed order.
+  const CAT_ORDER = ['News', 'Webinar', 'Video', 'Media Release'];
+  const presentCats = Array.from(new Set(all.map(i => i.type).filter(Boolean)));
   const cats = ['All', ...CAT_ORDER.filter(c => presentCats.includes(c)), ...presentCats.filter(c => !CAT_ORDER.includes(c))];
   // Topic order: known pillars first, then Other last.
   const TAG_ORDER = ['Energy', 'Agriculture', 'Biodiversity', 'Other'];
@@ -651,7 +651,7 @@ function MediaPage({ setPage }) {
 
   const ql = q.trim().toLowerCase();
   const filtered = all.filter(it => {
-    if (catFilter !== 'All' && it.category !== catFilter) return false;
+    if (catFilter !== 'All' && it.type !== catFilter) return false;
     if (tagFilter !== 'All' && it.tag !== tagFilter) return false;
     if (ql && !(
       (it.title || '').toLowerCase().includes(ql) ||
@@ -691,8 +691,8 @@ function MediaPage({ setPage }) {
       <section className="media-filter-bar" style={{ padding: '24px 0 32px', background: 'var(--paper-warm)', borderBottom: '1px solid var(--rule)', position: 'sticky', top: 79, zIndex: 10 }}>
         <div className="container-wide" style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap', rowGap: 16 }}>
           <div className="filter-group" style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-            <div className="eyebrow">Category</div>
-            <div role="tablist" aria-label="Filter by category" className="chip-row" style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+            <div className="eyebrow">Type</div>
+            <div role="tablist" aria-label="Filter by type" className="chip-row" style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
               {cats.map(t => (
                 <button
                   key={t}
