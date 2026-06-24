@@ -641,7 +641,7 @@ function MediaPage({ setPage }) {
 
   const all = items || [];
   // Category tabs (Interview / Comment / Press Release / Media), in fixed order.
-  const CAT_ORDER = ['Interview', 'Comment', 'Press Release', 'Media', 'Video'];
+  const CAT_ORDER = ['Interview', 'Comment', 'Press Release', 'Media'];
   const presentCats = Array.from(new Set(all.map(i => i.category).filter(Boolean)));
   const cats = ['All', ...CAT_ORDER.filter(c => presentCats.includes(c)), ...presentCats.filter(c => !CAT_ORDER.includes(c))];
   // Topic order: known pillars first, then Other last.
