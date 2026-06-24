@@ -355,6 +355,35 @@ function MissionStatement({ setPage }) {
   );
 }
 
+function FlagshipMediaPanel({ f }) {
+  // The remote AEA logo (preview.affordableenergy.org.au) is intermittently
+  // unreachable from mobile networks, leaving the broken-image icon. If the
+  // image fails to load, fall back to a typeset wordmark so the panel never
+  // shows a broken-image marker.
+  const [imgFailed, setImgFailed] = useState(false);
+  const showImg = f.logoUrl && !imgFailed;
+  return (
+    <div className="flagship-media" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--ink)', padding: '48px 56px', minHeight: 560 }}>
+      {showImg ? (
+        <img
+          src={f.logoUrl}
+          alt="Affordable Energy Australia"
+          loading="eager"
+          decoding="async"
+          onError={() => setImgFailed(true)}
+          style={{ maxWidth: '78%', maxHeight: 220, width: 'auto', height: 'auto', objectFit: 'contain', display: 'block' }}
+        />
+      ) : (
+        <div className="display" style={{ color: 'var(--bone)', fontWeight: 300, lineHeight: 1, letterSpacing: '-0.02em', textAlign: 'center', maxWidth: '90%' }}>
+          <div style={{ fontSize: 'clamp(36px, 6vw, 64px)' }}>Affordable</div>
+          <div style={{ fontSize: 'clamp(36px, 6vw, 64px)' }}>Energy</div>
+          <div className="italic" style={{ fontSize: 'clamp(28px, 5vw, 52px)', color: '#e6c97a', marginTop: 6 }}>Australia</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function FlagshipCampaign({ setPage }) {
   const f = C().home.flagship;
   return (
@@ -364,13 +393,7 @@ function FlagshipCampaign({ setPage }) {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, marginTop: 40, background: 'var(--ink)', color: 'var(--bone)', minHeight: 560 }}>
           {f.photoUrl
             ? <Photo kind={f.photoKind} src={f.photoUrl} label={f.photoLabel} credit={f.photoCredit} alt="" height="100%" />
-            : (
-              <div className="flagship-media" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--ink)', padding: '48px 56px', minHeight: 560 }}>
-                {f.logoUrl
-                  ? <img src={f.logoUrl} alt="Affordable Energy Australia" loading="lazy" decoding="async" style={{ maxWidth: '78%', maxHeight: 220, width: 'auto', height: 'auto', objectFit: 'contain', display: 'block' }} />
-                  : <Photo kind={f.photoKind} label={f.photoLabel} credit={f.photoCredit} alt="" height="100%" />}
-              </div>
-            )}
+            : <FlagshipMediaPanel f={f} />}
           <div style={{ padding: '64px 56px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <div>
               {(f.chipLabel || f.subBrandLabel) && (
