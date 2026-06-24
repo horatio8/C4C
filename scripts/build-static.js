@@ -15,6 +15,12 @@ const MEDIA_SRC = path.join(ROOT, 'content', 'media.json');
 const IMPORT_DIR = path.join(ROOT, 'assets', 'imported');
 const BANNER_MANIFEST = path.join(__dirname, 'canva-banners.json');
 const BANNER_DIR = path.join(ROOT, 'assets', 'banners');
+const VENDOR_DIR = path.join(ROOT, 'assets', 'vendor');
+const VENDOR_FILES = [
+  { name: 'react.production.min.js', url: 'https://unpkg.com/react@18.3.1/umd/react.production.min.js' },
+  { name: 'react-dom.production.min.js', url: 'https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js' },
+  { name: 'babel.min.js', url: 'https://unpkg.com/@babel/standalone@7.29.0/babel.min.js' },
+];
 
 function write(name, body) {
   fs.writeFileSync(path.join(ROOT, name), body);
@@ -117,6 +123,29 @@ async function main() {
     `\n</urlset>\n`);
 
   await fetchBanners();
+  await fetchVendorJs();
+}
+
+// --- Vendor JS (React + Babel) self-host ----------------------------------
+async function fetchVendorJs() {
+  fs.mkdirSync(VENDOR_DIR, { recursive: true });
+  let fetched = 0, kept = 0, failed = 0;
+  for (const v of VENDOR_FILES) {
+    const dest = path.join(VENDOR_DIR, v.name);
+    if (fs.existsSync(dest) && fs.statSync(dest).size > 1000) { kept++; continue; }
+    try {
+      const res = await fetch(v.url, { redirect: 'follow' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const buf = Buffer.from(await res.arrayBuffer());
+      if (buf.length < 1000) throw new Error('too small');
+      fs.writeFileSync(dest, buf);
+      fetched++;
+    } catch (e) {
+      console.warn(`build-static: vendor ${v.name} fetch failed (${e.message}).`);
+      failed++;
+    }
+  }
+  console.log(`build-static: vendor JS — ${fetched} fetched, ${kept} kept, ${failed} failed`);
 }
 
 // --- Banner fetch (committed bytes win; manifest URLs are a fallback) -------
