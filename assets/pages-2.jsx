@@ -782,7 +782,7 @@ function MediaPage({ setPage }) {
                         alt=""
                         loading="lazy"
                         decoding="async"
-                        style={{ width: '100%', height: 200, objectFit: 'cover', display: 'block', background: 'var(--paper-warm)' }}
+                        style={{ width: '100%', height: 200, objectFit: 'cover', objectPosition: it.imagePosition || 'center', display: 'block', background: 'var(--paper-warm)' }}
                       />
                     ) : (
                       <div className={`ph ph-${(it.tag || 'forest').toLowerCase() === 'energy' ? 'coast' : (it.tag || '').toLowerCase() === 'agriculture' ? 'wheat' : 'forest'}`} style={{ height: 200 }} />
