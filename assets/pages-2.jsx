@@ -774,16 +774,28 @@ function MediaPage({ setPage }) {
           {items && filtered.length > 0 && (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32 }}>
               {shown.map((it, i) => {
+                // Video/webinar records without a still fall back to the
+                // YouTube thumbnail ("a screenshot from the video").
+                const thumb = it.imageUrl || (it.youtubeId ? `https://i.ytimg.com/vi/${it.youtubeId}/hqdefault.jpg` : '');
                 const card = (
                   <React.Fragment>
-                    {it.imageUrl ? (
-                      <img
-                        src={it.imageUrl}
-                        alt=""
-                        loading="lazy"
-                        decoding="async"
-                        style={{ width: '100%', height: 200, objectFit: 'cover', objectPosition: it.imagePosition || 'center', display: 'block', background: 'var(--paper-warm)' }}
-                      />
+                    {thumb ? (
+                      <div style={{ position: 'relative' }}>
+                        <img
+                          src={thumb}
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          style={{ width: '100%', height: 200, objectFit: 'cover', objectPosition: it.imagePosition || 'center', display: 'block', background: 'var(--paper-warm)' }}
+                        />
+                        {it.youtubeId && (
+                          <span aria-hidden="true" style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <span style={{ width: 52, height: 52, borderRadius: '50%', background: 'rgba(20,28,22,0.62)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                              <span style={{ width: 0, height: 0, borderStyle: 'solid', borderWidth: '9px 0 9px 15px', borderColor: 'transparent transparent transparent #fff', marginLeft: 3 }} />
+                            </span>
+                          </span>
+                        )}
+                      </div>
                     ) : (
                       <div className={`ph ph-${(it.tag || 'forest').toLowerCase() === 'energy' ? 'coast' : (it.tag || '').toLowerCase() === 'agriculture' ? 'wheat' : 'forest'}`} style={{ height: 200 }} />
                     )}
@@ -884,13 +896,24 @@ function MediaArticlePage({ slug, setPage }) {
 
       <section className="section" style={{ paddingTop: 48 }}>
         <div className="container-wide" style={{ maxWidth: 820, marginLeft: 'auto', marginRight: 'auto' }}>
-          {item.imageUrl && (
+          {item.youtubeId ? (
+            <div style={{ position: 'relative', width: '100%', paddingTop: '56.25%', marginBottom: 40, background: '#000', borderRadius: 4, overflow: 'hidden' }}>
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${item.youtubeId}`}
+                title={item.title}
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }}
+              />
+            </div>
+          ) : item.imageUrl ? (
             <img
               src={item.imageUrl}
               alt=""
               style={{ width: '100%', maxHeight: 520, objectFit: 'contain', display: 'block', background: 'var(--paper-warm)', borderRadius: 4, marginBottom: 40 }}
             />
-          )}
+          ) : null}
           {paras.length > 0 ? paras.map((p, i) => (
             <p key={i} className="body" style={{ fontSize: 18, lineHeight: 1.7, marginBottom: 24 }}>{p}</p>
           )) : (
