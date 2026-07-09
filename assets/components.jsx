@@ -187,8 +187,6 @@ function Footer({ setPage }) {
           <div>
             <div className="eyebrow eyebrow-paper" style={{ marginBottom: 20 }}>{f.office.title}</div>
             <p style={{ fontSize: 14, color: 'rgba(236,225,200,0.85)', lineHeight: 1.75 }}>
-              {f.office.addressLine1}<br />
-              {f.office.addressLine2}<br /><br />
               <a href={`tel:${(f.office.phone || '').replace(/\s/g, '')}`} style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'rgba(236,225,200,0.7)' }}>
                 {f.office.phone}
               </a>
