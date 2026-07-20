@@ -300,6 +300,13 @@ function formatDateAU(isoOrDate) {
   return `${String(d.getDate()).padStart(2,'0')} ${months[d.getMonth()]} ${d.getFullYear()}`;
 }
 
+// Accept a full YouTube URL or a bare 11-char ID; store just the ID.
+function ytId(s) {
+  if (!s) return '';
+  const m = String(s).match(/(?:youtube\.com\/(?:watch\?v=|embed\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : String(s).trim();
+}
+
 function MediaItemForm({ value, onSave, onCancel }) {
   const [item, setItem] = useState(value);
   const update = (k, v) => setItem(prev => ({ ...prev, [k]: v }));
@@ -355,8 +362,20 @@ function MediaItemForm({ value, onSave, onCancel }) {
             <input type="url" value={item.url || ''} onChange={e => update('url', e.target.value)} placeholder="https://…" />
           </div>
           <div className="field">
-            <label className="field-label">Image URL</label>
+            <label className="field-label">Hero image</label>
             <ImageField value={item.imageUrl || ''} onChange={v => update('imageUrl', v)} />
+          </div>
+          <div className="form-row">
+            <div className="field">
+              <label className="field-label">YouTube video (link or ID)</label>
+              <input type="text" value={item.youtubeId || ''} onChange={e => update('youtubeId', ytId(e.target.value))} placeholder="https://youtu.be/… or 11-char ID" />
+              <div className="help">Video/Webinar posts: embeds the player on the story page and uses the video thumbnail as the hero when no image is set.</div>
+            </div>
+            <div className="field">
+              <label className="field-label">Image focus (optional)</label>
+              <input type="text" value={item.imagePosition || ''} onChange={e => update('imagePosition', e.target.value)} placeholder="center 30%" />
+              <div className="help">CSS object-position for the card crop, e.g. "center 30%" to lower a face into frame.</div>
+            </div>
           </div>
           <div className="field">
             <label className="field-label">Excerpt</label>
