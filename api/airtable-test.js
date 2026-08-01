@@ -16,25 +16,10 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: 'method not allowed' });
   }
 
-  // CMS/admin env presence (booleans + lengths only — no secret values).
-  // The correct ADMIN_PASSWORD_HASH length is 174. Anything else = truncated on paste.
-  const cmsEnv = {
-    adminPasswordHashPresent: !!process.env.ADMIN_PASSWORD_HASH,
-    adminPasswordHashLength: (process.env.ADMIN_PASSWORD_HASH || '').length,
-    sessionSecretPresent: !!process.env.SESSION_SECRET,
-    sessionSecretLength: (process.env.SESSION_SECRET || '').length,
-    githubTokenPresent: !!process.env.GITHUB_TOKEN,
-    githubOwner: process.env.GITHUB_OWNER || null,
-    githubRepo: process.env.GITHUB_REPO || null,
-    githubBranch: process.env.GITHUB_BRANCH || null,
-    adminUsername: process.env.ADMIN_USERNAME || null,
-  };
-
   if (!airtable.isConfigured()) {
     return res.status(503).json({
       ok: false,
       stage: 'config',
-      cmsEnv,
       detail: 'Missing one or more of AIRTABLE_API_KEY / AIRTABLE_BASE_ID / AIRTABLE_TABLE_ID',
       airtableApiKeyPresent: !!process.env.AIRTABLE_API_KEY,
       airtableBaseIdPresent: !!process.env.AIRTABLE_BASE_ID,
@@ -72,7 +57,6 @@ module.exports = async (req, res) => {
 
     return res.status(200).json({
       ok: true,
-      cmsEnv,
       recordCountSampled: (parsed && parsed.records && parsed.records.length) || 0,
       stripeKeyPresent: !!process.env.STRIPE_SECRET_KEY,
       stripeWebhookSecretPresent: !!process.env.STRIPE_WEBHOOK_SECRET,
